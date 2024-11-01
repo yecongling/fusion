@@ -1,6 +1,6 @@
-package cn.net.framework.core;
+package cn.net.fusion.framework.core;
 
-import cn.net.framework.enums.HttpCodeEnum;
+import cn.net.fusion.framework.enums.HttpCodeEnum;
 
 /**
  * @ClassName Response
@@ -106,7 +106,7 @@ public class Response<T> {
     }
 
     public static <T> Response<T> fail() {
-        Response<T> response = new Response<>();
+        Response<T> response = new Response<T>();
         response.setStatus(false);
         response.setCode(HttpCodeEnum.ERROR.getCode());
         response.setMessage(HttpCodeEnum.ERROR.getMessage());

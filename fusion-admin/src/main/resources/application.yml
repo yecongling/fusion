@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: fusion-admin
+logging:
+  charset:
+    #  控制台输出的字符集
+    console: UTF-8
+    # 日志写入文件的字符集
+    file: UTF-8
+    # 自定义的配置文件的路径
+  config: classpath:log4j2.xml
+  # 应用程序包的路径
+  level.cn.net: INFO
+  # 日志存放路径
+  file:
+    path: logs/fusion.log

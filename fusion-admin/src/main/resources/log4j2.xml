@@ -1,0 +1,61 @@
+<?xml
+        version="1.0" encoding="UTF-8"?>
+<!--status：用来指定log4j2本身的打印日志的级别,monitorinterval：用于指定log4j自动重新配置的监测间隔时间，单位是s,最小是5s-->
+<Configuration status="WARN" monitorInterval="30">
+    <Properties>
+        <Property name="logDir">logs</Property>
+        <Property name="logFile">cmams</Property>
+        <Property name="level">DEBUG</Property>
+    </Properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="[%-4level] [%date{yyyy-MM-dd HH:mm:ss.SSS}] [%thread] %logger{96}:%line - %msg%n"/>
+            <!--控制台只输出level及其以上级别的信息（onMatch），其他的直接拒绝（onMismatch）-->
+            <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+        </Console>
+        <RollingFile name="File" fileName="${logDir}/${logFile}.log"
+                     filePattern="${logDir}/${logFile}-%d{yyyy-MM-dd}-%i.log.gz">
+            <!--日志输出格式-->
+            <PatternLayout pattern="[%-4level] [%date{yyyy-MM-dd HH:mm:ss.SSS}] [%thread] %logger{96}:%line - %msg%n"/>
+            <!--满足任何一个policy即进行归档-->
+            <Policies>
+                <!--当前日志与开始日期不匹配（RollingFile中配置的filePattern中配置的最小时间单位不匹配时）时进行归档-->
+                <TimeBasedTriggeringPolicy/>
+                <!--文件超过512M进行归档，SizeBasedTriggeringPolicy规定了当日志文件达到了指定的size时，触发rollover操作。size参数可以用KB、MB、GB等做后缀来指定具体的字节数，如20MB-->
+                <SizeBasedTriggeringPolicy size="64MB"/>
+            </Policies>
+            <!--归档的文件最大数量,max参数指定了计数器的最大值。一旦计数器达到了最大值，过旧的文件将被删除。-->
+            <DefaultRolloverStrategy max="20">
+                <!--删除规则-->
+                <Delete basePath="${logDir}" maxDepth="2">
+                    <!--匹配文件规则-->
+                    <IfFileName glob="*.log.gz">
+                        <IfLastModified age="60d">
+                            <IfAny>
+                                <!--logDir下文件总大小超过5GB，进行删除-->
+                                <IfAccumulatedFileSize exceeds="5GB"/>
+                                <!--logDir下文件总数量超过100，进行删除-->
+                                <IfAccumulatedFileCount exceeds="100"/>
+                            </IfAny>
+                        </IfLastModified>
+                    </IfFileName>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <!--若是additivity设为false，则 子Logger 只会在自己的appender里输出，而不会在 父Logger 的appender里输出。-->
+        <Logger name="com.cxwn.cmams" level="${level}" additivity="false">
+            <AppenderRef ref="File"/>
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <Logger name="org.springframework" level="ERROR" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="File"/>
+        </Logger>
+        <AsyncRoot level="WARN">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="File"/>
+        </AsyncRoot>
+    </Loggers>
+</Configuration>

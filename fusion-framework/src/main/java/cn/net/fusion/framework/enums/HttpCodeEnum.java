@@ -1,4 +1,4 @@
-package cn.net.framework.enums;
+package cn.net.fusion.framework.enums;
 
 /**
  * @ClassName HttpCodeEnum
