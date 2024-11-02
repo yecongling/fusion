@@ -51,7 +51,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         }
         // 从redis中获取用户的登录信息，判定token有效
         if (!redisUtil.hasKey(token)) {
-            response.getWriter().write(JSONObject.toJSONString(Response.fail(HttpCodeEnum.RC100.getCode(), HttpCodeEnum.RC100.getMessage())));
+            response.getWriter().write(JSONObject.toJSONString(Response.fail(HttpCodeEnum.RC401.getCode(), HttpCodeEnum.RC401.getMessage())));
             return false;
         }
         return true;
