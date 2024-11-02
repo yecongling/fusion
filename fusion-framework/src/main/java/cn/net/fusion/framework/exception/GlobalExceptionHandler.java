@@ -3,10 +3,15 @@ package cn.net.fusion.framework.exception;
 
 import cn.net.fusion.framework.core.Response;
 import cn.net.fusion.framework.enums.HttpCodeEnum;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 /**
  * @ClassName GlobalException
@@ -19,7 +24,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     // 日志记录工具
-    private static final Logger logger = LogManager.getLogger(GlobalExceptionHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     /**
      * 处理业务异常
@@ -31,6 +36,31 @@ public class GlobalExceptionHandler {
     public Response<Object> businessException(BusinessException businessException) {
         logger.error("业务异常 => code: {},原因是: {}", businessException.getCode(), businessException.getMessage());
         return Response.fail(businessException.getCode(), businessException.getMessage());
+    }
+
+    /**
+     * 处理请求资源不存在的情况（404）
+     *
+     * @param e 异常信息
+     * @return 错误信息
+     */
+    @ExceptionHandler(NoHandlerFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Response<Object> noHandlerFoundException(HttpServletRequest e) {
+        logger.error("请求地址错误（404）异常 => 请求方式： {}, 请求地址: {}", e.getMethod(), e.getServletPath());
+        return Response.fail(HttpCodeEnum.RC404.getCode(), HttpCodeEnum.RC404.getMessage());
+    }
+
+    /**
+     * 处理请求方式错误的异常（405）
+     *
+     * @param e 异常信息
+     * @return 错误信息
+     */
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public Response<Object> httpRequestMethodNotSupportedException(HttpServletRequest e) {
+        logger.error("请求方式错误（405）异常 => 请求方式: {}, 请求地址：: {}", e.getMethod(), e.getServletPath());
+        return Response.fail(HttpCodeEnum.RC405.getCode(), HttpCodeEnum.RC405.getMessage());
     }
 
     /**

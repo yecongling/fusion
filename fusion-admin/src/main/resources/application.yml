@@ -1,16 +1,58 @@
+server:
+  port: 8080
+  undertow:
+    # 以下的配置会影响buffer,这些buffer会用于服务器连接的IO操作,有点类似netty的池化内存管理
+    # 每块buffer的空间大小,越小的空间被利用越充分，不要设置太大，以免影响其他应用，合适即可
+    buffer-size: 1024
+    # 每个区分配的buffer数量 , 所以pool的大小是buffer-size * buffers-per-region
+    #buffers-per-region: 1024
+    # 是否分配的直接内存(NIO直接分配的堆外内存)
+    direct-buffers: true
+    threads:
+      # 阻塞任务线程池, 当执行类似servlet请求阻塞IO操作, undertow会从这个线程池中取得线程
+      # 它的值设置取决于系统线程执行任务的阻塞系数，默认值是IO线程数*8
+      worker: 256
+      io: 16
+  servlet:
+    context-path: /fusion
 spring:
   application:
-    name: fusion-admin
-logging:
-  charset:
-    #  控制台输出的字符集
-    console: UTF-8
-    # 日志写入文件的字符集
-    file: UTF-8
-    # 自定义的配置文件的路径
-  config: classpath:log4j2.xml
-  # 应用程序包的路径
-  level.cn.net: INFO
-  # 日志存放路径
-  file:
-    path: logs/fusion.log
+    name: fusion
+  web:
+    resources:
+      add-mappings: false
+  datasource:
+    #    url: jdbc:mysql://47.108.142.142:3306/integration?characterEncoding=UTF-8&useUnicode=true&useSSL=false&tinyInt1isBit=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai&allowMultiQueries=true
+    url: jdbc:mysql://localhost:3306/integration?characterEncoding=UTF-8&useUnicode=true&useSSL=false&tinyInt1isBit=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai&allowMultiQueries=true
+    username: root
+    password: Ycl499475142!
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    # 连接池
+    hikari:
+      #连接池名
+      pool-name: DateHikariCP
+      #最小空闲连接数
+      minimum-idle: 5
+      # 空闲连接存活最大时间，默认10分钟
+      idle-timeout: 600000
+      # 连接池最大连接数，默认是10
+      maximum-pool-size: 100
+      # 此属性控制池中连接的最长生命周期，值0表示无限生命周期，默认1800000即30分钟
+      max-lifetime: 1800000
+      # 数据库连接超时时间,默认30秒，即30000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+#  data:
+#    redis:
+#      host: localhost
+#      port: 6379
+#      password: Ycl499475142!
+#      database: 0
+#      lettuce:
+#        pool:
+#          max-idle: 16
+#          max-active: 32
+#          min-idle: 8
+mybatis:
+  mapper-locations: classpath*:mapper/**/*.xml

@@ -27,6 +27,15 @@
 		<java.version>17</java.version>
 	</properties>
 
+	<dependencies>
+		<!-- 框架部分 -->
+		<dependency>
+			<groupId>cn.net</groupId>
+			<artifactId>fusion-framework</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+	</dependencies>
+
 	<build>
 		<plugins>
 			<plugin>
