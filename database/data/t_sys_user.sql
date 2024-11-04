@@ -1,0 +1,2 @@
+insert into fusion.t_sys_user (id, username, real_name, password, salt, avatar, birthday, sex, email, phone, org_code, status, del_flag, third_id, third_type, activity_sync, work_no, post, telephone, create_by, create_time, update_by, update_time, user_identity, depart_ids, rel_tenant_ids, client_id)
+values  ('0000000000000001', 'admin', '叶丛林', '2f22910934545c26', '63293188', null, null, null, null, null, null, null, null, null, null, null, null, null, null, '0000000000000001', NOW(), '0000000000000001', NOW(), null, null, null, null);
