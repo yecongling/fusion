@@ -88,6 +88,8 @@ public class LoginServiceImpl implements ILoginService {
         String password = loginModel.getPassword();
         String userPassword = PasswordUtils.encrypt(username, password, sysUser.getSalt());
         if (!userPassword.equals(sysUser.getPassword())) {
+            // 密码输入错填，记录登录失败次数
+            addLoginFailOvertimes(username);
             return Response.fail(HttpCodeEnum.RC108.getCode(), HttpCodeEnum.RC108.getMessage());
         }
         // 6、7、8步骤接到生成用户相关信息方法
