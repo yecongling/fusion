@@ -1,8 +1,8 @@
 package cn.net.fusion.system.service;
 
-import cn.net.fusion.system.model.SysUser;
-
-import java.util.Map;
+import cn.net.fusion.framework.core.Response;
+import cn.net.fusion.system.model.SysLoginModel;
+import com.alibaba.fastjson2.JSONObject;
 
 /**
  * @ClassName ILoginService
@@ -16,10 +16,10 @@ public interface ILoginService {
     /**
      * 系统登录逻辑
      *
-     * @param user 用户信息
+     * @param loginModel 登录模型
      * @return 登录结果，返回给前台的例如token、主页地址等信息
      */
-    Map<String, Object> login(SysUser user);
+    Response<JSONObject> login(SysLoginModel loginModel) throws Exception;
 
     /**
      * 退出登录

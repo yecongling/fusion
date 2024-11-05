@@ -1,4 +1,4 @@
-package cn.net.fusion.system.model;
+package cn.net.fusion.system.entity;
 
 import cn.net.fusion.framework.core.SysOpr;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serial;
@@ -154,6 +155,16 @@ public class SysUser extends SysOpr implements Serializable {
      * 登录首页地址
      */
     private String homePath;
+
+    /**
+     * 用户当前登录的ip
+     */
+    private String loginIp;
+
+    /**
+     * 用户对应的角色（目前暂时考虑一个用户对应一个角色，后续这里需要进行变更）
+     */
+    private String roleId;
 
     public String getUsername() {
         return username;
@@ -361,5 +372,21 @@ public class SysUser extends SysOpr implements Serializable {
 
     public void setHomePath(String homePath) {
         this.homePath = homePath;
+    }
+
+    public String getLoginIp() {
+        return loginIp;
+    }
+
+    public void setLoginIp(String loginIp) {
+        this.loginIp = loginIp;
+    }
+
+    public String getRoleId() {
+        return StringUtils.isBlank(this.roleId) ? "admin" : this.roleId;
+    }
+
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
     }
 }

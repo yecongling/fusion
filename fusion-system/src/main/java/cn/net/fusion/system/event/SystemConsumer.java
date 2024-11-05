@@ -1,5 +1,6 @@
 package cn.net.fusion.system.event;
 
+import cn.net.fusion.framework.enums.SysOperation;
 import cn.net.fusion.framework.event.BaseEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,18 @@ public class SystemConsumer implements ApplicationListener<BaseEvent<Object>> {
 
     @Override
     public void onApplicationEvent(BaseEvent<Object> event) {
-        logger.info("SystemConsumer onApplicationEvent, the message is {}", event);
+        // 获取事件操作类型
+        SysOperation operation = event.getOperation();
+        Object data = event.getData();
+        switch (operation) {
+            case LOGIN:
+                System.out.println("登录操作");
+                break;
+            case LOGOUT:
+                System.out.println("退出登录");
+            default:
+                break;
+        }
+        logger.info("SystemConsumer onApplicationEvent, the data is {}", data);
     }
 }

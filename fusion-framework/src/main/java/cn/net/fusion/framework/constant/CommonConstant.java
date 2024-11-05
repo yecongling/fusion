@@ -90,6 +90,11 @@ public interface CommonConstant {
     String LOGIN_OPERATION = "login";
 
     /**
+     * 登录失败前缀
+     */
+    String LOGIN_FAIL = "login_fail:";
+
+    /**
      * 0：一级菜单
      */
     Integer MENU_TYPE_0 = 0;

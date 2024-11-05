@@ -1,5 +1,6 @@
 package cn.net.fusion.framework.event;
 
+import cn.net.fusion.framework.enums.SysOperation;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.ResolvableTypeProvider;
@@ -16,10 +17,10 @@ public class BaseEvent<T> extends ApplicationEvent implements ResolvableTypeProv
     // 事件的操作数据
     private T data;
 
-    // 事件的操作类型（后续考虑更改为枚举）
-    private String operation;
+    // 事件的操作类型
+    private SysOperation operation;
 
-    public BaseEvent(T data, String operation) {
+    public BaseEvent(T data, SysOperation operation) {
         super(data);
         this.data = data;
         this.operation = operation;
@@ -33,11 +34,11 @@ public class BaseEvent<T> extends ApplicationEvent implements ResolvableTypeProv
         this.data = data;
     }
 
-    public String getOperation() {
+    public SysOperation getOperation() {
         return operation;
     }
 
-    public void setOperation(String operation) {
+    public void setOperation(SysOperation operation) {
         this.operation = operation;
     }
 

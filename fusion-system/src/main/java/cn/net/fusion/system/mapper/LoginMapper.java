@@ -1,6 +1,6 @@
 package cn.net.fusion.system.mapper;
 
-import cn.net.fusion.system.model.SysUser;
+import cn.net.fusion.system.entity.SysUser;
 
 /**
  * @ClassName LoginMapper

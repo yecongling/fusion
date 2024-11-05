@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.net.fusion.system.mapper.LoginMapper">
     <!-- 根据用户名查询用户信息 -->
-    <select id="getUserByName" resultType="cn.net.fusion.system.model.SysUser">
+    <select id="getUserByName" resultType="cn.net.fusion.system.entity.SysUser">
         select *
         from t_sys_user
         where username = #{usname}

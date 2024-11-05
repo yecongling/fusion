@@ -1,7 +1,7 @@
 package cn.net.fusion.system.controller;
 
 import cn.net.fusion.framework.core.Response;
-import cn.net.fusion.system.model.SysUser;
+import cn.net.fusion.system.model.SysLoginModel;
 import cn.net.fusion.system.service.ILoginService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,12 +31,12 @@ public class LoginController {
     /**
      * 系统登录操作接口
      *
-     * @param user          登录的用户信息
+     * @param loginModel    登录的用户信息
      * @param bindingResult Validation的校验错误存放对象
      * @return 返回登录结果
      */
     @PostMapping("/login")
-    public Response<Object> login(@RequestBody @Valid SysUser user, BindingResult bindingResult) {
+    public Response<Object> login(@RequestBody @Valid SysLoginModel loginModel, BindingResult bindingResult) {
 
         return null;
     }
