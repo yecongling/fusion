@@ -1,14 +1,13 @@
 package cn.net.fusion.system.controller;
 
 import cn.net.fusion.framework.core.Response;
+import cn.net.fusion.framework.enums.HttpCodeEnum;
 import cn.net.fusion.system.model.SysLoginModel;
 import cn.net.fusion.system.service.ILoginService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @ClassName LoginController
@@ -36,8 +35,23 @@ public class LoginController {
      * @return 返回登录结果
      */
     @PostMapping("/login")
-    public Response<Object> login(@RequestBody @Valid SysLoginModel loginModel, BindingResult bindingResult) {
+    public Response<Object> login(@RequestBody @Valid SysLoginModel loginModel, BindingResult bindingResult) throws Exception {
+        // 如果校验有误，直接返回参数错误信息
+        if (bindingResult.hasErrors()) {
+            return Response.fail(HttpCodeEnum.RC400.getCode(), bindingResult.getAllErrors().get(0).getDefaultMessage());
+        }
+        // 调用业务接口
+        return loginService.login(loginModel);
+    }
 
+    /**
+     * 获取验证码
+     *
+     * @param key 拼接key，前台传过来的时间戳
+     * @return 验证码图像
+     */
+    @GetMapping("/getCaptcha/{key}")
+    public Response<String> getCaptcha(@PathVariable("key") String key) {
         return null;
     }
 }

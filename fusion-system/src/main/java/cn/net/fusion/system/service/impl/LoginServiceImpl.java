@@ -7,10 +7,7 @@ import cn.net.fusion.framework.enums.SysOperation;
 import cn.net.fusion.framework.event.BaseEvent;
 import cn.net.fusion.framework.event.Producer;
 import cn.net.fusion.framework.redis.RedisUtil;
-import cn.net.fusion.framework.utils.MD5Utils;
-import cn.net.fusion.framework.utils.PasswordUtils;
-import cn.net.fusion.framework.utils.SpringContextUtils;
-import cn.net.fusion.framework.utils.UUIDUtils;
+import cn.net.fusion.framework.utils.*;
 import cn.net.fusion.system.entity.SysUser;
 import cn.net.fusion.system.mapper.LoginMapper;
 import cn.net.fusion.system.model.SysLoginModel;
@@ -48,6 +45,9 @@ public class LoginServiceImpl implements ILoginService {
         this.producer = producer;
     }
 
+    // 用于随机选择的字符
+    private final String BASE_CHECK_CODES = "abcdefghijklmnopqrstuvwxyzQWERTYUPLKJHGFDSAZXCVBNM1234567890";
+
     /**
      * 系统登录逻辑
      *
@@ -55,7 +55,7 @@ public class LoginServiceImpl implements ILoginService {
      * @return 登录结果，返回给前台的例如token、主页地址等信息
      */
     @Override
-    public Response<JSONObject> login(SysLoginModel loginModel) throws Exception{
+    public Response<Object> login(SysLoginModel loginModel) throws Exception{
         String username = loginModel.getUsername();
         // 1、验证用户名是否存在
         SysUser sysUser = loginMapper.getUserByName(username);
@@ -93,7 +93,7 @@ public class LoginServiceImpl implements ILoginService {
             return Response.fail(HttpCodeEnum.RC108.getCode(), HttpCodeEnum.RC108.getMessage());
         }
         // 6、7、8步骤接到生成用户相关信息方法
-        Response<JSONObject> response = new Response<>();
+        Response<Object> response = new Response<>();
         generateUserInfo(sysUser, response);
         // 9、登录成功，删除记录的验证码、删除记录的登录失败次数
         redisUtil.delete(realKey);
@@ -116,12 +116,27 @@ public class LoginServiceImpl implements ILoginService {
     }
 
     /**
+     * 生成随机的验证码图像
+     *
+     * @param key 时间戳
+     * @return 图像
+     * @throws Exception ex
+     */
+    @Override
+    public String randomImage(String key) throws Exception {
+        // 生成随机的四位数的验证码
+        String code = RandomUtils.randomString(BASE_CHECK_CODES, 4);
+
+        return "";
+    }
+
+    /**
      * 生成用户相关信息
      *
      * @param sysUser  用户
      * @param response 结果
      */
-    private void generateUserInfo(SysUser sysUser, Response<JSONObject> response) {
+    private void generateUserInfo(SysUser sysUser, Response<Object> response) {
         // 6、登录成功，生成token
         String token = UUIDUtils.getUUID();
         // 记录操作员登录地址

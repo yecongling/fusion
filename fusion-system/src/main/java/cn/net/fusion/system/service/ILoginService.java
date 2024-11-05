@@ -2,7 +2,6 @@ package cn.net.fusion.system.service;
 
 import cn.net.fusion.framework.core.Response;
 import cn.net.fusion.system.model.SysLoginModel;
-import com.alibaba.fastjson2.JSONObject;
 
 /**
  * @ClassName ILoginService
@@ -19,7 +18,7 @@ public interface ILoginService {
      * @param loginModel 登录模型
      * @return 登录结果，返回给前台的例如token、主页地址等信息
      */
-    Response<JSONObject> login(SysLoginModel loginModel) throws Exception;
+    Response<Object> login(SysLoginModel loginModel) throws Exception;
 
     /**
      * 退出登录
@@ -28,4 +27,13 @@ public interface ILoginService {
      * @return 返回退出登录结果
      */
     Object logout(String token);
+
+    /**
+     * 生成随机的验证码图像
+     *
+     * @param key 时间戳
+     * @return 图像
+     * @throws Exception ex
+     */
+    String randomImage(String key) throws Exception;
 }
