@@ -55,7 +55,7 @@ public class LoginServiceImpl implements ILoginService {
      * @return 登录结果，返回给前台的例如token、主页地址等信息
      */
     @Override
-    public Response<Object> login(SysLoginModel loginModel) throws Exception{
+    public Response<Object> login(SysLoginModel loginModel) throws Exception {
         String username = loginModel.getUsername();
         // 1、验证用户名是否存在
         SysUser sysUser = loginMapper.getUserByName(username);
@@ -68,7 +68,7 @@ public class LoginServiceImpl implements ILoginService {
         }
         // 3、验证码校验
         String captcha = loginModel.getCaptcha();
-        if(StringUtils.isBlank(captcha)) {
+        if (StringUtils.isBlank(captcha)) {
             return Response.fail(HttpCodeEnum.RC301.getCode(), HttpCodeEnum.RC301.getMessage());
         }
         // 加入验证key
@@ -112,7 +112,14 @@ public class LoginServiceImpl implements ILoginService {
      */
     @Override
     public Object logout(String token) {
-        return null;
+        // 获取用户信息
+        Object o = redisUtil.get(CommonConstant.PREFIX_USER_TOKEN + token);
+        // 记录退出登录日志
+        BaseEvent<Object> event = new BaseEvent<>(o, SysOperation.LOGOUT);
+        producer.publishEvent(event);
+        // 清空用户token缓存
+        redisUtil.delete(CommonConstant.PREFIX_USER_TOKEN + token);
+        return "退出登录成功！";
     }
 
     /**
@@ -126,8 +133,13 @@ public class LoginServiceImpl implements ILoginService {
     public String randomImage(String key) throws Exception {
         // 生成随机的四位数的验证码
         String code = RandomUtils.randomString(BASE_CHECK_CODES, 4);
-
-        return "";
+        // 将验证码存储到redis中
+        String lowerCode = code.toLowerCase();
+        String origin = lowerCode + key;
+        String realKey = MD5Utils.MD5Encode(origin, "utf-8");
+        redisUtil.set(realKey, origin, 60);
+        // 将数据返回给前端
+        return RandImageUtils.generate(code);
     }
 
     /**
@@ -144,7 +156,7 @@ public class LoginServiceImpl implements ILoginService {
         String localAddr = request.getLocalAddr();
         sysUser.setLoginIp(localAddr);
         // 7、记录token，并记录token有效期(30分钟)
-        redisUtil.set(token, sysUser, 1800);
+        redisUtil.set(CommonConstant.PREFIX_USER_TOKEN + token, sysUser, 1800);
         // 8、获取用户相关信息
         JSONObject result = new JSONObject();
         result.put("token", token);

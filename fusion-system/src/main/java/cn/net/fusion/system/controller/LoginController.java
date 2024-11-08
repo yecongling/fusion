@@ -4,7 +4,9 @@ import cn.net.fusion.framework.core.Response;
 import cn.net.fusion.framework.enums.HttpCodeEnum;
 import cn.net.fusion.system.model.SysLoginModel;
 import cn.net.fusion.system.service.ILoginService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -45,13 +47,29 @@ public class LoginController {
     }
 
     /**
+     * 退出登录
+     *
+     * @param request 请求（需要从中获取token）
+     * @return 结果
+     */
+    @RequestMapping("/logout")
+    public Response<Object> logout(HttpServletRequest request) {
+        // 首选需要从header中获取token，如果没有传递token，那退出登录失败
+        String token = request.getHeader("token");
+        if (StringUtils.isEmpty(token)) {
+            return Response.fail("退出登录失败， token不合法！");
+        }
+        return Response.success(loginService.logout(token));
+    }
+
+    /**
      * 获取验证码
      *
      * @param key 拼接key，前台传过来的时间戳
      * @return 验证码图像
      */
     @GetMapping("/getCaptcha/{key}")
-    public Response<String> getCaptcha(@PathVariable("key") String key) {
-        return null;
+    public Response<String> getCaptcha(@PathVariable("key") String key) throws Exception {
+        return Response.success(loginService.randomImage(key));
     }
 }

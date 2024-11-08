@@ -1,5 +1,6 @@
 package cn.net.fusion.framework.interceptor;
 
+import cn.net.fusion.framework.constant.CommonConstant;
 import cn.net.fusion.framework.core.Response;
 import cn.net.fusion.framework.enums.HttpCodeEnum;
 import cn.net.fusion.framework.redis.RedisUtil;
@@ -50,7 +51,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             return false;
         }
         // 从redis中获取用户的登录信息，判定token有效
-        if (!redisUtil.hasKey(token)) {
+        if (!redisUtil.hasKey(CommonConstant.PREFIX_USER_TOKEN + token)) {
             response.getWriter().write(JSONObject.toJSONString(Response.fail(HttpCodeEnum.RC401.getCode(), HttpCodeEnum.RC401.getMessage())));
             return false;
         }

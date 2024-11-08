@@ -30,7 +30,7 @@ public class MvcInterceptor implements WebMvcConfigurer {
      * @param registry 拦截器配置中心
      */
     public void addInterceptors(InterceptorRegistry registry) {
-        // 添加登录验证拦截器，但是需要排除一些拦截登录验证的路径(登录地址和退出登录地址不需要验证)
-        registry.addInterceptor(new LoginInterceptor(redisUtil)).addPathPatterns("/**").excludePathPatterns("/login", "/logout");
+        // 添加登录验证拦截器，但是需要排除一些拦截登录验证的路径(登录地址、退出登录地址、获取验证码地址不需要验证)
+        registry.addInterceptor(new LoginInterceptor(redisUtil)).addPathPatterns("/**").excludePathPatterns("/login", "/logout", "/getCaptcha");
     }
 }
