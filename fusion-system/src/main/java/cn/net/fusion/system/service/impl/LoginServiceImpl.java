@@ -137,7 +137,7 @@ public class LoginServiceImpl implements ILoginService {
         String lowerCode = code.toLowerCase();
         String origin = lowerCode + key;
         String realKey = MD5Utils.MD5Encode(origin, "utf-8");
-        redisUtil.set(realKey, origin, 60);
+        redisUtil.set(realKey, lowerCode, 60);
         // 将数据返回给前端
         return RandImageUtils.generate(code);
     }

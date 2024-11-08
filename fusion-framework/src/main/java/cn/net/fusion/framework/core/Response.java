@@ -58,21 +58,6 @@ public class Response<T> {
     }
 
     /**
-     * 返回成功
-     *
-     * @param msg 消息
-     * @param <T> 类型
-     * @return 结果
-     */
-    public static <T> Response<T> success(String msg) {
-        Response<T> r = new Response<T>();
-        r.setStatus(true);
-        r.setCode(HttpCodeEnum.SUCCESS.getCode());
-        r.setMessage(msg);
-        return r;
-    }
-
-    /**
      * 响应带数据的成功结果
      *
      * @param data 数据
