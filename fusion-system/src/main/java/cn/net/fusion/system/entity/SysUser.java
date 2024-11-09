@@ -367,6 +367,10 @@ public class SysUser extends SysOpr implements Serializable {
     }
 
     public String getHomePath() {
+        // 这里暂时写死（后续需要和角色、菜单联动后才能配置）
+        if (StringUtils.isBlank(homePath)) {
+            return "/home";
+        }
         return homePath;
     }
 

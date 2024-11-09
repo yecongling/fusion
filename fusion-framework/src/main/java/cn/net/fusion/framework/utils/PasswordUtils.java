@@ -7,6 +7,8 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.security.SecureRandom;
+import java.util.Base64;
 
 /**
  * @ClassName PasswordUtils
@@ -23,12 +25,6 @@ public class PasswordUtils {
     public static final String ALGORITHM = "PBEWithMD5AndDES";
 
     /**
-     * 定义使用的算法为:PBEWITHMD5andDES算法
-     * 密钥
-     */
-    public static final String SALT = "63293188";
-
-    /**
      * 定义迭代次数为1000次
      */
     private static final int ITERATION_COUNT = 1000;
@@ -38,13 +34,13 @@ public class PasswordUtils {
      *
      * @param plaintext 待加密的明文字符串
      * @param password  生成密钥时所使用的密码
-     * @param salt      盐值
+     * @param salt      盐值(通过base64转换过的)
      * @return 加密后的密文字符串
      */
     public static String encrypt(String plaintext, String password, String salt) throws Exception {
         Key key = getPbeKey(password);
         byte[] encipheredData;
-        PBEParameterSpec parameterSpec = new PBEParameterSpec(salt.getBytes(), ITERATION_COUNT);
+        PBEParameterSpec parameterSpec = new PBEParameterSpec(Base64.getDecoder().decode(salt), ITERATION_COUNT);
         Cipher cipher = Cipher.getInstance(ALGORITHM);
         cipher.init(Cipher.ENCRYPT_MODE, key, parameterSpec);
         encipheredData = cipher.doFinal(plaintext.getBytes(StandardCharsets.UTF_8));
@@ -89,5 +85,16 @@ public class PasswordUtils {
             stringBuilder.append(hv);
         }
         return stringBuilder.toString();
+    }
+
+    /**
+     * 生成随机密码盐（每次请求不一样）
+     * @return 返回密码盐
+     */
+    public static String generateSalt() {
+        SecureRandom random = new SecureRandom();
+        byte[] salt = new byte[8]; // 通常盐长度为8字节
+        random.nextBytes(salt);
+        return Base64.getEncoder().encodeToString(salt); // 返回 Base64 编码的盐
     }
 }

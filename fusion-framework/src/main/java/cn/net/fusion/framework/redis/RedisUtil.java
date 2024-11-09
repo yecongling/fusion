@@ -116,6 +116,15 @@ public class RedisUtil {
     }
 
     /**
+     * 删除缓存
+     *
+     * @param key 缓存key
+     */
+    public void delete(String key) {
+        redisTemplate.delete(key);
+    }
+
+    /**
      * 批量添加 key (重复的键会覆盖)
      *
      * @param keyAndValue 键值对
@@ -345,10 +354,9 @@ public class RedisUtil {
      *
      * @param key      键
      * @param hashKeys hash key
-     * @return 删除成功的 数量
      */
-    public Long delete(String key, String... hashKeys) {
-        return redisTemplate.opsForHash().delete(key, (Object) hashKeys);
+    public void hDelete(String key, String... hashKeys) {
+        redisTemplate.opsForHash().delete(key, (Object) hashKeys);
     }
 
     /**
