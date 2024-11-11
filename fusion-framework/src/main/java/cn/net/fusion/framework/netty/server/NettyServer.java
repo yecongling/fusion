@@ -30,7 +30,7 @@ public class NettyServer {
     /**
      * 端口号
      */
-    @Value("${webSocket.netty.port:8889}")
+    @Value("${webSocket.netty.port:8891}")
     int port;
 
     EventLoopGroup bossGroup;

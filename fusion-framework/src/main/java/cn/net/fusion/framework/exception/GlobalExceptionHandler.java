@@ -64,7 +64,7 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * 处理全局未知（600）异常
+     * 处理全局未知（600）异常 这里后续需要修改，记录完整的调用栈，不然不好排查错误
      *
      * @param e Exception
      * @return response
