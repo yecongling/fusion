@@ -15,11 +15,11 @@ import java.util.List;
  * @Date 2024/11/8 11:57
  * @Version 1.0
  */
-@RequestMapping("/sys/menu")
+@RequestMapping("/system/menu")
 @RestController
 public class SysMenuController {
 
-    private ISysMenuService sysMenuService;
+    private final ISysMenuService sysMenuService;
     @Autowired
     public SysMenuController(ISysMenuService sysMenuService) {
         this.sysMenuService = sysMenuService;
@@ -33,7 +33,7 @@ public class SysMenuController {
      */
     @PostMapping("/getAllMenus")
     public List<SysMenu> getAllMenu(@RequestBody(required = false) SysMenu sysMenu) {
-        return null;
+        return sysMenuService.getAllMenus(sysMenu);
     }
 
     /**

@@ -23,7 +23,7 @@
                 <if test="menu.name != null and menu.name != ''">
                     and INSTR(`name`, #{menu.name}) > 0
                 </if>
-                <if test="menu.menu_type != null and menu.menu_type != '-1'">
+                <if test="menu.menuType != null and menu.menuType != '-1'">
                     and menu_type = #{menu.menu_type}
                 </if>
                 <if test="menu.hidden != null and menu.hidden != '-1'">

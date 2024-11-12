@@ -4,6 +4,7 @@ package cn.net.fusion.framework.exception;
 import cn.net.fusion.framework.core.Response;
 import cn.net.fusion.framework.enums.HttpCodeEnum;
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -72,6 +73,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public Response<Object> globalException(Exception e) {
         logger.error("未知（600）异常 => 原因是：{}", e.getMessage());
-        return Response.fail(HttpCodeEnum.RC600.getCode(), e.getMessage());
+        // 这里暂时向前台返回具体的调用栈信息
+        return Response.fail(HttpCodeEnum.RC600.getCode(), ExceptionUtils.getRootCauseMessage(e));
     }
 }
