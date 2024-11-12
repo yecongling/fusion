@@ -1,6 +1,5 @@
 package cn.net.fusion.system.entity;
 
-import java.awt.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -154,7 +153,7 @@ public class SysMenu implements Serializable {
     /**
      * 下级子菜单（功能按钮）
      */
-    private List<Menu> children;
+    private List<SysMenu> children;
 
     public String getId() {
         return id;
@@ -372,14 +371,14 @@ public class SysMenu implements Serializable {
         this.internalOrExternal = internalOrExternal;
     }
 
-    public List<Menu> getChildren() {
+    public List<SysMenu> getChildren() {
         if (children == null) {
             children = new ArrayList<>();
         }
         return children;
     }
 
-    public void setChildren(List<Menu> children) {
+    public void setChildren(List<SysMenu> children) {
         this.children = children;
     }
 }

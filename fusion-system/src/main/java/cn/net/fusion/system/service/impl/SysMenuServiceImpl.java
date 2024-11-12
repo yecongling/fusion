@@ -2,10 +2,16 @@ package cn.net.fusion.system.service.impl;
 
 import cn.net.fusion.framework.core.Response;
 import cn.net.fusion.system.entity.SysMenu;
+import cn.net.fusion.system.mapper.SysMenuMapper;
 import cn.net.fusion.system.service.ISysMenuService;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName SysMenuServiceImpl
@@ -17,6 +23,13 @@ import java.util.List;
 @Service
 public class SysMenuServiceImpl implements ISysMenuService {
 
+    private final SysMenuMapper sysMenuMapper;
+
+    @Autowired
+    public SysMenuServiceImpl(SysMenuMapper sysMenuMapper) {
+        this.sysMenuMapper = sysMenuMapper;
+    }
+
     /**
      * 获取所有菜单
      *
@@ -25,7 +38,9 @@ public class SysMenuServiceImpl implements ISysMenuService {
      */
     @Override
     public List<SysMenu> getAllMenus(SysMenu menu) {
-        return List.of();
+        List<SysMenu> allMenus = sysMenuMapper.getAllMenus(menu);
+        // 构建上下级关系的树结构数据
+        return this.buildMenus(allMenus);
     }
 
     /**
@@ -80,5 +95,35 @@ public class SysMenuServiceImpl implements ISysMenuService {
     @Override
     public Response<SysMenu> deleteMenu(String id) {
         return null;
+    }
+
+    /**
+     * 构建菜单的上下级关系
+     *
+     * @param menus 查询的平级的菜单数据
+     * @return 构建成树结构的菜单数据
+     */
+    private List<SysMenu> buildMenus(List<SysMenu> menus) {
+        // 做id和菜单的映射，方便后续查找父级菜单
+        Map<String, SysMenu> idToMenuMap = new HashMap<>();
+        for (SysMenu menu : menus) {
+            idToMenuMap.put(menu.getId(), menu);
+        }
+        List<SysMenu> root = new ArrayList<>();
+        for (SysMenu menu : menus) {
+            String parentId = menu.getParentId();
+            if (StringUtils.isBlank(parentId)) {
+                root.add(menu);
+            } else {
+                SysMenu parent = idToMenuMap.get(parentId);
+                if (parent != null) {
+                    parent.getChildren().add(menu);
+                } else {
+                    // 如果配置了父级但是没有显示父级的都按一级菜单处理
+                    root.add(menu);
+                }
+            }
+        }
+        return root;
     }
 }
