@@ -1,0 +1,39 @@
+name: Build and Deploy to Aliyun
+
+on:
+  push:
+    branches:
+      - master  # 你希望在哪个分支推送时触发该工作流
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up JDK
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '17'  # 使用的 Java 版本，根据你的项目调整
+
+    - name: Build with Maven
+      run: mvn clean package
+    - name: Add known hosts
+      run: |
+        mkdir -p ~/.ssh
+        ssh-keyscan -H ${{ secrets.ALIYUN_HOST }} >> ~/.ssh/known_hosts
+
+    - name: Deploy to server
+      env:
+        HOST: ${{ secrets.ALIYUN_HOST }}
+        USERNAME: ${{ secrets.ALIYUN_USERNAME }}
+        PRIVATE_KEY: ${{ secrets.ALIYUN_PRIVATE_KEY }}
+      run: |
+        echo "$PRIVATE_KEY" > private_key.pem
+        chmod 600 private_key.pem
+        scp -i private_key.pem fusion-admin/target/fusion-admin-1.0.0.jar $USERNAME@$HOST:/home/admin/jars
+        ssh -i private_key.pem $USERNAME@$HOST "sh /home/admin/jars/fusion_start.sh restart"
+        rm private_key.pem
