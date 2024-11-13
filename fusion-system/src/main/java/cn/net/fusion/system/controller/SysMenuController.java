@@ -3,6 +3,7 @@ package cn.net.fusion.system.controller;
 import cn.net.fusion.framework.core.Response;
 import cn.net.fusion.system.entity.SysMenu;
 import cn.net.fusion.system.service.ISysMenuService;
+import com.alibaba.fastjson2.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +21,7 @@ import java.util.List;
 public class SysMenuController {
 
     private final ISysMenuService sysMenuService;
+
     @Autowired
     public SysMenuController(ISysMenuService sysMenuService) {
         this.sysMenuService = sysMenuService;
@@ -43,8 +45,8 @@ public class SysMenuController {
      * @return 菜单信息
      */
     @GetMapping("/getMenusByRole")
-    public List<SysMenu> getMenusByRoleId(@RequestParam(name = "roleId") String roleId) {
-        return null;
+    public JSONArray getMenusByRoleId(@RequestParam(name = "roleId") String roleId) {
+        return sysMenuService.getMenusByRoleId(roleId);
     }
 
     /**

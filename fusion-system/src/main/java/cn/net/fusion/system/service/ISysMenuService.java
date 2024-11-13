@@ -2,6 +2,7 @@ package cn.net.fusion.system.service;
 
 import cn.net.fusion.framework.core.Response;
 import cn.net.fusion.system.entity.SysMenu;
+import com.alibaba.fastjson2.JSONArray;
 
 import java.util.List;
 
@@ -28,7 +29,7 @@ public interface ISysMenuService {
      * @param roleId 角色id
      * @return 菜单信息
      */
-    List<SysMenu> getMenusByRoleId(String roleId);
+    JSONArray getMenusByRoleId(String roleId);
 
     /**
      * 获取一级菜单，用于构建菜单的上级

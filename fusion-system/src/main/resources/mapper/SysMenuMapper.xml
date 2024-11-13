@@ -35,4 +35,17 @@
         order by sort_no asc
     </select>
 
+    <!-- 查询用户权限，根据角色id查询 都是查询非删除状态的 -->
+    <select id="queryByUser" parameterType="object" resultMap="menu">
+        <choose>
+            <when test="roleId == 'admin'">
+                select * from t_sys_permission where del_flag = 0 order by sort_no
+            </when>
+            <otherwise>
+                select a.* from t_sys_permission a left join t_sys_role_permission b on a.id = b.permission_id where
+                b.role_id = #{roleId} and a.del_flag = 0 order by a.sort_no
+            </otherwise>
+        </choose>
+    </select>
+
 </mapper>
