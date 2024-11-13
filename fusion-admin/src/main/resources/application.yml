@@ -56,3 +56,7 @@ spring:
           min-idle: 8
 mybatis:
   mapper-locations: classpath*:mapper/**/*.xml
+logging:
+  level:
+    root: info
+    org.springframework.web: error

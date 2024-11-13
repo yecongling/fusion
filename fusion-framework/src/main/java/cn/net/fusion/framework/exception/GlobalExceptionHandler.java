@@ -72,8 +72,8 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(Exception.class)
     public Response<Object> globalException(Exception e) {
-        logger.error("未知（600）异常 => 原因是：{}", e.getMessage());
-        // 这里暂时向前台返回具体的调用栈信息
+        logger.error("未知（600）异常 => 错误调用栈：{}", ExceptionUtils.getStackTrace(e));
+        // 这里向前台返回主要的调用栈信息
         return Response.fail(HttpCodeEnum.RC600.getCode(), ExceptionUtils.getRootCauseMessage(e));
     }
 }

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+
+    <!-- 定义日志输出到控制台的格式 -->
+    <property name="log.console.pattern" value="%magenta(%d{yyyy-MM-dd HH:mm:ss:SSS}) [%thread] %highlight([%-5level]) %cyan(%logger{90}) - %msg%n" />
+    <!-- 定义日志输出到文件中的格式 -->
+    <property name="log.file.pattern" value="%d{yyyy-MM-dd HH:mm:ss:SSS} [%thread] [%-5level] %logger{90} - %msg%n" />
+    <!-- 日志文件存储目录（从 application 配置文件取得） -->
+    <springProperty scope="context" name="file.path" source="logging.file.path" defaultValue="${user.home}/fusionLog" />
+
+    <!-- 输出日志到控制台 -->
+    <appender name="CONSOLE_APPENDER" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${log.console.pattern}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <!-- 输出 INFO 级别及以上的日志 -->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+    </appender>
+
+    <!-- 滚动输出 ERROR 级别的日志到文件 -->
+    <appender name="ROLLING_FILE_ERROR_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${file.path}/system.error.log</file>
+        <encoder>
+            <pattern>${log.file.pattern}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <!-- 设置滚动策略，基于大小和时间的滚动策略 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${file.path}/system.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>10MB</maxFileSize>
+            <maxHistory>7</maxHistory>
+            <!-- 总大小表示无限制 -->
+            <totalSizeCap>0</totalSizeCap>
+        </rollingPolicy>
+        <!-- 只保留 ERROR 级别的日志 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- 将各 appender 挂载到 root 节点下  -->
+    <root level="DEBUG">
+        <appender-ref ref="CONSOLE_APPENDER" />
+        <appender-ref ref="ROLLING_FILE_ERROR_APPENDER" />
+    </root>
+
+</configuration>
