@@ -24,10 +24,10 @@
                     and INSTR(`name`, #{menu.name}) > 0
                 </if>
                 <if test="menu.menuType != null and menu.menuType != '-1'">
-                    and menu_type = #{menu.menu_type}
+                    and menu_type = #{menu.menuType}
                 </if>
-                <if test="menu.hidden != null and menu.hidden != '-1'">
-                    and hidden = #{menu.hidden}
+                <if test="menu.status != null and menu.status != '-1'">
+                    and status = #{menu.status}
                 </if>
             </where>
         </if>
