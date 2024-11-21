@@ -3,6 +3,9 @@ package cn.net.fusion.system.service.impl;
 import cn.net.fusion.framework.constant.CommonConstant;
 import cn.net.fusion.framework.constant.SymbolConstant;
 import cn.net.fusion.framework.core.Response;
+import cn.net.fusion.framework.core.SysOpr;
+import cn.net.fusion.framework.utils.ServletUtils;
+import cn.net.fusion.framework.utils.SnowFlakeGenerator;
 import cn.net.fusion.system.entity.SysMenu;
 import cn.net.fusion.system.mapper.SysMenuMapper;
 import cn.net.fusion.system.service.ISysMenuService;
@@ -12,10 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @ClassName SysMenuServiceImpl
@@ -29,9 +29,17 @@ public class SysMenuServiceImpl implements ISysMenuService {
 
     private final SysMenuMapper sysMenuMapper;
 
+    // 雪花id生成算法
+    private final SnowFlakeGenerator snowFlakeGenerator;
+
+    // 获取操作员
+    private final ServletUtils servletUtils;
+
     @Autowired
-    public SysMenuServiceImpl(SysMenuMapper sysMenuMapper) {
+    public SysMenuServiceImpl(SysMenuMapper sysMenuMapper, SnowFlakeGenerator snowFlakeGenerator, ServletUtils servletUtils) {
         this.sysMenuMapper = sysMenuMapper;
+        this.snowFlakeGenerator = snowFlakeGenerator;
+        this.servletUtils = servletUtils;
     }
 
     /**
@@ -84,8 +92,19 @@ public class SysMenuServiceImpl implements ISysMenuService {
      * @return 结果
      */
     @Override
-    public Response<SysMenu> addMenu(SysMenu menu) {
-        return null;
+    public Response<Integer> addMenu(SysMenu menu) {
+        // 新增需要生成唯一ID和操作员相关信息
+        String id = snowFlakeGenerator.generateUniqueId();
+        // 获取操作员
+        SysOpr sysOpr = servletUtils.getSysOpr();
+        menu.setId(id);
+        menu.setCreateBy(sysOpr.getUserId());
+        menu.setCreateTime(new Date());
+        menu.setUpdateBy(sysOpr.getUserId());
+        menu.setUpdateTime(new Date());
+        // 受影响的行数
+        int i = sysMenuMapper.addMenu(menu);
+        return i > 0 ? Response.success() : Response.fail();
     }
 
     /**
@@ -95,19 +114,26 @@ public class SysMenuServiceImpl implements ISysMenuService {
      * @return 结果
      */
     @Override
-    public Response<SysMenu> modifyMenu(SysMenu menu) throws Exception {
-        return null;
+    public Response<Integer> modifyMenu(Map<String, Object> menu) {
+        SysOpr sysOpr = servletUtils.getSysOpr();
+        menu.put("updateBy", sysOpr.getUserId());
+        menu.put("updateTime", new Date());
+        int i = sysMenuMapper.updateMenu(menu);
+        return i > 0 ? Response.success() : Response.fail();
     }
 
     /**
-     * 删除菜单
+     * 删除菜单 假删除，将del_flag置为1
      *
      * @param id 菜单ID
      * @return -
      */
     @Override
-    public Response<SysMenu> deleteMenu(String id) {
-        return null;
+    public Response<Integer> deleteMenu(String id) {
+        // 这里需要判断菜单是否在使用中（如果菜单在使用中，则不允许删除）
+
+        int i = sysMenuMapper.deleteMenu(id);
+        return i > 0 ? Response.success() : Response.fail();
     }
 
     /**
@@ -143,12 +169,46 @@ public class SysMenuServiceImpl implements ISysMenuService {
     /**
      * 将查询到的菜单目录构建成树结构
      *
-     * @param array 数组
-     * @param menus 查询到的菜单
+     * @param array      数组
+     * @param menus      查询到的菜单
      * @param parentJSON 父级
      */
     private void buildDirectory(JSONArray array, List<SysMenu> menus, JSONObject parentJSON) {
+        if (menus == null || menus.isEmpty()) {
+            return;
+        }
+        for (SysMenu menu : menus) {
+            JSONObject json = getMenuDirectory(menu);
+            String parentId = menu.getParentId();
+            if (parentJSON == null && StringUtils.isEmpty(parentId)) {
+                array.add(json);
+            } else if (parentJSON != null && StringUtils.isNotEmpty(parentId) && parentId.equals(parentJSON.get("id"))) {
+                if (parentJSON.containsKey("children")) {
+                    parentJSON.getJSONArray("children").add(json);
+                } else {
+                    JSONArray jsonArray = new JSONArray();
+                    jsonArray.add(json);
+                    parentJSON.put("children", jsonArray);
+                }
+                if (!menu.isLeaf()) {
+                    buildDirectory(array, menus, json);
+                }
+            }
 
+        }
+    }
+
+    /**
+     * 将menu中的ID和name抽出来作为前端树结构的数据
+     *
+     * @param menu 菜单对象
+     * @return json
+     */
+    private JSONObject getMenuDirectory(SysMenu menu) {
+        JSONObject json = new JSONObject();
+        json.put("value", menu.getId());
+        json.put("title", menu.getName());
+        return json;
     }
 
     /**

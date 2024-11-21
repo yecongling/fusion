@@ -49,10 +49,10 @@ public interface SysMenuMapper {
     /**
      * 更新菜单
      *
-     * @param menu 菜单对象数据
+     * @param map 菜单对象数据
      * @return -
      */
-    int updateMenu(Map<String, Object> menu);
+    int updateMenu(Map<String, Object> map);
 
     /**
      * 删除菜单

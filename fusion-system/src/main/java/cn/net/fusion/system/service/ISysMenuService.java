@@ -5,6 +5,7 @@ import cn.net.fusion.system.entity.SysMenu;
 import com.alibaba.fastjson2.JSONArray;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName ISysMenuService
@@ -44,7 +45,7 @@ public interface ISysMenuService {
      * @param menu 菜单
      * @return 结果
      */
-    Response<SysMenu> addMenu(SysMenu menu);
+    Response<Integer> addMenu(SysMenu menu);
 
     /**
      * 更新菜单
@@ -52,7 +53,7 @@ public interface ISysMenuService {
      * @param menu 菜单对象
      * @return 结果
      */
-    Response<SysMenu> modifyMenu(SysMenu menu) throws Exception;
+    Response<Integer> modifyMenu(Map<String, Object> menu);
 
     /**
      * 删除菜单
@@ -60,5 +61,5 @@ public interface ISysMenuService {
      * @param id 菜单ID
      * @return -
      */
-    Response<SysMenu> deleteMenu(String id);
+    Response<Integer> deleteMenu(String id);
 }

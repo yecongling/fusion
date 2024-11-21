@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName SysMenuController
@@ -66,19 +67,19 @@ public class SysMenuController {
      * @return 新增结果
      */
     @PostMapping("/addMenu")
-    public Response<SysMenu> addMenu(@RequestBody SysMenu sysMenu) {
-        return null;
+    public Response<Integer> addMenu(@RequestBody SysMenu sysMenu) {
+        return sysMenuService.addMenu(sysMenu);
     }
 
     /**
-     * 修改菜单
+     * 修改菜单（使用map的原因是根据数目动态更新内部的字段）
      *
-     * @param sysMenu 系统菜单
+     * @param menuMap 菜单数据
      * @return 修改结果
      */
-    @PostMapping("/modifyMenu")
-    public Response<SysMenu> modifyMenu(@RequestBody SysMenu sysMenu) {
-        return null;
+    @PostMapping("/updateMenu")
+    public Response<Integer> updateMenu(@RequestBody Map<String, Object> menuMap) {
+        return sysMenuService.modifyMenu(menuMap);
     }
 
     /**
@@ -88,7 +89,7 @@ public class SysMenuController {
      * @return 删除结果
      */
     @DeleteMapping("/deleteMenu")
-    public Response<SysMenu> deleteMenu(@RequestParam(name = "id") String id) {
-        return null;
+    public Response<Integer> deleteMenu(@RequestParam(name = "id") String id) {
+        return sysMenuService.deleteMenu(id);
     }
 }

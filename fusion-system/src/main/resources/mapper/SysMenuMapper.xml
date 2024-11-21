@@ -57,4 +57,38 @@
           and menu_type = 0
         order by sort_no
     </select>
+
+    <!-- 新增菜单 -->
+    <insert id="addMenu" parameterType="cn.net.fusion.system.entity.SysMenu">
+        insert into t_sys_permission (id, parent_id, `name`, url, component, component_name,
+                                      redirect, menu_type, perms, perms_type, sort_no, always_show,
+                                      icon, is_route, is_leaf, keep_alive, hidden, hide_tab, description, create_by,
+                                      create_time, update_by, update_time, del_flag, rule_flag, status,
+                                      internal_or_external)
+            VALUE
+            (#{id}, #{parentId}, #{name}, #{url}, #{component}, #{componentName},
+             #{redirect}, #{menuType}, #{perms}, #{permsType}, #{sortNo}, #{alwaysShow},
+             #{icon}, #{route}, #{leaf}, #{keepAlive}, #{hidden}, #{hideTab}, #{description}, #{createBy},
+             #{createTime}, #{updateBy}, #{updateTime}, #{delFlag}, #{ruleFlag}, #{status}, #{internalOrExternal})
+    </insert>
+
+    <!-- 更新菜单数据 -->
+    <update id="updateMenu" parameterType="map">
+        update t_sys_permission
+        <set>
+            <foreach collection="map" index="key" item="value" separator=",">
+                <if test="key != 'id' and value != null">
+                    ${key} = #{value}
+                </if>
+            </foreach>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!-- 删除菜单 假删除-->
+    <update id="deleteMenu" parameterType="string">
+        update t_sys_permission
+        set del_flag = 1
+        where id = #{id}
+    </update>
 </mapper>

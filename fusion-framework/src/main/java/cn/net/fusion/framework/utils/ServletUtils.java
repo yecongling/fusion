@@ -1,6 +1,9 @@
 package cn.net.fusion.framework.utils;
 
+import cn.net.fusion.framework.constant.CommonConstant;
 import cn.net.fusion.framework.core.SysOpr;
+import cn.net.fusion.framework.enums.HttpCodeEnum;
+import cn.net.fusion.framework.exception.BusinessException;
 import cn.net.fusion.framework.redis.RedisUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.ObjectUtils;
@@ -39,10 +42,10 @@ public class ServletUtils {
         if (requestURI.endsWith("/login")) {
             return new SysOpr();
         }
-        Object o = redisUtil.get(token);
+        Object o = redisUtil.get(CommonConstant.PREFIX_USER_TOKEN + token);
         if (ObjectUtils.isEmpty(o)) {
             // 如果没取到，直接抛出异常，阻止进行下一步操作
-            throw new RuntimeException("用户未进行登录或会话已失效，请重新登录进行操作");
+            throw new BusinessException(HttpCodeEnum.RC401);
         }
         return (SysOpr) o;
     }
