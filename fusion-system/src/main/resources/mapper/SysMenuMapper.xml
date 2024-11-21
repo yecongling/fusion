@@ -48,4 +48,13 @@
         </choose>
     </select>
 
+    <!-- 查询所有的目录 -->
+    <select id="getDirectory" resultMap="menu">
+        select id, `name`, parent_id
+        from fusion.t_sys_permission
+        where status = 1
+          and del_flag = 0
+          and menu_type = 0
+        order by sort_no
+    </select>
 </mapper>

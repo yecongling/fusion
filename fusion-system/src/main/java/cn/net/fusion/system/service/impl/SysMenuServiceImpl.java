@@ -69,8 +69,12 @@ public class SysMenuServiceImpl implements ISysMenuService {
      * @return 目录
      */
     @Override
-    public List<SysMenu> getDirectory() {
-        return List.of();
+    public JSONArray getDirectory() {
+        List<SysMenu> directory = sysMenuMapper.getDirectory();
+        // 构建成树结构
+        JSONArray array = new JSONArray();
+        this.buildDirectory(array, directory, null);
+        return array;
     }
 
     /**
@@ -134,6 +138,17 @@ public class SysMenuServiceImpl implements ISysMenuService {
             }
         }
         return root;
+    }
+
+    /**
+     * 将查询到的菜单目录构建成树结构
+     *
+     * @param array 数组
+     * @param menus 查询到的菜单
+     * @param parentJSON 父级
+     */
+    private void buildDirectory(JSONArray array, List<SysMenu> menus, JSONObject parentJSON) {
+
     }
 
     /**

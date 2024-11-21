@@ -36,7 +36,7 @@ public interface ISysMenuService {
      *
      * @return 目录
      */
-    List<SysMenu> getDirectory();
+    JSONArray getDirectory();
 
     /**
      * 新增菜单

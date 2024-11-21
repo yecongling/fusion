@@ -55,8 +55,8 @@ public class SysMenuController {
      * @return 菜单目录
      */
     @GetMapping("/getDirectory")
-    public List<SysMenu> getMenuDirectory() {
-        return null;
+    public JSONArray getMenuDirectory() {
+        return sysMenuService.getDirectory();
     }
 
     /**

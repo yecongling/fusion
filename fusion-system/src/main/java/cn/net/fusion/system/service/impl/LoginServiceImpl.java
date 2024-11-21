@@ -155,8 +155,8 @@ public class LoginServiceImpl implements ILoginService {
         HttpServletRequest request = SpringContextUtils.getHttpServletRequest();
         String localAddr = request.getLocalAddr();
         sysUser.setLoginIp(localAddr);
-        // 7、记录token，并记录token有效期(30分钟)
-        redisUtil.set(CommonConstant.PREFIX_USER_TOKEN + token, sysUser, 1800);
+        // 7、记录token，并记录token有效期(30分钟)（dev环境下暂时不过期）
+        redisUtil.set(CommonConstant.PREFIX_USER_TOKEN + token, sysUser, -1);
         // 8、获取用户相关信息
         JSONObject result = new JSONObject();
         result.put("token", token);
