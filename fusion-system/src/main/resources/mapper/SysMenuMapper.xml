@@ -2,41 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.net.fusion.system.mapper.SysMenuMapper">
 
-    <!-- 通过<resultMap>映射实体类属性名和表的字段名对应关系 -->
-    <resultMap id="menu" type="cn.net.fusion.system.entity.SysMenu">
-        <!-- result属性映射非匹配字段 -->
-        <result column="is_route" property="route"/>
-        <result column="keep_alive" property="keepAlive"/>
-        <result column="parent_id" property="parentId"/>
-        <result column="is_leaf" property="leaf"/>
-        <result column="menu_type" property="menuType"/>
-        <result column="component_name" property="componentName"/>
-        <result column="sort_no" property="sortNo"/>
-    </resultMap>
-
-    <!-- 获取所有菜单 -->
-    <select id="getAllMenus" parameterType="object" resultMap="menu">
-        select *
-        from t_sys_permission
-        <if test="menu != null">
-            <where>
-                <if test="menu.name != null and menu.name != ''">
-                    and INSTR(`name`, #{menu.name}) > 0
-                </if>
-                <if test="menu.menuType != null and menu.menuType != '-1'">
-                    and menu_type = #{menu.menuType}
-                </if>
-                <if test="menu.status != null and menu.status != '-1'">
-                    and status = #{menu.status}
-                </if>
-            </where>
-        </if>
-
-        order by sort_no asc
-    </select>
-
     <!-- 查询用户权限，根据角色id查询 都是查询非删除状态的 -->
-    <select id="queryByUser" parameterType="object" resultMap="menu">
+    <select id="queryByUser" parameterType="object">
         <choose>
             <when test="roleId == 'admin'">
                 select * from t_sys_permission where del_flag = 0 order by sort_no
@@ -49,7 +16,7 @@
     </select>
 
     <!-- 查询所有的目录 -->
-    <select id="getDirectory" resultMap="menu">
+    <select id="getDirectory">
         select id, `name`, parent_id
         from fusion.t_sys_permission
         where status = 1
@@ -57,38 +24,4 @@
           and menu_type = 0
         order by sort_no
     </select>
-
-    <!-- 新增菜单 -->
-    <insert id="addMenu" parameterType="cn.net.fusion.system.entity.SysMenu">
-        insert into t_sys_permission (id, parent_id, `name`, url, component, component_name,
-                                      redirect, menu_type, perms, perms_type, sort_no, always_show,
-                                      icon, is_route, is_leaf, keep_alive, hidden, hide_tab, description, create_by,
-                                      create_time, update_by, update_time, del_flag, rule_flag, status,
-                                      internal_or_external)
-            VALUE
-            (#{id}, #{parentId}, #{name}, #{url}, #{component}, #{componentName},
-             #{redirect}, #{menuType}, #{perms}, #{permsType}, #{sortNo}, #{alwaysShow},
-             #{icon}, #{route}, #{leaf}, #{keepAlive}, #{hidden}, #{hideTab}, #{description}, #{createBy},
-             #{createTime}, #{updateBy}, #{updateTime}, #{delFlag}, #{ruleFlag}, #{status}, #{internalOrExternal})
-    </insert>
-
-    <!-- 更新菜单数据 -->
-    <update id="updateMenu">
-        update t_sys_permission
-        <set>
-            <foreach collection="map.entrySet()" item="value" index="key" separator="," nullable="true">
-                <if test="key != 'id' and value != null">
-                    ${key} = #{value}
-                </if>
-            </foreach>
-        </set>
-        where id = #{map.id}
-    </update>
-
-    <!-- 删除菜单 假删除-->
-    <update id="deleteMenu" parameterType="string">
-        update t_sys_permission
-        set del_flag = 1
-        where id = #{id}
-    </update>
 </mapper>

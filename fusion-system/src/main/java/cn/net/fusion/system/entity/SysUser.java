@@ -1,6 +1,7 @@
 package cn.net.fusion.system.entity;
 
 import cn.net.fusion.framework.core.SysOpr;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -21,6 +22,7 @@ import java.util.Date;
  * @Version 1.0
  **/
 @JsonIgnoreProperties(value = {"password"}, allowSetters = true)
+@TableName("t_sys_user")
 public class SysUser extends SysOpr implements Serializable {
     @Serial
     private static final long serialVersionUID = -1283938764867538048L;

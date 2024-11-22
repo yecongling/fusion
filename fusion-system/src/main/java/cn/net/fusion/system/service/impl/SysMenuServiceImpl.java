@@ -11,6 +11,9 @@ import cn.net.fusion.system.mapper.SysMenuMapper;
 import cn.net.fusion.system.service.ISysMenuService;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,7 +28,7 @@ import java.util.*;
  * @Version 1.0
  */
 @Service
-public class SysMenuServiceImpl implements ISysMenuService {
+public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> implements ISysMenuService {
 
     private final SysMenuMapper sysMenuMapper;
 
@@ -50,7 +53,12 @@ public class SysMenuServiceImpl implements ISysMenuService {
      */
     @Override
     public List<SysMenu> getAllMenus(SysMenu menu) {
-        List<SysMenu> allMenus = sysMenuMapper.getAllMenus(menu);
+        QueryWrapper<SysMenu> queryWrapper = new QueryWrapper<>();
+        if (StringUtils.isNotEmpty(menu.getName())) {
+            queryWrapper.like("name", menu.getName());
+        }
+        queryWrapper.orderByAsc("sort_no");
+        List<SysMenu> allMenus = this.list(queryWrapper);
         // 构建上下级关系的树结构数据
         return this.buildMenus(allMenus);
     }
@@ -103,8 +111,8 @@ public class SysMenuServiceImpl implements ISysMenuService {
         menu.setUpdateBy(sysOpr.getUserId());
         menu.setUpdateTime(new Date());
         // 受影响的行数
-        int i = sysMenuMapper.addMenu(menu);
-        return i > 0 ? Response.success() : Response.fail();
+        boolean success = this.save(menu);
+        return success ? Response.success() : Response.fail();
     }
 
     /**
@@ -114,13 +122,12 @@ public class SysMenuServiceImpl implements ISysMenuService {
      * @return 结果
      */
     @Override
-    public Response<Integer> modifyMenu(Map<String, Object> menu) {
+    public Response<Integer> modifyMenu(SysMenu menu) {
         SysOpr sysOpr = servletUtils.getSysOpr();
-        menu.put("updateBy", sysOpr.getUserId());
-        menu.put("updateTime", new Date());
-
-        int i = sysMenuMapper.updateMenu(menu);
-        return i > 0 ? Response.success() : Response.fail();
+        menu.setUpdateBy(sysOpr.getUserId());
+        menu.setUpdateTime(new Date());
+        boolean update = this.updateById(menu);
+        return update ? Response.success() : Response.fail();
     }
 
     /**
@@ -131,10 +138,15 @@ public class SysMenuServiceImpl implements ISysMenuService {
      */
     @Override
     public Response<Integer> deleteMenu(String id) {
+        SysOpr sysOpr = servletUtils.getSysOpr();
         // 这里需要判断菜单是否在使用中（如果菜单在使用中，则不允许删除）
-
-        int i = sysMenuMapper.deleteMenu(id);
-        return i > 0 ? Response.success() : Response.fail();
+        UpdateWrapper<SysMenu> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("id", id);
+        updateWrapper.set("del_flag", 1);
+        updateWrapper.set("update_time", new Date());
+        updateWrapper.set("update_by", sysOpr.getUserId());
+        boolean update = this.update(updateWrapper);
+        return update ? Response.success() : Response.fail();
     }
 
     /**

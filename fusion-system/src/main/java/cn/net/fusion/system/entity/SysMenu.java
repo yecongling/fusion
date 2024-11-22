@@ -1,5 +1,8 @@
 package cn.net.fusion.system.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -13,6 +16,7 @@ import java.util.List;
  * @Date 2024/11/8 11:58
  * @Version 1.0
  */
+@TableName("t_sys_permission")
 public class SysMenu implements Serializable {
 
     @Serial
@@ -78,12 +82,12 @@ public class SysMenu implements Serializable {
     /**
      * 是否叶子节点: 1:是  0:不是
      */
-    private boolean leaf;
+    private boolean isLeaf;
 
     /**
      * 是否路由菜单: 0:不是  1:是（默认值1）
      */
-    private boolean route = true;
+    private boolean isRoute = true;
 
     /**
      * 是否缓存页面: 0:不是  1:是（默认值1）
@@ -153,6 +157,7 @@ public class SysMenu implements Serializable {
     /**
      * 下级子菜单（功能按钮）
      */
+    @TableField(exist = false)
     private List<SysMenu> children;
 
     public String getId() {
@@ -252,19 +257,19 @@ public class SysMenu implements Serializable {
     }
 
     public boolean isLeaf() {
-        return leaf;
+        return isLeaf;
     }
 
     public void setLeaf(boolean leaf) {
-        this.leaf = leaf;
+        isLeaf = leaf;
     }
 
     public boolean isRoute() {
-        return route;
+        return isRoute;
     }
 
     public void setRoute(boolean route) {
-        this.route = route;
+        isRoute = route;
     }
 
     public boolean isKeepAlive() {

@@ -3,9 +3,9 @@ package cn.net.fusion.system.service;
 import cn.net.fusion.framework.core.Response;
 import cn.net.fusion.system.entity.SysMenu;
 import com.alibaba.fastjson2.JSONArray;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @ClassName ISysMenuService
@@ -14,7 +14,7 @@ import java.util.Map;
  * @Date 2024/11/8 15:31
  * @Version 1.0
  */
-public interface ISysMenuService {
+public interface ISysMenuService extends IService<SysMenu> {
 
     /**
      * 获取所有菜单
@@ -53,7 +53,7 @@ public interface ISysMenuService {
      * @param menu 菜单对象
      * @return 结果
      */
-    Response<Integer> modifyMenu(Map<String, Object> menu);
+    Response<Integer> modifyMenu(SysMenu menu);
 
     /**
      * 删除菜单

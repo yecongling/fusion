@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @ClassName SysMenuController
@@ -78,7 +77,7 @@ public class SysMenuController {
      * @return 修改结果
      */
     @PostMapping("/updateMenu")
-    public Response<Integer> updateMenu(@RequestBody Map<String, Object> menuMap) {
+    public Response<Integer> updateMenu(@RequestBody SysMenu menuMap) {
         return sysMenuService.modifyMenu(menuMap);
     }
 
