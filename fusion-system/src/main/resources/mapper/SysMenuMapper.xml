@@ -73,16 +73,16 @@
     </insert>
 
     <!-- 更新菜单数据 -->
-    <update id="updateMenu" parameterType="map">
+    <update id="updateMenu">
         update t_sys_permission
         <set>
-            <foreach collection="map" index="key" item="value" separator=",">
+            <foreach collection="map.entrySet()" item="value" index="key" separator="," nullable="true">
                 <if test="key != 'id' and value != null">
                     ${key} = #{value}
                 </if>
             </foreach>
         </set>
-        where id = #{id}
+        where id = #{map.id}
     </update>
 
     <!-- 删除菜单 假删除-->

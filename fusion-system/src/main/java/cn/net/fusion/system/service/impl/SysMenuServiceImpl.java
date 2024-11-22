@@ -118,6 +118,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
         SysOpr sysOpr = servletUtils.getSysOpr();
         menu.put("updateBy", sysOpr.getUserId());
         menu.put("updateTime", new Date());
+
         int i = sysMenuMapper.updateMenu(menu);
         return i > 0 ? Response.success() : Response.fail();
     }

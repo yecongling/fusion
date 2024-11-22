@@ -74,7 +74,7 @@ public class MybatisSqlInterceptor implements Interceptor {
             map.put("msg", msg);
             map.put("type", type);
         }
-        logger.info(msg);
+        logger.info(map.toJSONString());
         // 这里是需要把执行后的结果进行消息的推送
 //        SysOpr sysOpr = servletUtils.getSysOpr();
 //        if (sysOpr != null) {

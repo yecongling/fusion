@@ -52,7 +52,7 @@ public interface SysMenuMapper {
      * @param map 菜单对象数据
      * @return -
      */
-    int updateMenu(Map<String, Object> map);
+    int updateMenu(@Param("map") Map<String, Object> map);
 
     /**
      * 删除菜单
