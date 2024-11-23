@@ -82,7 +82,7 @@ public class SysMenuController {
     }
 
     /**
-     * 删除菜单
+     * 删除菜单（假删除 - 更改del_flag）
      *
      * @param id 菜单id
      * @return 删除结果
@@ -90,5 +90,17 @@ public class SysMenuController {
     @DeleteMapping("/deleteMenu")
     public Response<Integer> deleteMenu(@RequestParam(name = "id") String id) {
         return sysMenuService.deleteMenu(id);
+    }
+
+    /**
+     * 批量删除菜单（假删除 - 更改del_flag）
+     *
+     * @param menusId 菜单id
+     * @return 删除结果
+     */
+    @DeleteMapping("/deleteMenuBatch")
+    public Response<Boolean> deleteMenuBatch(@RequestBody List<String> menusId) {
+        Boolean b = sysMenuService.deleteBatch(menusId);
+        return b ? Response.success() : Response.fail();
     }
 }

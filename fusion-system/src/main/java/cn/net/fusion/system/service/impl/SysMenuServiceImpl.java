@@ -11,12 +11,14 @@ import cn.net.fusion.system.mapper.SysMenuMapper;
 import cn.net.fusion.system.service.ISysMenuService;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -58,9 +60,9 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
             queryWrapper.like("name", menu.getName());
         }
         queryWrapper.orderByAsc("sort_no");
-        List<SysMenu> allMenus = this.list(queryWrapper);
+        List<SysMenu> sysMenus = sysMenuMapper.selectList(queryWrapper);
         // 构建上下级关系的树结构数据
-        return this.buildMenus(allMenus);
+        return this.buildMenus(sysMenus);
     }
 
     /**
@@ -86,7 +88,12 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
      */
     @Override
     public JSONArray getDirectory() {
-        List<SysMenu> directory = sysMenuMapper.getDirectory();
+        LambdaQueryWrapper<SysMenu> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        // 查询的字段
+        lambdaQueryWrapper.select(SysMenu::getId, SysMenu::getParentId, SysMenu::getName);
+        // 排序
+        lambdaQueryWrapper.orderByAsc(SysMenu::getSortNo);
+        List<SysMenu> directory = sysMenuMapper.selectList(lambdaQueryWrapper);
         // 构建成树结构
         JSONArray array = new JSONArray();
         this.buildDirectory(array, directory, null);
@@ -111,8 +118,8 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         menu.setUpdateBy(sysOpr.getUserId());
         menu.setUpdateTime(new Date());
         // 受影响的行数
-        boolean success = this.save(menu);
-        return success ? Response.success() : Response.fail();
+        int num = sysMenuMapper.insert(menu);
+        return num > 0 ? Response.success() : Response.fail();
     }
 
     /**
@@ -145,8 +152,31 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         updateWrapper.set("del_flag", 1);
         updateWrapper.set("update_time", new Date());
         updateWrapper.set("update_by", sysOpr.getUserId());
-        boolean update = this.update(updateWrapper);
-        return update ? Response.success() : Response.fail();
+        int update = sysMenuMapper.update(updateWrapper);
+        return update > 0 ? Response.success() : Response.fail();
+    }
+
+    /**
+     * 批量删除
+     *
+     * @param ids 菜单id
+     * @return true 删除成功 false 删除失败
+     */
+    @Transactional
+    @Override
+    public Boolean deleteBatch(List<String> ids) {
+        SysOpr sysOpr = servletUtils.getSysOpr();
+        // 利用id转换为menu对象
+        List<SysMenu> menus = new ArrayList<>();
+        ids.forEach(id -> {
+            SysMenu sysMenu = new SysMenu();
+            sysMenu.setId(id);
+            sysMenu.setDelFlag(1);
+            sysMenu.setUpdateBy(sysOpr.getUserId());
+            sysMenu.setUpdateTime(new Date());
+            menus.add(sysMenu);
+        });
+        return this.updateBatchById(menus);
     }
 
     /**

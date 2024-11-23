@@ -3,7 +3,7 @@
 <mapper namespace="cn.net.fusion.system.mapper.SysMenuMapper">
 
     <!-- 查询用户权限，根据角色id查询 都是查询非删除状态的 -->
-    <select id="queryByUser" parameterType="object">
+    <select id="queryByUser" parameterType="object" resultType="cn.net.fusion.system.entity.SysMenu">
         <choose>
             <when test="roleId == 'admin'">
                 select * from t_sys_permission where del_flag = 0 order by sort_no
@@ -13,15 +13,5 @@
                 b.role_id = #{roleId} and a.del_flag = 0 order by a.sort_no
             </otherwise>
         </choose>
-    </select>
-
-    <!-- 查询所有的目录 -->
-    <select id="getDirectory">
-        select id, `name`, parent_id
-        from fusion.t_sys_permission
-        where status = 1
-          and del_flag = 0
-          and menu_type = 0
-        order by sort_no
     </select>
 </mapper>

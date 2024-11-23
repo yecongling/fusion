@@ -62,4 +62,12 @@ public interface ISysMenuService extends IService<SysMenu> {
      * @return -
      */
     Response<Integer> deleteMenu(String id);
+
+    /**
+     * 批量删除
+     *
+     * @param ids 菜单id
+     * @return true 删除成功 false 删除失败
+     */
+    Boolean deleteBatch(List<String> ids);
 }

@@ -22,11 +22,4 @@ public interface SysMenuMapper extends BaseMapper<SysMenu> {
      * @return 用户权限
      */
     List<SysMenu> queryByUser(@Param("roleId") String roleId);
-
-    /**
-     * 查询目录 - 一级菜单
-     *
-     * @return 一级菜单
-     */
-    List<SysMenu> getDirectory();
 }
