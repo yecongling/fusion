@@ -1,6 +1,7 @@
 package cn.net.fusion.integration.mapper;
 
 import cn.net.fusion.integration.entity.EndpointType;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
  * @ClassName EndpointTypeMapper

@@ -3,6 +3,9 @@ package cn.net.fusion.integration.service.impl;
 import cn.net.fusion.integration.entity.EndpointType;
 import cn.net.fusion.integration.mapper.EndpointTypeMapper;
 import cn.net.fusion.integration.service.IEndpointTypeService;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * @ClassName EndpointTypeServiceImpl
@@ -14,4 +17,10 @@ import cn.net.fusion.integration.service.IEndpointTypeService;
 @Service
 public class EndpointTypeServiceImpl extends ServiceImpl<EndpointTypeMapper, EndpointType> implements IEndpointTypeService {
 
+    // 数据库操作接口
+    private final EndpointTypeMapper endpointTypeMapper;
+    @Autowired
+    public EndpointTypeServiceImpl(EndpointTypeMapper endpointTypeMapper) {
+        this.endpointTypeMapper = endpointTypeMapper;
+    }
 }

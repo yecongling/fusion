@@ -1,5 +1,9 @@
 package cn.net.fusion.integration.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
+
+import java.io.Serializable;
+
 /**
  * @ClassName EndpointType
  * @Description 端点类型
@@ -7,5 +11,7 @@ package cn.net.fusion.integration.entity;
  * @Date 2024/11/23 17:46
  * @Version 1.0
  */
-public class EndpointType {
+@TableName("t_engine_endpoint_type")
+public class EndpointType implements Serializable {
+
 }
