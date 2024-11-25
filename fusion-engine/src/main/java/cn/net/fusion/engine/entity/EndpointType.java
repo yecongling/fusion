@@ -1,7 +1,8 @@
-package cn.net.fusion.integration.entity;
+package cn.net.fusion.engine.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -13,5 +14,8 @@ import java.io.Serializable;
  */
 @TableName("t_engine_endpoint_type")
 public class EndpointType implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 5893206708013699530L;
 
 }

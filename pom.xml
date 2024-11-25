@@ -18,7 +18,7 @@
         <module>fusion-framework</module>
         <module>fusion-admin</module>
         <module>fusion-system</module>
-        <module>fusion-integration</module>
+        <module>fusion-engine</module>
     </modules>
     <url/>
     <licenses>

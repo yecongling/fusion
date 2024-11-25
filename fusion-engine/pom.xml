@@ -7,10 +7,10 @@
         <artifactId>fusion</artifactId>
         <version>1.0.0</version>
     </parent>
-    <artifactId>fusion-integration</artifactId>
+    <artifactId>fusion-engine</artifactId>
     <version>1.0.0</version>
-    <name>fusion-integration</name>
-    <description>fusion-integration</description>
+    <name>fusion-engine</name>
+    <description>fusion-engine</description>
     <url/>
     <licenses>
         <license/>

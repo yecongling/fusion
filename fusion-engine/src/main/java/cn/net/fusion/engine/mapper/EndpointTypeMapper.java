@@ -1,6 +1,6 @@
-package cn.net.fusion.integration.mapper;
+package cn.net.fusion.engine.mapper;
 
-import cn.net.fusion.integration.entity.EndpointType;
+import cn.net.fusion.engine.entity.EndpointType;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

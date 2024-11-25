@@ -1,6 +1,6 @@
-package cn.net.fusion.integration.service;
+package cn.net.fusion.engine.service;
 
-import cn.net.fusion.integration.entity.EndpointType;
+import cn.net.fusion.engine.entity.EndpointType;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

@@ -1,6 +1,6 @@
-package cn.net.fusion.integration.controller;
+package cn.net.fusion.engine.controller;
 
-import cn.net.fusion.integration.service.IEndpointTypeService;
+import cn.net.fusion.engine.service.IEndpointTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

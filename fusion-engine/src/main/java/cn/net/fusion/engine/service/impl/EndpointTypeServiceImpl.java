@@ -1,8 +1,8 @@
-package cn.net.fusion.integration.service.impl;
+package cn.net.fusion.engine.service.impl;
 
-import cn.net.fusion.integration.entity.EndpointType;
-import cn.net.fusion.integration.mapper.EndpointTypeMapper;
-import cn.net.fusion.integration.service.IEndpointTypeService;
+import cn.net.fusion.engine.entity.EndpointType;
+import cn.net.fusion.engine.mapper.EndpointTypeMapper;
+import cn.net.fusion.engine.service.IEndpointTypeService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
