@@ -142,7 +142,7 @@ public class SysMenu implements Serializable {
     /**
      * 按钮权限状态(0无效1有效)
      */
-    private String status;
+    private Integer status;
 
     /**
      * alwaysShow
@@ -352,11 +352,11 @@ public class SysMenu implements Serializable {
         this.updateTime = updateTime;
     }
 
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
