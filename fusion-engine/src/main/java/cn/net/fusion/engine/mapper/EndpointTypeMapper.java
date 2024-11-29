@@ -3,7 +3,6 @@ package cn.net.fusion.engine.mapper;
 import cn.net.fusion.engine.entity.EndpointType;
 import cn.net.fusion.engine.vo.EndpointConfigTypeVO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -16,6 +15,11 @@ import java.util.List;
  */
 public interface EndpointTypeMapper extends BaseMapper<EndpointType> {
 
-    @Select("select *")
-    List<EndpointConfigTypeVO> selectConfigTypeList(EndpointConfigTypeVO vo);
+    /**
+     * 查询端点配置分类
+     *
+     * @param name 类型名或配置端点名
+     * @return 端点配置分类集合
+     */
+    List<EndpointConfigTypeVO> selectConfigTypeList(String name);
 }

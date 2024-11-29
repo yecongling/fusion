@@ -30,11 +30,11 @@ public class EndpointConfigServiceImpl extends ServiceImpl<EndpointTypeMapper, E
     /**
      * 查询端点配置类型数据
      *
-     * @param vo 查询条件
+     * @param name 查询条件 类型名或配置名
      * @return 端点配置类型数据
      */
     @Override
-    public List<EndpointConfigTypeVO> queryEndpointConfigType(EndpointConfigTypeVO vo) {
+    public List<EndpointConfigTypeVO> queryEndpointConfigType(String name) {
 
         return null;
     }

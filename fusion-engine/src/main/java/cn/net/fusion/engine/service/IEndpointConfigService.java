@@ -18,8 +18,8 @@ public interface IEndpointConfigService extends IService<EndpointType> {
     /**
      * 查询端点配置类型数据
      *
-     * @param vo 查询条件
+     * @param name 查询条件
      * @return 端点配置类型数据
      */
-    List<EndpointConfigTypeVO> queryEndpointConfigType(EndpointConfigTypeVO vo);
+    List<EndpointConfigTypeVO> queryEndpointConfigType(String name);
 }

@@ -1,6 +1,7 @@
 package cn.net.fusion.system.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serial;
@@ -24,6 +25,7 @@ public class SysMenu implements Serializable {
     /**
      * id
      */
+    @TableId
     private String id;
 
     /**

@@ -14,44 +14,18 @@ public class EndpointConfigTypeVO implements Serializable {
     @Serial
     private static final long serialVersionUID = 3577463857341920571L;
     // 分类id
-    private Integer categoryId;
-    // 分类名称
-    private String categoryName;
-
-    // 端点类型id
     private Integer typeId;
-    // 端点类型名
+    // 分类名称
     private String typeName;
 
-    public Integer getCategoryId() {
-        return categoryId;
-    }
+    // 上级分类
+    private String parentId;
 
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
-    }
+    // 配置id
+    private String configId;
 
-    public String getCategoryName() {
-        return categoryName;
-    }
+    // 配置名称
+    private String configName;
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
 
-    public Integer getTypeId() {
-        return typeId;
-    }
-
-    public void setTypeId(Integer typeId) {
-        this.typeId = typeId;
-    }
-
-    public String getTypeName() {
-        return typeName;
-    }
-
-    public void setTypeName(String typeName) {
-        this.typeName = typeName;
-    }
 }
