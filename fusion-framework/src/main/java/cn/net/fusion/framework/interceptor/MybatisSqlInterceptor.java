@@ -14,6 +14,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.type.TypeHandlerRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -40,6 +41,9 @@ public class MybatisSqlInterceptor implements Interceptor {
     // 日志记录工具
     private static final Logger logger = LoggerFactory.getLogger(MybatisSqlInterceptor.class);
 
+    @Value("${mybatis.interceptor.enabled:true}")
+    private boolean interceptorEnabled;
+
     /**
      * mybatis的执行模块
      *
@@ -49,6 +53,9 @@ public class MybatisSqlInterceptor implements Interceptor {
      */
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
+        if (!interceptorEnabled) {
+            return invocation.proceed();
+        }
         JSONObject map = new JSONObject();
         String msg = "";
         String type = "";

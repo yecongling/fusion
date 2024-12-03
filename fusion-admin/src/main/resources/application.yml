@@ -54,6 +54,10 @@ spring:
           max-idle: 16
           max-active: 32
           min-idle: 8
+# 是否开启mybatis的sql执行拦截器
+mybatis:
+  interceptor:
+    enabled: false
 mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
@@ -62,3 +66,5 @@ logging:
   level:
     root: info
     org.springframework.web: error
+  file:
+    path: ${user.home}/fusionLog
