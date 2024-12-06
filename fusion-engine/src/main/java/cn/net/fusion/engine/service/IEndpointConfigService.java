@@ -1,7 +1,6 @@
 package cn.net.fusion.engine.service;
 
 import cn.net.fusion.engine.entity.EndpointType;
-import cn.net.fusion.engine.vo.EndpointConfigTypeVO;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
@@ -21,5 +20,5 @@ public interface IEndpointConfigService extends IService<EndpointType> {
      * @param name 查询条件
      * @return 端点配置类型数据
      */
-    List<EndpointConfigTypeVO> queryEndpointConfigType(String name);
+    List<EndpointType> queryEndpointConfigType(String name);
 }

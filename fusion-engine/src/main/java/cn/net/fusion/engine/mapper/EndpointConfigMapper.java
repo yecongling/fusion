@@ -11,4 +11,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @Version 1.0
  */
 public interface EndpointConfigMapper extends BaseMapper<EndpointConfig> {
+
 }

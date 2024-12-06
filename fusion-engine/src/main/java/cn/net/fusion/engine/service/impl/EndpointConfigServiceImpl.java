@@ -1,14 +1,20 @@
 package cn.net.fusion.engine.service.impl;
 
+import cn.net.fusion.engine.entity.EndpointConfig;
 import cn.net.fusion.engine.entity.EndpointType;
+import cn.net.fusion.engine.mapper.EndpointConfigMapper;
 import cn.net.fusion.engine.mapper.EndpointTypeMapper;
 import cn.net.fusion.engine.service.IEndpointConfigService;
-import cn.net.fusion.engine.vo.EndpointConfigTypeVO;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName EndpointConfigServiceImpl
@@ -22,9 +28,11 @@ public class EndpointConfigServiceImpl extends ServiceImpl<EndpointTypeMapper, E
 
     // 数据库操作接口
     private final EndpointTypeMapper endpointTypeMapper;
+    private final EndpointConfigMapper endpointConfigMapper;
     @Autowired
-    public EndpointConfigServiceImpl(EndpointTypeMapper endpointTypeMapper) {
+    public EndpointConfigServiceImpl(EndpointTypeMapper endpointTypeMapper, EndpointConfigMapper endpointConfigMapper) {
         this.endpointTypeMapper = endpointTypeMapper;
+        this.endpointConfigMapper = endpointConfigMapper;
     }
 
     /**
@@ -34,8 +42,57 @@ public class EndpointConfigServiceImpl extends ServiceImpl<EndpointTypeMapper, E
      * @return 端点配置类型数据
      */
     @Override
-    public List<EndpointConfigTypeVO> queryEndpointConfigType(String name) {
+    public List<EndpointType> queryEndpointConfigType(String name) {
+        LambdaQueryWrapper<EndpointType> typeLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        // 传输的name不为空的时候查询
+        typeLambdaQueryWrapper.like(StringUtils.isNoneBlank(name), EndpointType::getTypeName, name);
+        // 选择需要的字段
+        typeLambdaQueryWrapper.select(EndpointType::getTypeName, EndpointType::getId, EndpointType::getParentId);
+        List<EndpointType> endpointTypes = endpointTypeMapper.selectList(typeLambdaQueryWrapper);
+        Map<String, EndpointType> mapping = new HashMap<>();
+        for (EndpointType endpointType : endpointTypes) {
+            mapping.put(endpointType.getId(), endpointType);
+        }
+        List<EndpointType> result = new ArrayList<>();
+        // 查询配置数据，然后加到mapping中的对应的节点的children下
+        LambdaQueryWrapper<EndpointConfig> configLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        configLambdaQueryWrapper.like(StringUtils.isNoneBlank(name), EndpointConfig::getConfigName, name);
+        // 选择需要的字段
+        configLambdaQueryWrapper.select(EndpointConfig::getId, EndpointConfig::getConfigName, EndpointConfig::getTypeId, EndpointConfig::getIcon);
+        List<EndpointConfig> endpointConfigs = endpointConfigMapper.selectList(configLambdaQueryWrapper);
+        // 将配置数据合并到映射中去
+        for (EndpointConfig endpointConfig : endpointConfigs) {
+            EndpointType endpointType = mapping.get(endpointConfig.getTypeId());
+            if (endpointType != null) {
+                endpointType.getEndpointConfigs().add(endpointConfig);
+            }
+        }
+        // 构建类型树结构
+        this.buildTypeTree(result, endpointTypes, mapping);
+        return result;
+    }
 
-        return null;
+    /**
+     * 将类型数据构建成树结构
+     * @param result 结果数据
+     * @param typeList 类型数据
+     * @param mapping 映射 将id设为key做后续数据获取需要的映射
+     */
+    private void buildTypeTree(List<EndpointType> result, List<EndpointType> typeList, Map<String, EndpointType> mapping) {
+        // 将子节点添加到父节点的children中去
+        for (EndpointType endpointType : typeList) {
+            if (endpointType.getParentId() != null) {
+                EndpointType parent = mapping.get(endpointType.getParentId());
+                if (parent != null) {
+                    parent.getChildren().add(endpointType);
+                }
+            }
+        }
+        // 找到根节点（parentId为null的节点）
+        for (EndpointType endpointType : typeList) {
+            if (endpointType.getParentId() == null) {
+                result.add(endpointType);
+            }
+        }
     }
 }

@@ -40,6 +40,16 @@
             <artifactId>fusion-system</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <!-- engine部分 -->
+        <dependency>
+            <groupId>cn.net</groupId>
+            <artifactId>fusion-engine</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

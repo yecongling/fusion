@@ -22,13 +22,16 @@ public class EndpointConfig implements Serializable {
 
     // 配置 id
     @TableId
-    private Integer id;
+    private String id;
 
     // 端点配置名称
     private String configName;
 
+    // 图标
+    private String icon;
+
     // 所属分类
-    private Integer typeId;
+    private String typeId;
 
     // 支持的模式
     private String supportedMode;
@@ -48,11 +51,11 @@ public class EndpointConfig implements Serializable {
     // 更新时间
     private Date updateTime;
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -64,11 +67,19 @@ public class EndpointConfig implements Serializable {
         this.configName = configName;
     }
 
-    public Integer getTypeId() {
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public String getTypeId() {
         return typeId;
     }
 
-    public void setTypeId(Integer typeId) {
+    public void setTypeId(String typeId) {
         this.typeId = typeId;
     }
 

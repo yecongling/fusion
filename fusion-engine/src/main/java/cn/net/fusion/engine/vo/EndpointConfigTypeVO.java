@@ -10,6 +10,7 @@ import java.io.Serializable;
  * @Date 2024/11/26 09:39
  * @Version 1.0
  */
+@Deprecated
 public class EndpointConfigTypeVO implements Serializable {
     @Serial
     private static final long serialVersionUID = 3577463857341920571L;
@@ -27,5 +28,6 @@ public class EndpointConfigTypeVO implements Serializable {
     // 配置名称
     private String configName;
 
-
+    // 配置icon
+    private String configIcon;
 }

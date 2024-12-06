@@ -1,11 +1,14 @@
 package cn.net.fusion.engine.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @ClassName EndpointType
@@ -37,6 +40,13 @@ public class EndpointType implements Serializable {
     private String updateBy;
     // 更新时间
     private Date updateTime;
+
+    @TableField(exist = false)
+    private List<EndpointType> children;
+
+    @TableField(exist = false)
+    private List<EndpointConfig> endpointConfigs;
+
 
     public String getId() {
         return id;
@@ -92,5 +102,27 @@ public class EndpointType implements Serializable {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public List<EndpointConfig> getEndpointConfigs() {
+        if (endpointConfigs == null) {
+            endpointConfigs = new ArrayList<>();
+        }
+        return endpointConfigs;
+    }
+
+    public void setEndpointConfigs(List<EndpointConfig> endpointConfigs) {
+        this.endpointConfigs = endpointConfigs;
+    }
+
+    public List<EndpointType> getChildren() {
+        if (children == null) {
+            children = new ArrayList<>();
+        }
+        return children;
+    }
+
+    public void setChildren(List<EndpointType> children) {
+        this.children = children;
     }
 }
