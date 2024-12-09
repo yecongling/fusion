@@ -50,11 +50,11 @@
             <artifactId>camel-spring-boot-starter</artifactId>
             <version>4.8.1</version>
         </dependency>
-        <!-- mybatis-plus -->
+        <!-- mybatis-plex -->
         <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>3.5.9</version>
+            <groupId>com.mybatis-flex</groupId>
+            <artifactId>mybatis-flex-spring-boot-starter</artifactId>
+            <version>1.10.2</version>
         </dependency>
         <dependency>
             <groupId>org.mybatis</groupId>

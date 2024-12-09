@@ -3,7 +3,6 @@ package cn.net.fusion.system.service;
 import cn.net.fusion.framework.core.Response;
 import cn.net.fusion.system.entity.SysMenu;
 import com.alibaba.fastjson2.JSONArray;
-import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
 
@@ -14,7 +13,7 @@ import java.util.List;
  * @Date 2024/11/8 15:31
  * @Version 1.0
  */
-public interface ISysMenuService extends IService<SysMenu> {
+public interface ISysMenuService {
 
     /**
      * 获取所有菜单

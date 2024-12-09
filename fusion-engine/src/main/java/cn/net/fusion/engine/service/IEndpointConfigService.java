@@ -1,7 +1,6 @@
 package cn.net.fusion.engine.service;
 
 import cn.net.fusion.engine.entity.EndpointType;
-import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
 
@@ -12,7 +11,7 @@ import java.util.List;
  * @Date 2024/11/23 17:47
  * @Version 1.0
  */
-public interface IEndpointConfigService extends IService<EndpointType> {
+public interface IEndpointConfigService {
 
     /**
      * 查询端点配置类型数据

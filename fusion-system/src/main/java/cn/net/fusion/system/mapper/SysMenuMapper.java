@@ -1,7 +1,7 @@
 package cn.net.fusion.system.mapper;
 
 import cn.net.fusion.system.entity.SysMenu;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.mybatisflex.core.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

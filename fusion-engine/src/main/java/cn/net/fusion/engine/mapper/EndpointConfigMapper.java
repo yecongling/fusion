@@ -1,7 +1,7 @@
 package cn.net.fusion.engine.mapper;
 
 import cn.net.fusion.engine.entity.EndpointConfig;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.mybatisflex.core.BaseMapper;
 
 /**
  * @ClassName EndpointConfigMapper

@@ -1,7 +1,7 @@
 package cn.net.fusion.engine.entity;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.mybatisflex.annotation.Id;
+import com.mybatisflex.annotation.Table;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -14,14 +14,14 @@ import java.util.Date;
  * @Date 2024/11/28 11:17
  * @Version 1.0
  */
-@TableName("t_engine_endpoint_properties")
+@Table("t_engine_endpoint_properties")
 public class EndpointProperties implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 241343699855628548L;
 
     // 属性id
-    @TableId
+    @Id
     private String id;
 
     // 配置名

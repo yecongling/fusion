@@ -1,8 +1,8 @@
 package cn.net.fusion.system.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.mybatisflex.annotation.Column;
+import com.mybatisflex.annotation.Id;
+import com.mybatisflex.annotation.Table;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -17,7 +17,7 @@ import java.util.List;
  * @Date 2024/11/8 11:58
  * @Version 1.0
  */
-@TableName("t_sys_permission")
+@Table("t_sys_permission")
 public class SysMenu implements Serializable {
 
     @Serial
@@ -25,7 +25,7 @@ public class SysMenu implements Serializable {
     /**
      * id
      */
-    @TableId
+    @Id
     private String id;
 
     /**
@@ -159,7 +159,7 @@ public class SysMenu implements Serializable {
     /**
      * 下级子菜单（功能按钮）
      */
-    @TableField(exist = false)
+    @Column(ignore = true)
     private List<SysMenu> children;
 
     public String getId() {

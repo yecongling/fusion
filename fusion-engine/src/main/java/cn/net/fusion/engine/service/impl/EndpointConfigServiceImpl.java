@@ -5,9 +5,7 @@ import cn.net.fusion.engine.entity.EndpointType;
 import cn.net.fusion.engine.mapper.EndpointConfigMapper;
 import cn.net.fusion.engine.mapper.EndpointTypeMapper;
 import cn.net.fusion.engine.service.IEndpointConfigService;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.apache.commons.lang3.StringUtils;
+import com.mybatisflex.core.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +22,8 @@ import java.util.Map;
  * @Version 1.0
  */
 @Service
-public class EndpointConfigServiceImpl extends ServiceImpl<EndpointTypeMapper, EndpointType> implements IEndpointConfigService {
+@SuppressWarnings({"varargs", "unchecked", "unused"})
+public class EndpointConfigServiceImpl implements IEndpointConfigService {
 
     // 数据库操作接口
     private final EndpointTypeMapper endpointTypeMapper;
@@ -43,23 +42,23 @@ public class EndpointConfigServiceImpl extends ServiceImpl<EndpointTypeMapper, E
      */
     @Override
     public List<EndpointType> queryEndpointConfigType(String name) {
-        LambdaQueryWrapper<EndpointType> typeLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        QueryWrapper queryWrapper = new QueryWrapper();
         // 传输的name不为空的时候查询
-        typeLambdaQueryWrapper.like(StringUtils.isNoneBlank(name), EndpointType::getTypeName, name);
+        queryWrapper.like( EndpointType::getTypeName, name);
         // 选择需要的字段
-        typeLambdaQueryWrapper.select(EndpointType::getTypeName, EndpointType::getId, EndpointType::getParentId);
-        List<EndpointType> endpointTypes = endpointTypeMapper.selectList(typeLambdaQueryWrapper);
+        queryWrapper.select(EndpointType::getTypeName, EndpointType::getId, EndpointType::getParentId);
+        List<EndpointType> endpointTypes = endpointTypeMapper.selectListByQuery(queryWrapper);
         Map<String, EndpointType> mapping = new HashMap<>();
         for (EndpointType endpointType : endpointTypes) {
             mapping.put(endpointType.getId(), endpointType);
         }
         List<EndpointType> result = new ArrayList<>();
         // 查询配置数据，然后加到mapping中的对应的节点的children下
-        LambdaQueryWrapper<EndpointConfig> configLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        configLambdaQueryWrapper.like(StringUtils.isNoneBlank(name), EndpointConfig::getConfigName, name);
+        queryWrapper.clear();
+        queryWrapper.like( EndpointConfig::getConfigName, name);
         // 选择需要的字段
-        configLambdaQueryWrapper.select(EndpointConfig::getId, EndpointConfig::getConfigName, EndpointConfig::getTypeId, EndpointConfig::getIcon);
-        List<EndpointConfig> endpointConfigs = endpointConfigMapper.selectList(configLambdaQueryWrapper);
+        queryWrapper.select(EndpointConfig::getId, EndpointConfig::getConfigName, EndpointConfig::getTypeId, EndpointConfig::getIcon);
+        List<EndpointConfig> endpointConfigs = endpointConfigMapper.selectListByQuery(queryWrapper);
         // 将配置数据合并到映射中去
         for (EndpointConfig endpointConfig : endpointConfigs) {
             EndpointType endpointType = mapping.get(endpointConfig.getTypeId());

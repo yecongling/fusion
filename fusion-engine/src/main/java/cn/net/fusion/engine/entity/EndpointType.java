@@ -1,8 +1,8 @@
 package cn.net.fusion.engine.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.mybatisflex.annotation.Column;
+import com.mybatisflex.annotation.Id;
+import com.mybatisflex.annotation.Table;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -17,14 +17,14 @@ import java.util.List;
  * @Date 2024/11/23 17:46
  * @Version 1.0
  */
-@TableName("t_engine_endpoint_type")
+@Table("t_engine_endpoint_type")
 public class EndpointType implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 5893206708013699530L;
 
     // 类型id
-    @TableId
+    @Id
     private String id;
 
     // 类型名
@@ -41,10 +41,10 @@ public class EndpointType implements Serializable {
     // 更新时间
     private Date updateTime;
 
-    @TableField(exist = false)
+    @Column(ignore = true)
     private List<EndpointType> children;
 
-    @TableField(exist = false)
+    @Column(ignore = true)
     private List<EndpointConfig> endpointConfigs;
 
 
