@@ -5,14 +5,15 @@ import cn.net.fusion.engine.entity.EndpointType;
 import cn.net.fusion.engine.mapper.EndpointConfigMapper;
 import cn.net.fusion.engine.mapper.EndpointTypeMapper;
 import cn.net.fusion.engine.service.IEndpointConfigService;
+import cn.net.fusion.framework.core.SysOpr;
+import cn.net.fusion.framework.exception.BusinessException;
+import cn.net.fusion.framework.utils.ServletUtils;
+import cn.net.fusion.framework.utils.SnowFlakeGenerator;
 import com.mybatisflex.core.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @ClassName EndpointConfigServiceImpl
@@ -28,10 +29,21 @@ public class EndpointConfigServiceImpl implements IEndpointConfigService {
     // 数据库操作接口
     private final EndpointTypeMapper endpointTypeMapper;
     private final EndpointConfigMapper endpointConfigMapper;
+    // 雪花ID生成
+    private SnowFlakeGenerator snowFlakeGenerator;
+
+    // 获取操作员
+    private final ServletUtils servletUtils;
+
     @Autowired
-    public EndpointConfigServiceImpl(EndpointTypeMapper endpointTypeMapper, EndpointConfigMapper endpointConfigMapper) {
+    public EndpointConfigServiceImpl(EndpointTypeMapper endpointTypeMapper,
+                                     EndpointConfigMapper endpointConfigMapper,
+                                     SnowFlakeGenerator snowFlakeGenerator,
+                                     ServletUtils servletUtils) {
         this.endpointTypeMapper = endpointTypeMapper;
         this.endpointConfigMapper = endpointConfigMapper;
+        this.snowFlakeGenerator = snowFlakeGenerator;
+        this.servletUtils = servletUtils;
     }
 
     /**
@@ -44,7 +56,7 @@ public class EndpointConfigServiceImpl implements IEndpointConfigService {
     public List<EndpointType> queryEndpointConfigType(String name) {
         QueryWrapper queryWrapper = new QueryWrapper();
         // 传输的name不为空的时候查询
-        queryWrapper.like( EndpointType::getTypeName, name);
+        queryWrapper.like(EndpointType::getTypeName, name);
         // 选择需要的字段
         queryWrapper.select(EndpointType::getTypeName, EndpointType::getId, EndpointType::getParentId);
         List<EndpointType> endpointTypes = endpointTypeMapper.selectListByQuery(queryWrapper);
@@ -55,7 +67,7 @@ public class EndpointConfigServiceImpl implements IEndpointConfigService {
         List<EndpointType> result = new ArrayList<>();
         // 查询配置数据，然后加到mapping中的对应的节点的children下
         queryWrapper.clear();
-        queryWrapper.like( EndpointConfig::getConfigName, name);
+        queryWrapper.like(EndpointConfig::getConfigName, name);
         // 选择需要的字段
         queryWrapper.select(EndpointConfig::getId, EndpointConfig::getConfigName, EndpointConfig::getTypeId, EndpointConfig::getIcon);
         List<EndpointConfig> endpointConfigs = endpointConfigMapper.selectListByQuery(queryWrapper);
@@ -71,11 +83,36 @@ public class EndpointConfigServiceImpl implements IEndpointConfigService {
         return result;
     }
 
+
+    /**
+     * 新增端点类型
+     *
+     * @param endpointType 端点类型数据
+     * @return 返回新增的端点
+     */
+    @Override
+    public EndpointType addEndpointConfig(EndpointType endpointType) {
+        // 新增的时候需要生成id
+        endpointType.setId(snowFlakeGenerator.generateUniqueId());
+        // 添加创建人、时间、更新人、时间等信息
+        SysOpr sysOpr = servletUtils.getSysOpr();
+        endpointType.setCreateBy(sysOpr.getUserId());
+        endpointType.setUpdateBy(sysOpr.getUserId());
+        endpointType.setCreateTime(new Date());
+        endpointType.setUpdateTime(new Date());
+        int insert = endpointTypeMapper.insert(endpointType);
+        if (insert > 0) {
+            return endpointType;
+        }
+        throw new BusinessException("新增端点类型失败！受影响的行数为0！");
+    }
+
     /**
      * 将类型数据构建成树结构
-     * @param result 结果数据
+     *
+     * @param result   结果数据
      * @param typeList 类型数据
-     * @param mapping 映射 将id设为key做后续数据获取需要的映射
+     * @param mapping  映射 将id设为key做后续数据获取需要的映射
      */
     private void buildTypeTree(List<EndpointType> result, List<EndpointType> typeList, Map<String, EndpointType> mapping) {
         // 将子节点添加到父节点的children中去

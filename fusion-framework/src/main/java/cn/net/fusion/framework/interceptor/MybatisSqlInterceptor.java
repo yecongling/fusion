@@ -41,7 +41,7 @@ public class MybatisSqlInterceptor implements Interceptor {
     // 日志记录工具
     private static final Logger logger = LoggerFactory.getLogger(MybatisSqlInterceptor.class);
 
-    @Value("${mybatis.interceptor.enabled:true}")
+    @Value("${mybatis.sqlLog:true}")
     private boolean interceptorEnabled;
 
     /**

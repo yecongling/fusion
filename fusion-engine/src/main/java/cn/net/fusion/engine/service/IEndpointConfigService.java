@@ -20,4 +20,11 @@ public interface IEndpointConfigService {
      * @return 端点配置类型数据
      */
     List<EndpointType> queryEndpointConfigType(String name);
+
+    /**
+     * 新增端点类型
+     * @param endpointType 端点类型数据
+     * @return 返回新增的端点
+     */
+    EndpointType addEndpointConfig(EndpointType endpointType);
 }
