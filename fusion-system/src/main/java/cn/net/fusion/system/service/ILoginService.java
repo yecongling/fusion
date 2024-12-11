@@ -23,10 +23,9 @@ public interface ILoginService {
     /**
      * 退出登录
      *
-     * @param token 用户token
      * @return 返回退出登录结果
      */
-    Object logout(String token);
+    Object logout();
 
     /**
      * 生成随机的验证码图像

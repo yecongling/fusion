@@ -109,18 +109,20 @@ public class LoginServiceImpl implements ILoginService {
     /**
      * 退出登录
      *
-     * @param token 用户token
      * @return 返回退出登录结果
      */
     @Override
-    public Object logout(String token) {
+    public Object logout() {
+        SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
         // 获取用户信息
-        Object o = redisUtil.get(CommonConstant.PREFIX_USER_TOKEN + token);
+        Object o = redisUtil.get(CommonConstant.PREFIX_USER_TOKEN + tokenInfo.tokenValue);
         // 记录退出登录日志
         BaseEvent<Object> event = new BaseEvent<>(o, SysOperation.LOGOUT);
         producer.publishEvent(event);
         // 清空用户token缓存
-        redisUtil.delete(CommonConstant.PREFIX_USER_TOKEN + token);
+        redisUtil.delete(CommonConstant.PREFIX_USER_TOKEN + tokenInfo.tokenValue);
+        // 当前会话注销登录
+        StpUtil.logout();
         return "退出登录成功！";
     }
 
@@ -163,7 +165,6 @@ public class LoginServiceImpl implements ILoginService {
         redisUtil.set(CommonConstant.PREFIX_USER_TOKEN + tokenInfo.tokenValue, sysUser, -1);
         // 8、获取用户相关信息
         JSONObject result = new JSONObject();
-        result.put(tokenInfo.tokenName, tokenInfo.tokenValue);
         result.put("homePath", sysUser.getHomePath());
         result.put("roleId", sysUser.getRoleId());
 

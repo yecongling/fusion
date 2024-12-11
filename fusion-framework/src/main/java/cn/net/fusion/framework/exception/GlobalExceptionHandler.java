@@ -1,6 +1,7 @@
 package cn.net.fusion.framework.exception;
 
 
+import cn.dev33.satoken.exception.NotLoginException;
 import cn.net.fusion.framework.core.Response;
 import cn.net.fusion.framework.enums.HttpCodeEnum;
 import jakarta.servlet.http.HttpServletRequest;
@@ -75,5 +76,16 @@ public class GlobalExceptionHandler {
         logger.error("未知（600）异常 => 错误调用栈：{}", ExceptionUtils.getStackTrace(e));
         // 这里向前台返回主要的调用栈信息
         return Response.fail(HttpCodeEnum.RC600.getCode(), ExceptionUtils.getRootCauseMessage(e));
+    }
+
+    /**
+     * 处理未登录异常
+     *
+     * @param e 未登录异常
+     * @return response
+     */
+    @ExceptionHandler(NotLoginException.class)
+    public Response<Object> handleNotLoginException(NotLoginException e) {
+        return Response.fail(HttpCodeEnum.RC101.getCode(), ExceptionUtils.getRootCauseMessage(e));
     }
 }

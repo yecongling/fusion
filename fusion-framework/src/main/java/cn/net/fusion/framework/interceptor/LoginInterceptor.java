@@ -16,7 +16,9 @@ import org.springframework.web.servlet.HandlerInterceptor;
  * @Author 叶丛林
  * @Date 2024/11/2 21:24
  * @Version 1.0
+ * 采用sa-token
  **/
+@Deprecated
 public class LoginInterceptor implements HandlerInterceptor {
 
     // redis工具（用于验证用户的登录token）
