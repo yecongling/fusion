@@ -11,8 +11,8 @@ server:
     threads:
       # 阻塞任务线程池, 当执行类似servlet请求阻塞IO操作, undertow会从这个线程池中取得线程
       # 它的值设置取决于系统线程执行任务的阻塞系数，默认值是IO线程数*8
-      worker: 256
-      io: 16
+      worker: 64
+      io: 8
   servlet:
     context-path: /fusion
 spring:
@@ -66,3 +66,8 @@ logging:
     org.springframework.web: error
   file:
     path: ${user.home}/fusionLog
+# sa-token 配置
+sa-token:
+  # token有效期 一小时
+  timeout: 3600
+  token-style: random-64
