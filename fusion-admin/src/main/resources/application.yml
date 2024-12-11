@@ -54,10 +54,9 @@ spring:
           max-idle: 16
           max-active: 32
           min-idle: 8
-# 是否开启mybatis的sql执行拦截器
+# 是否开启sql记录
 mybatis:
-  interceptor:
-    enabled: false
+  sqlLog: true
 mybatis-flex:
   mapper-locations: classpath*:mapper/**/*.xml
 logging:
