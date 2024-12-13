@@ -44,8 +44,9 @@ public class ServletUtils {
         if (requestURI.endsWith("/login")) {
             return new SysOpr();
         }
-        Object o = redisUtil.get(CommonConstant.PREFIX_USER_TOKEN + tokenInfo);
+        Object o = redisUtil.get(CommonConstant.PREFIX_USER_TOKEN + tokenInfo.tokenValue);
         if (ObjectUtils.isEmpty(o)) {
+            StpUtil.logout();
             // 如果没取到，直接抛出异常，阻止进行下一步操作
             throw new BusinessException(HttpCodeEnum.RC401);
         }
