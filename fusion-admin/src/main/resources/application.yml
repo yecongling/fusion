@@ -67,6 +67,6 @@ logging:
     path: ${user.home}/fusionLog
 # sa-token 配置
 sa-token:
-  # token有效期 一小时
-  timeout: 3600
   token-style: random-64
+  # 60分钟内无操作，token则会立即过期，有操作就一直续期
+  active-timeout: 3600
