@@ -5,7 +5,9 @@ import cn.net.fusion.framework.config.EntityUpdateListener;
 import cn.net.fusion.framework.core.BaseEntity;
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
+import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
+import com.mybatisflex.core.keygen.KeyGenerators;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -26,7 +28,7 @@ public class EndpointType extends BaseEntity implements Serializable {
     private static final long serialVersionUID = 5893206708013699530L;
 
     // 类型id
-    @Id
+    @Id(keyType = KeyType.Generator, value = KeyGenerators.snowFlakeId)
     private String id;
 
     // 类型名

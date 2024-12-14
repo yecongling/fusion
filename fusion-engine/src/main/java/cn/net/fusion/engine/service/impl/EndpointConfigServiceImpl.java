@@ -90,7 +90,7 @@ public class EndpointConfigServiceImpl implements IEndpointConfigService {
     @Override
     public EndpointType addEndpointConfig(EndpointType endpointType) {
         // 新增的时候需要生成id
-        endpointType.setId(snowFlakeGenerator.generateUniqueId());
+//        endpointType.setId(snowFlakeGenerator.generateUniqueId());
         int insert = endpointTypeMapper.insert(endpointType);
         if (insert > 0) {
             return endpointType;
