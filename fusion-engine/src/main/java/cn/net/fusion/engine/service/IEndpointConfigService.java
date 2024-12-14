@@ -27,4 +27,12 @@ public interface IEndpointConfigService {
      * @return 返回新增的端点
      */
     EndpointType addEndpointConfig(EndpointType endpointType);
+
+    /**
+     * 修改端点类型数据
+     *
+     * @param endpointType 端点数据
+     * @return 结果
+     */
+    EndpointType updateEndpointConfig(EndpointType endpointType);
 }

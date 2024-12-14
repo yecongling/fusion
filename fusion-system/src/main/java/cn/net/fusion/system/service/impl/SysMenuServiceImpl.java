@@ -110,13 +110,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
     public Response<Integer> addMenu(SysMenu menu) {
         // 新增需要生成唯一ID和操作员相关信息
         String id = snowFlakeGenerator.generateUniqueId();
-        // 获取操作员
-        SysOpr sysOpr = servletUtils.getSysOpr();
         menu.setId(id);
-        menu.setCreateBy(sysOpr.getUserId());
-        menu.setCreateTime(new Date());
-        menu.setUpdateBy(sysOpr.getUserId());
-        menu.setUpdateTime(new Date());
         // 受影响的行数
         int num = sysMenuMapper.insert(menu);
         return num > 0 ? Response.success() : Response.fail();
@@ -130,9 +124,6 @@ public class SysMenuServiceImpl implements ISysMenuService {
      */
     @Override
     public Response<Integer> modifyMenu(SysMenu menu) {
-        SysOpr sysOpr = servletUtils.getSysOpr();
-        menu.setUpdateBy(sysOpr.getUserId());
-        menu.setUpdateTime(new Date());
         int update = sysMenuMapper.update(menu);
         return update > 0 ? Response.success() : Response.fail();
     }
@@ -145,12 +136,9 @@ public class SysMenuServiceImpl implements ISysMenuService {
      */
     @Override
     public Response<Integer> deleteMenu(String id) {
-        SysOpr sysOpr = servletUtils.getSysOpr();
         // 这里需要判断菜单是否在使用中（如果菜单在使用中，则不允许删除）
         SysMenu sysMenu = UpdateEntity.of(SysMenu.class, id);
         sysMenu.setDelFlag(1);
-        sysMenu.setUpdateTime(new Date());
-        sysMenu.setUpdateBy(sysOpr.getUserId());
 
         int update = sysMenuMapper.update(sysMenu);
         return update > 0 ? Response.success() : Response.fail();

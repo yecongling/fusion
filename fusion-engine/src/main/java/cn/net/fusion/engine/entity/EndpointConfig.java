@@ -1,11 +1,12 @@
 package cn.net.fusion.engine.entity;
 
+import cn.net.fusion.framework.core.BaseEntity;
+import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.Table;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * @ClassName EndpointConfig
@@ -15,7 +16,7 @@ import java.util.Date;
  * @Version 1.0
  */
 @Table("t_engine_endpoint_config")
-public class EndpointConfig implements Serializable {
+public class EndpointConfig extends BaseEntity implements Serializable {
 
     @Serial
     private static final long serialVersionUID = -5039736494205830358L;
@@ -39,17 +40,8 @@ public class EndpointConfig implements Serializable {
     // 描述
     private String description;
 
-    // 创建人
-    private String createBy;
-
-    // 创建时间
-    private Date createTime;
-
-    // 更新人
-    private String updateBy;
-
-    // 更新时间
-    private Date updateTime;
+    @Column(ignore = true)
+    private Boolean isConfig = Boolean.TRUE;
 
     public String getId() {
         return id;
@@ -99,35 +91,11 @@ public class EndpointConfig implements Serializable {
         this.description = description;
     }
 
-    public String getCreateBy() {
-        return createBy;
+    public Boolean getConfig() {
+        return isConfig;
     }
 
-    public void setCreateBy(String createBy) {
-        this.createBy = createBy;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateBy(String updateBy) {
-        this.updateBy = updateBy;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
+    public void setConfig(Boolean config) {
+        isConfig = config;
     }
 }

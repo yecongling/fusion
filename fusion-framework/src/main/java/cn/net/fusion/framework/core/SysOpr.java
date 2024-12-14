@@ -7,7 +7,7 @@ package cn.net.fusion.framework.core;
  * @Date 2024/11/4 20:43
  * @Version 1.0
  **/
-public class SysOpr {
+public class SysOpr extends BaseEntity{
     private String userId = "00001";
     private String userName = "admin";
 

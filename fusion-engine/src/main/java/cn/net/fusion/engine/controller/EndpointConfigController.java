@@ -41,11 +41,23 @@ public class EndpointConfigController {
 
     /**
      * 新增端点类型
+     *
      * @param endpointType 端点类型数据
      * @return 返回新增的端点
      */
     @PostMapping("/addEndpointType")
     public Response<EndpointType> addEndpointConfig(@RequestBody @Valid EndpointType endpointType) {
-        return Response.success(endpointTypeService.addEndpointConfig(endpointType));
+        return Response.success("新增端点类型成功！", endpointTypeService.addEndpointConfig(endpointType));
+    }
+
+    /**
+     * 修改端点类型
+     *
+     * @param endpointType 端点类型数据
+     * @return 修改结果
+     */
+    @PostMapping("/updateEndpointType")
+    public Response<EndpointType> updateEndpointType(@RequestBody @Valid EndpointType endpointType) {
+        return Response.success("修改端点类型成功！", endpointTypeService.updateEndpointConfig(endpointType));
     }
 }

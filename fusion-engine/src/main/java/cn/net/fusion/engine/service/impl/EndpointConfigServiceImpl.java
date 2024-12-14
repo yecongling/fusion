@@ -5,15 +5,16 @@ import cn.net.fusion.engine.entity.EndpointType;
 import cn.net.fusion.engine.mapper.EndpointConfigMapper;
 import cn.net.fusion.engine.mapper.EndpointTypeMapper;
 import cn.net.fusion.engine.service.IEndpointConfigService;
-import cn.net.fusion.framework.core.SysOpr;
 import cn.net.fusion.framework.exception.BusinessException;
-import cn.net.fusion.framework.utils.ServletUtils;
 import cn.net.fusion.framework.utils.SnowFlakeGenerator;
 import com.mybatisflex.core.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName EndpointConfigServiceImpl
@@ -30,20 +31,16 @@ public class EndpointConfigServiceImpl implements IEndpointConfigService {
     private final EndpointTypeMapper endpointTypeMapper;
     private final EndpointConfigMapper endpointConfigMapper;
     // 雪花ID生成
-    private SnowFlakeGenerator snowFlakeGenerator;
+    private final SnowFlakeGenerator snowFlakeGenerator;
 
-    // 获取操作员
-    private final ServletUtils servletUtils;
 
     @Autowired
     public EndpointConfigServiceImpl(EndpointTypeMapper endpointTypeMapper,
                                      EndpointConfigMapper endpointConfigMapper,
-                                     SnowFlakeGenerator snowFlakeGenerator,
-                                     ServletUtils servletUtils) {
+                                     SnowFlakeGenerator snowFlakeGenerator) {
         this.endpointTypeMapper = endpointTypeMapper;
         this.endpointConfigMapper = endpointConfigMapper;
         this.snowFlakeGenerator = snowFlakeGenerator;
-        this.servletUtils = servletUtils;
     }
 
     /**
@@ -94,17 +91,27 @@ public class EndpointConfigServiceImpl implements IEndpointConfigService {
     public EndpointType addEndpointConfig(EndpointType endpointType) {
         // 新增的时候需要生成id
         endpointType.setId(snowFlakeGenerator.generateUniqueId());
-        // 添加创建人、时间、更新人、时间等信息
-        SysOpr sysOpr = servletUtils.getSysOpr();
-        endpointType.setCreateBy(sysOpr.getUserId());
-        endpointType.setUpdateBy(sysOpr.getUserId());
-        endpointType.setCreateTime(new Date());
-        endpointType.setUpdateTime(new Date());
         int insert = endpointTypeMapper.insert(endpointType);
         if (insert > 0) {
             return endpointType;
         }
         throw new BusinessException("新增端点类型失败！受影响的行数为0！");
+    }
+
+
+    /**
+     * 修改端点类型数据
+     *
+     * @param endpointType 端点数据
+     * @return 结果
+     */
+    @Override
+    public EndpointType updateEndpointConfig(EndpointType endpointType) {
+        int update = endpointTypeMapper.update(endpointType);
+        if (update > 0) {
+            return endpointType;
+        }
+        throw new BusinessException("更新端点类型失败！受影响的行数为0！");
     }
 
     /**

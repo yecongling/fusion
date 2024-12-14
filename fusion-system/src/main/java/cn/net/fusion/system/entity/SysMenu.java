@@ -1,5 +1,8 @@
 package cn.net.fusion.system.entity;
 
+import cn.net.fusion.framework.config.EntityInsertListener;
+import cn.net.fusion.framework.config.EntityUpdateListener;
+import cn.net.fusion.framework.core.BaseEntity;
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.Table;
@@ -7,7 +10,6 @@ import com.mybatisflex.annotation.Table;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,8 +19,8 @@ import java.util.List;
  * @Date 2024/11/8 11:58
  * @Version 1.0
  */
-@Table("t_sys_permission")
-public class SysMenu implements Serializable {
+@Table(value = "t_sys_permission", onInsert = EntityInsertListener.class, onUpdate = EntityUpdateListener.class)
+public class SysMenu extends BaseEntity implements Serializable {
 
     @Serial
     private static final long serialVersionUID = -6376947729586532271L;
@@ -102,11 +104,6 @@ public class SysMenu implements Serializable {
     private String description;
 
     /**
-     * 创建人
-     */
-    private String createBy;
-
-    /**
      * 删除状态 0正常 1已删除
      */
     private Integer delFlag = 0;
@@ -125,21 +122,6 @@ public class SysMenu implements Serializable {
      * 是否隐藏Tab: 0否,1是（默认值0）
      */
     private boolean hideTab = false;
-
-    /**
-     * 创建时间
-     */
-    private Date createTime;
-
-    /**
-     * 更新人
-     */
-    private String updateBy;
-
-    /**
-     * 更新时间
-     */
-    private Date updateTime;
 
     /**
      * 按钮权限状态(0无效1有效)
@@ -290,14 +272,6 @@ public class SysMenu implements Serializable {
         this.description = description;
     }
 
-    public String getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(String createBy) {
-        this.createBy = createBy;
-    }
-
     public Integer getDelFlag() {
         return delFlag;
     }
@@ -328,30 +302,6 @@ public class SysMenu implements Serializable {
 
     public void setHideTab(boolean hideTab) {
         this.hideTab = hideTab;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateBy(String updateBy) {
-        this.updateBy = updateBy;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
     }
 
     public Integer getStatus() {

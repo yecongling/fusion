@@ -1,5 +1,8 @@
 package cn.net.fusion.engine.entity;
 
+import cn.net.fusion.framework.config.EntityInsertListener;
+import cn.net.fusion.framework.config.EntityUpdateListener;
+import cn.net.fusion.framework.core.BaseEntity;
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.Table;
@@ -7,7 +10,6 @@ import com.mybatisflex.annotation.Table;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,8 +19,8 @@ import java.util.List;
  * @Date 2024/11/23 17:46
  * @Version 1.0
  */
-@Table("t_engine_endpoint_type")
-public class EndpointType implements Serializable {
+@Table(value = "t_engine_endpoint_type", onInsert = EntityInsertListener.class, onUpdate = EntityUpdateListener.class)
+public class EndpointType extends BaseEntity implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 5893206708013699530L;
@@ -32,14 +34,6 @@ public class EndpointType implements Serializable {
 
     // 上级id
     private String parentId;
-    // 创建人
-    private String createBy;
-    // 创建时间
-    private Date createTime;
-    // 更新人
-    private String updateBy;
-    // 更新时间
-    private Date updateTime;
 
     @Column(ignore = true)
     private List<EndpointType> children;
@@ -70,38 +64,6 @@ public class EndpointType implements Serializable {
 
     public void setParentId(String parentId) {
         this.parentId = parentId;
-    }
-
-    public String getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(String createBy) {
-        this.createBy = createBy;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateBy(String updateBy) {
-        this.updateBy = updateBy;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
     }
 
     public List<EndpointConfig> getEndpointConfigs() {
