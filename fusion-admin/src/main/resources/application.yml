@@ -22,10 +22,9 @@ spring:
     resources:
       add-mappings: false
   datasource:
-    #    url: jdbc:mysql://47.108.142.142:3306/integration?characterEncoding=UTF-8&useUnicode=true&useSSL=false&tinyInt1isBit=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai&allowMultiQueries=true
-    url: jdbc:mysql://localhost:3306/fusion?characterEncoding=UTF-8&useUnicode=true&useSSL=false&tinyInt1isBit=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai&allowMultiQueries=true
-    username: root
-    password: Ycl499475142!
+    url: MFACjKALPqKdW8XlhZbu1J3vvlpcLjAntE5j2trzYgDtfyfd92M/TobpBQDyP8egDw1xRxKQHc2NeZzw97i9JqNvx0Gy3EH/vYGjTk5b+rswk+UGwQBz5fssCR8615fPVLOeSsqD+M7q9Et6bjkYOHCE1ENJ+nuiTcQXrclrED1lqf13qGOye+e7uLV18jUeknykhKvztqO+45ROzD0sjajoXlaO8ocq4AqMNYbSOYi1EJY5r5wSgBhxNH9OVZEs
+    username: HFundkUyNJ6IqZX+sDMeFg==
+    password: QA2Cr8IO+jgJWrcIZZZZmw==
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.zaxxer.hikari.HikariDataSource
     # 连接池
@@ -47,7 +46,7 @@ spring:
     redis:
       host: localhost
       port: 6379
-      password: Ycl499475142!
+      password: QA2Cr8IO+jgJWrcIZZZZmw==
       database: 0
       lettuce:
         pool:
