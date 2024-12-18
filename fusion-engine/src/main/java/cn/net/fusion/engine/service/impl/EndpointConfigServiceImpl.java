@@ -114,6 +114,27 @@ public class EndpointConfigServiceImpl implements IEndpointConfigService {
     }
 
     /**
+     * 删除分类ID
+     *
+     * @param typeId 分类ID
+     * @return 删除结果
+     */
+    @Override
+    public Boolean deleteEndpointConfigType(String typeId) {
+        // 需要判定这个分类下面是否还有下级节点
+        long count = endpointTypeMapper.selectCountByQuery(new QueryWrapper().eq(EndpointType::getParentId, typeId));
+        if (count > 0) {
+            throw new BusinessException("该分类下存在下级分类，无法删除！");
+        }
+        long configCount = endpointConfigMapper.selectCountByQuery(new QueryWrapper().eq(EndpointConfig::getTypeId, typeId));
+        if (configCount > 0) {
+            throw new BusinessException("该分类下存在端点配置数据，无法删除！");
+        }
+        int i = endpointTypeMapper.deleteById(typeId);
+        return i > 0;
+    }
+
+    /**
      * 根据id获取端点配置数据
      *
      * @param id 端点配置id

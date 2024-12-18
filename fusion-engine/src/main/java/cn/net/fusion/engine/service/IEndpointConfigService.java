@@ -39,6 +39,14 @@ public interface IEndpointConfigService {
     EndpointType updateEndpointConfigType(EndpointType endpointType);
 
     /**
+     * 删除分类ID
+     *
+     * @param typeId 分类ID
+     * @return 删除结果
+     */
+    Boolean deleteEndpointConfigType(String typeId);
+
+    /**
      * 根据id获取端点配置数据
      *
      * @param id 端点配置id

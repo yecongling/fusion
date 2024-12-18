@@ -5,6 +5,7 @@ import cn.net.fusion.engine.entity.EndpointType;
 import cn.net.fusion.engine.service.IEndpointConfigService;
 import cn.net.fusion.framework.core.Response;
 import cn.net.fusion.framework.enums.HttpCodeEnum;
+import cn.net.fusion.framework.exception.BusinessException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -62,6 +63,21 @@ public class EndpointConfigController {
     @PostMapping("/updateEndpointType")
     public Response<EndpointType> updateEndpointType(@RequestBody @Valid EndpointType endpointType) {
         return Response.success("修改端点类型成功！", endpointConfigService.updateEndpointConfigType(endpointType));
+    }
+
+    /**
+     * 删除端点分类
+     *
+     * @param id 分类ID
+     * @return 删除结果
+     */
+    @DeleteMapping("/deleteEndpointType")
+    public Response<Object> deleteEndpointType(@RequestParam(value = "id") String id) {
+        Boolean deleted = endpointConfigService.deleteEndpointConfigType(id);
+        if (deleted) {
+            return Response.success("端点分类删除成功！", "");
+        }
+        throw new BusinessException("端点分类删除失败！无法找到满足条件的需要删除的数据，请检查数据正确性！");
     }
 
     /*=========================端点配置数据和属性配置数据相关===========================*/
