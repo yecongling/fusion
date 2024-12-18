@@ -1,8 +1,13 @@
 package cn.net.fusion.engine.entity;
 
+import cn.net.fusion.framework.config.EntityInsertListener;
+import cn.net.fusion.framework.config.EntityUpdateListener;
 import cn.net.fusion.framework.core.BaseEntity;
 import com.mybatisflex.annotation.Id;
+import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
+import com.mybatisflex.core.keygen.KeyGenerators;
+import jakarta.validation.constraints.NotBlank;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -14,17 +19,18 @@ import java.io.Serializable;
  * @Date 2024/11/28 11:17
  * @Version 1.0
  */
-@Table("t_engine_endpoint_properties")
+@Table(value = "t_engine_endpoint_properties", onInsert = EntityInsertListener.class, onUpdate = EntityUpdateListener.class)
 public class EndpointProperties extends BaseEntity implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 241343699855628548L;
 
     // 属性id
-    @Id
+    @Id(keyType = KeyType.Generator, value = KeyGenerators.snowFlakeId)
     private String id;
 
     // 配置名
+    @NotBlank(message = "属性配置名不能为空！")
     private String name;
 
     // 所属端点配置id
@@ -36,7 +42,7 @@ public class EndpointProperties extends BaseEntity implements Serializable {
     // 提示信息
     private String tips;
 
-    // 类型
+    // 类型（针对前端控件的类型，如input、select、checkbox等）
     private String type;
 
     // 是否必填

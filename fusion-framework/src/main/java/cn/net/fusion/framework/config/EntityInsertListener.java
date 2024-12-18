@@ -10,7 +10,8 @@ import java.util.Date;
 
 /**
  * @ClassName EntityInsertListener
- * @Description 实体类插入数据时的数据填充，填充创建人、创建时间、更新人、更新时间
+ * @Description 实体类插入数据时的数据填充，填充创建人、创建时间、更新人、更新时间，该功能只有使用mybatis-flex的BaseMapper的时候才会触发，
+ * 使用mybatis的xml mapper插入数据或者通过Db + Row中插入数据，不会触发该行为
  * @Author ycl
  * @Date 2024/12/14 10:39
  * @Version 1.0
