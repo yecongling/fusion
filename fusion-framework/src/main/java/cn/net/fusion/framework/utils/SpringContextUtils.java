@@ -30,15 +30,6 @@ public class SpringContextUtils implements ApplicationContextAware {
     }
 
     /**
-     * 获取applicationContext
-     *
-     * @return
-     */
-    public static ApplicationContext getApplicationContext() {
-        return applicationContext;
-    }
-
-    /**
      * 获取HttpServletRequest
      */
     public static HttpServletRequest getHttpServletRequest() {
@@ -64,7 +55,7 @@ public class SpringContextUtils implements ApplicationContextAware {
      * @return
      */
     public static Object getBean(String name) {
-        return getApplicationContext().getBean(name);
+        return applicationContext.getBean(name);
     }
 
     /**
@@ -75,7 +66,7 @@ public class SpringContextUtils implements ApplicationContextAware {
      * @return
      */
     public static <T> T getBean(Class<T> clazz) {
-        return getApplicationContext().getBean(clazz);
+        return applicationContext.getBean(clazz);
     }
 
     /**
@@ -87,6 +78,6 @@ public class SpringContextUtils implements ApplicationContextAware {
      * @return
      */
     public static <T> T getBean(String name, Class<T> clazz) {
-        return getApplicationContext().getBean(name, clazz);
+        return applicationContext.getBean(name, clazz);
     }
 }
