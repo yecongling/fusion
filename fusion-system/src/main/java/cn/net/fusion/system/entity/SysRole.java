@@ -4,7 +4,10 @@ import cn.net.fusion.framework.config.EntityInsertListener;
 import cn.net.fusion.framework.config.EntityUpdateListener;
 import cn.net.fusion.framework.core.BaseEntity;
 import com.mybatisflex.annotation.Id;
+import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
+import com.mybatisflex.core.keygen.KeyGenerators;
+import jakarta.validation.constraints.NotBlank;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -23,14 +26,21 @@ public class SysRole extends BaseEntity implements Serializable {
     private static final long serialVersionUID = -5972546709725498012L;
 
     /**
-     * id
+     * id 后端生成
      */
-    @Id
+    @Id(keyType = KeyType.Generator, value = KeyGenerators.snowFlakeId)
     private String id;
+
+    /**
+     * 角色编码 用户填写
+     */
+    @NotBlank(message = "角色编码不能为空")
+    private String roleCode;
 
     /**
      * 角色名称
      */
+    @NotBlank(message = "角色名称不能为空")
     private String roleName;
 
     /**
@@ -48,5 +58,51 @@ public class SysRole extends BaseEntity implements Serializable {
      */
     private String description;
 
+    public String getId() {
+        return id;
+    }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getRoleCode() {
+        return roleCode;
+    }
+
+    public void setRoleCode(String roleCode) {
+        this.roleCode = roleCode;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
+
+    public String getRoleType() {
+        return roleType;
+    }
+
+    public void setRoleType(String roleType) {
+        this.roleType = roleType;
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }
