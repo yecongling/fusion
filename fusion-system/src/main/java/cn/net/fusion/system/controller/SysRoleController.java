@@ -26,6 +26,7 @@ import java.util.List;
 public class SysRoleController {
 
     private final ISysRoleService sysRoleService;
+
     @Autowired
     public SysRoleController(ISysRoleService sysRoleService) {
         this.sysRoleService = sysRoleService;
@@ -45,7 +46,7 @@ public class SysRoleController {
     /**
      * 新增角色
      *
-     * @param sysRole 角色数据
+     * @param sysRole       角色数据
      * @param bindingResult 校验结果
      * @return 新增结果
      */
@@ -57,4 +58,18 @@ public class SysRoleController {
         return Response.success(sysRoleService.insertRole(sysRole));
     }
 
+    /**
+     * 编辑角色
+     *
+     * @param sysRole       角色数据
+     * @param bindingResult 校验结果
+     * @return 编辑结果
+     */
+    @PostMapping("/editRole")
+    Response<Integer> editRole(@RequestBody @Valid SysRole sysRole, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return Response.fail(HttpCodeEnum.RC400.getCode(), bindingResult.getAllErrors().get(0).getDefaultMessage());
+        }
+        return null;
+    }
 }

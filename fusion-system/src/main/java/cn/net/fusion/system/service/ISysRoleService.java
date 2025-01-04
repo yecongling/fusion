@@ -28,4 +28,12 @@ public interface ISysRoleService {
      * @return 受影响的行数
      */
     Integer insertRole(SysRole sysRole);
+
+    /**
+     * 更新角色
+     *
+     * @param sysRole 系统角色
+     * @return 受影响的行数
+     */
+    Integer updateRole(SysRole sysRole);
 }

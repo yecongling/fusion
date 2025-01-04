@@ -20,6 +20,7 @@ import java.util.List;
 public class SysRoleServiceImpl implements ISysRoleService {
 
     private final SysRoleMapper sysRoleMapper;
+
     @Autowired
     public SysRoleServiceImpl(SysRoleMapper sysRoleMapper) {
         this.sysRoleMapper = sysRoleMapper;
@@ -52,5 +53,16 @@ public class SysRoleServiceImpl implements ISysRoleService {
     @Override
     public Integer insertRole(SysRole sysRole) {
         return sysRoleMapper.insert(sysRole);
+    }
+
+    /**
+     * 更新角色
+     *
+     * @param sysRole 系统角色
+     * @return 受影响的行数
+     */
+    @Override
+    public Integer updateRole(SysRole sysRole) {
+        return sysRoleMapper.update(sysRole);
     }
 }
