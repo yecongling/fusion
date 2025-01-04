@@ -6,10 +6,10 @@
     <select id="queryByUser" parameterType="object" resultType="cn.net.fusion.system.entity.SysMenu">
         <choose>
             <when test="roleId == 'admin'">
-                select * from t_sys_permission where del_flag = 0 order by sort_no
+                select * from t_sys_menu where del_flag = 0 order by sort_no
             </when>
             <otherwise>
-                select a.* from t_sys_permission a left join t_sys_role_permission b on a.id = b.permission_id where
+                select a.* from t_sys_menu a left join t_sys_role_menu b on a.id = b.menu_id where
                 b.role_id = #{roleId} and a.del_flag = 0 order by a.sort_no
             </otherwise>
         </choose>

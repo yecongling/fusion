@@ -54,9 +54,9 @@ public class SysRole extends BaseEntity implements Serializable {
     private Boolean status;
 
     /**
-     * 角色描述
+     * 角色备注
      */
-    private String description;
+    private String remark;
 
     public String getId() {
         return id;
@@ -98,11 +98,11 @@ public class SysRole extends BaseEntity implements Serializable {
         this.status = status;
     }
 
-    public String getDescription() {
-        return description;
+    public String getRemark() {
+        return remark;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }
