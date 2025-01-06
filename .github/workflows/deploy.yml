@@ -17,7 +17,7 @@ jobs:
       uses: actions/setup-java@v3
       with:
         distribution: 'temurin'
-        java-version: '17'  # 使用的 Java 版本，根据你的项目调整
+        java-version: '21'  # 使用的 Java 版本，根据你的项目调整
 
     - name: Build with Maven
       run: mvn clean package
