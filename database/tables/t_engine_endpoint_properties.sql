@@ -22,9 +22,9 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `t_engine_endpoint_properties`;
 CREATE TABLE `t_engine_endpoint_properties` (
-  `id` varchar(16) COLLATE utf8mb4_general_ci NOT NULL COMMENT '主键id',
+  `id` bigint unsigned NOT NULL COMMENT '主键id',
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '配置名',
-  `config_id` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '所属端点配置',
+  `config_id` bigint unsigned NOT NULL COMMENT '所属端点配置',
   `tips` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '提示信息',
   `title` varchar(255) COLLATE utf8mb4_general_ci NOT NULL COMMENT '配置title',
   `type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'input' COMMENT '配置字段使用控件类型（checkbox、input、select等）',

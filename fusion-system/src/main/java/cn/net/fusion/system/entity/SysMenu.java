@@ -19,7 +19,7 @@ import java.util.List;
  * @Date 2024/11/8 11:58
  * @Version 1.0
  */
-@Table(value = "t_sys_permission", onInsert = EntityInsertListener.class, onUpdate = EntityUpdateListener.class)
+@Table(value = "t_sys_menu", onInsert = EntityInsertListener.class, onUpdate = EntityUpdateListener.class)
 public class SysMenu extends BaseEntity implements Serializable {
 
     @Serial

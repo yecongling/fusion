@@ -18,10 +18,10 @@ SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
--- Table structure for t_sys_permission 菜单表
+-- Table structure for t_sys_menu 菜单表
 -- ----------------------------
-DROP TABLE IF EXISTS `t_sys_permission`;
-CREATE TABLE `t_sys_permission`
+DROP TABLE IF EXISTS `t_sys_menu`;
+CREATE TABLE `t_sys_menu`
 (
     `id`                   varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '主键id',
     `parent_id`            varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  DEFAULT NULL COMMENT '父id',
@@ -33,7 +33,7 @@ CREATE TABLE `t_sys_permission`
     `menu_type`            int                                                           DEFAULT NULL COMMENT '菜单类型(0:一级菜单; 1:子菜单:2:按钮权限)',
     `perms`                varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '菜单权限编码',
     `perms_type`           varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  DEFAULT 0 COMMENT '权限策略1显示2禁用',
-    `sort_no`              int                                                          NOT NULL COMMENT '菜单排序',
+    `sort_no`              double(8,2)                                                   NOT NULL COMMENT '菜单排序',
     `always_show`          tinyint(1)                                                    DEFAULT NULL COMMENT '聚合子路由: 1是0否',
     `icon`                 varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '菜单图标',
     `is_route`             tinyint(1)                                                    DEFAULT 1 COMMENT '是否路由菜单: 0:不是  1:是（默认值1）',
@@ -66,7 +66,7 @@ CREATE TABLE `t_sys_permission`
 
 SET FOREIGN_KEY_CHECKS = 1;
 
-insert into t_sys_permission (id, parent_id, name, url, component, component_name, redirect, menu_type, perms,
+insert into t_sys_menu (id, parent_id, name, url, component, component_name, redirect, menu_type, perms,
                               perms_type, sort_no, always_show, icon, is_route, is_leaf, keep_alive, hidden, hide_tab,
                               description, create_by, create_time, update_by, update_time, del_flag, rule_flag, status,
                               internal_or_external)

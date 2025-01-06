@@ -21,6 +21,18 @@
         </filter>
     </appender>
 
+    <!-- 输出日志到控制台 -->
+    <appender name="CONSOLE_APPENDER" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${log.console.pattern}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <!-- 输出 INFO 级别及以上的日志 -->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+    </appender>
+
     <!-- 滚动输出 ERROR 级别的日志到文件 -->
     <appender name="ROLLING_FILE_ERROR_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${file.path}/system.error.log</file>

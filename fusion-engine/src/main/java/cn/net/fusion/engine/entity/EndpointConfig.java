@@ -1,12 +1,19 @@
 package cn.net.fusion.engine.entity;
 
+import cn.net.fusion.framework.config.EntityInsertListener;
+import cn.net.fusion.framework.config.EntityUpdateListener;
 import cn.net.fusion.framework.core.BaseEntity;
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
+import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
+import com.mybatisflex.core.keygen.KeyGenerators;
+import jakarta.validation.constraints.NotBlank;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @ClassName EndpointConfig
@@ -15,17 +22,18 @@ import java.io.Serializable;
  * @Date 2024/11/26 09:19
  * @Version 1.0
  */
-@Table("t_engine_endpoint_config")
+@Table(value = "t_engine_endpoint_config", onInsert = EntityInsertListener.class, onUpdate = EntityUpdateListener.class)
 public class EndpointConfig extends BaseEntity implements Serializable {
 
     @Serial
     private static final long serialVersionUID = -5039736494205830358L;
 
     // 配置 id
-    @Id
+    @Id(keyType = KeyType.Generator, value = KeyGenerators.snowFlakeId)
     private String id;
 
     // 端点配置名称
+    @NotBlank(message = "端点配置名称不能为空！")
     private String configName;
 
     // 图标
@@ -35,6 +43,7 @@ public class EndpointConfig extends BaseEntity implements Serializable {
     private String typeId;
 
     // 支持的模式
+    @NotBlank(message = "端点支持模式不能为空！")
     private String supportedMode;
 
     // 描述
@@ -42,6 +51,10 @@ public class EndpointConfig extends BaseEntity implements Serializable {
 
     @Column(ignore = true)
     private Boolean isConfig = Boolean.TRUE;
+
+    // 使用flex对实体进行操作时，忽略该字段的操作，自己手动处理
+    @Column(ignore = true)
+    private List<EndpointProperties> endpointProperties;
 
     public String getId() {
         return id;
@@ -97,5 +110,16 @@ public class EndpointConfig extends BaseEntity implements Serializable {
 
     public void setConfig(Boolean config) {
         isConfig = config;
+    }
+
+    public List<EndpointProperties> getEndpointProperties() {
+        if (endpointProperties == null) {
+            endpointProperties = new ArrayList<>();
+        }
+        return endpointProperties;
+    }
+
+    public void setEndpointProperties(List<EndpointProperties> endpointProperties) {
+        this.endpointProperties = endpointProperties;
     }
 }
