@@ -7,12 +7,10 @@ import cn.net.fusion.system.service.ISysRoleService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName SysRoleController
@@ -53,7 +51,7 @@ public class SysRoleController {
     @PostMapping("/addRole")
     Response<Integer> addRole(@RequestBody @Valid SysRole sysRole, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return Response.fail(HttpCodeEnum.RC400.getCode(), bindingResult.getAllErrors().get(0).getDefaultMessage());
+            return Response.fail(HttpCodeEnum.RC400.getCode(), bindingResult.getAllErrors().getFirst().getDefaultMessage());
         }
         return Response.success(sysRoleService.insertRole(sysRole));
     }
@@ -68,8 +66,19 @@ public class SysRoleController {
     @PostMapping("/editRole")
     Response<Integer> editRole(@RequestBody @Valid SysRole sysRole, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return Response.fail(HttpCodeEnum.RC400.getCode(), bindingResult.getAllErrors().get(0).getDefaultMessage());
+            return Response.fail(HttpCodeEnum.RC400.getCode(), bindingResult.getAllErrors().getFirst().getDefaultMessage());
         }
+        return Response.success(sysRoleService.updateRole(sysRole));
+    }
+
+    /**
+     * 改变角色状态
+     *
+     * @param sysRole 角色信息 包含角色id和status
+     * @return 结果
+     */
+    @PatchMapping("/changeStatus")
+    Response<Integer> changeRoleStatus(@RequestBody Map<String, Object> sysRole) {
         return null;
     }
 }
