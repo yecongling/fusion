@@ -1,6 +1,7 @@
 package cn.net.fusion.system.service;
 
 import cn.net.fusion.system.entity.SysRole;
+import com.alibaba.fastjson2.JSONObject;
 
 import java.util.List;
 
@@ -36,4 +37,12 @@ public interface ISysRoleService {
      * @return 受影响的行数
      */
     Integer updateRole(SysRole sysRole);
+
+    /**
+     * 获取所有菜单和角色对应选中的菜单
+     *
+     * @param roleId 角色id
+     * @return 所有菜单和角色配置的菜单
+     */
+    JSONObject getRoleMenu(String roleId);
 }

@@ -46,7 +46,7 @@ public class SysRole extends BaseEntity implements Serializable {
     /**
      * 角色类型
      */
-    private String roleType;
+    private Integer roleType;
 
     /**
      * 角色状态
@@ -82,11 +82,11 @@ public class SysRole extends BaseEntity implements Serializable {
         this.roleName = roleName;
     }
 
-    public String getRoleType() {
+    public Integer getRoleType() {
         return roleType;
     }
 
-    public void setRoleType(String roleType) {
+    public void setRoleType(Integer roleType) {
         this.roleType = roleType;
     }
 

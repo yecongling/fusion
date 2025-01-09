@@ -79,13 +79,16 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * 处理未登录异常
+     * 处理未登录异常(有很多种情况，需要区分)
      *
      * @param e 未登录异常
      * @return response
      */
     @ExceptionHandler(NotLoginException.class)
     public Response<Object> handleNotLoginException(NotLoginException e) {
+//        if (NotLoginException.TOKEN_FREEZE.equals(e.getLoginType())) {
+//            System.out.println(e.getMessage());
+//        }
         return Response.fail(HttpCodeEnum.RC101.getCode(), ExceptionUtils.getRootCauseMessage(e));
     }
 }

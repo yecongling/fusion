@@ -4,6 +4,7 @@ import cn.net.fusion.framework.core.Response;
 import cn.net.fusion.framework.enums.HttpCodeEnum;
 import cn.net.fusion.system.entity.SysRole;
 import cn.net.fusion.system.service.ISysRoleService;
+import com.alibaba.fastjson2.JSONObject;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -79,6 +80,28 @@ public class SysRoleController {
      */
     @PatchMapping("/changeStatus")
     Response<Integer> changeRoleStatus(@RequestBody Map<String, Object> sysRole) {
+        return null;
+    }
+
+    /**
+     * 获取所有菜单和角色对应选中的菜单
+     *
+     * @param roleId 角色
+     * @return 包含所有菜单和选中的菜单的id
+     */
+    @GetMapping("/getRoleMenu")
+    Response<JSONObject> getRoleMenu(@RequestParam String roleId) {
+        return Response.success(sysRoleService.getRoleMenu(roleId));
+    }
+
+    /**
+     * 给角色分配菜单权限
+     *
+     * @param params 参数，包含角色编码和对应的菜单编码
+     * @return 结果
+     */
+    @PostMapping("/assignRoleMenu")
+    Response<Boolean> assignRoleMenu(@RequestBody JSONObject params) {
         return null;
     }
 }
