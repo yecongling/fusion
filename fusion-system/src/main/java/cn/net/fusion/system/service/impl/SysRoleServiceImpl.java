@@ -97,7 +97,7 @@ public class SysRoleServiceImpl implements ISysRoleService {
         jsonObject.put("menuList", sysMenus);
         // 查询角色分配的菜单权限
         QueryWrapper queryWrapper = new QueryWrapper();
-        queryWrapper.eq(SysRole::getId, roleId);
+        queryWrapper.eq(SysRoleMenu::getRoleId, roleId);
         List<SysRoleMenu> sysRoleMenus = sysRoleMenuMapper.selectListByQuery(queryWrapper);
         List<String> menuIds = new ArrayList<>();
         sysRoleMenus.forEach(sysRoleMenu -> {menuIds.add(sysRoleMenu.getMenuId());});
