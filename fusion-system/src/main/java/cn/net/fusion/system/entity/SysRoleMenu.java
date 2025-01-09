@@ -1,5 +1,7 @@
 package cn.net.fusion.system.entity;
 
+import cn.net.fusion.framework.config.EntityInsertListener;
+import cn.net.fusion.framework.config.EntityUpdateListener;
 import cn.net.fusion.framework.core.BaseEntity;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
@@ -16,7 +18,7 @@ import java.io.Serializable;
  * @Date 2024/12/27 13:56
  * @Version 1.0
  */
-@Table(value = "t_sys_role_menu")
+@Table(value = "t_sys_role_menu", onInsert = EntityInsertListener.class, onUpdate = EntityUpdateListener.class)
 public class SysRoleMenu extends BaseEntity implements Serializable {
 
     @Serial

@@ -45,4 +45,13 @@ public interface ISysRoleService {
      * @return 所有菜单和角色配置的菜单
      */
     JSONObject getRoleMenu(String roleId);
+
+    /**
+     * 给角色分配菜单权限
+     *
+     * @param roleId 角色ID
+     * @param menuIds 菜单ID
+     * @return 分配结果
+     */
+    Boolean assignRoleMenu(String roleId, List<String> menuIds);
 }

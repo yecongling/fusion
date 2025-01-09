@@ -7,7 +7,9 @@ import cn.net.fusion.engine.mapper.EndpointConfigMapper;
 import cn.net.fusion.engine.mapper.EndpointPropertiesMapper;
 import cn.net.fusion.engine.mapper.EndpointTypeMapper;
 import cn.net.fusion.engine.service.IEndpointConfigService;
+import cn.net.fusion.framework.core.SysOpr;
 import cn.net.fusion.framework.exception.BusinessException;
+import cn.net.fusion.framework.utils.ServletUtils;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.core.row.Db;
 import org.apache.commons.lang3.StringUtils;
@@ -15,10 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @ClassName EndpointConfigServiceImpl
@@ -35,14 +34,17 @@ public class EndpointConfigServiceImpl implements IEndpointConfigService {
     private final EndpointTypeMapper endpointTypeMapper;
     private final EndpointConfigMapper endpointConfigMapper;
     private final EndpointPropertiesMapper endpointPropertiesMapper;
+    private final ServletUtils servletUtils;
 
     @Autowired
     public EndpointConfigServiceImpl(EndpointTypeMapper endpointTypeMapper,
                                      EndpointConfigMapper endpointConfigMapper,
-                                     EndpointPropertiesMapper endpointPropertiesMapper) {
+                                     EndpointPropertiesMapper endpointPropertiesMapper,
+                                     ServletUtils servletUtils) {
         this.endpointTypeMapper = endpointTypeMapper;
         this.endpointConfigMapper = endpointConfigMapper;
         this.endpointPropertiesMapper = endpointPropertiesMapper;
+        this.servletUtils = servletUtils;
     }
 
     /**
@@ -197,6 +199,12 @@ public class EndpointConfigServiceImpl implements IEndpointConfigService {
         }
         // 筛选出带id的数据进行修改
         List<EndpointProperties> updateList = propertiesList.stream().filter(property -> StringUtils.isNotBlank(property.getId())).toList();
+        // 需要修改的数据填充更新时间和更新人（非mapper操作无法使用onUpdate监听）
+        SysOpr sysOpr = servletUtils.getSysOpr();
+        for (EndpointProperties prop : updateList) {
+            prop.setUpdateBy(sysOpr.getUserId());
+            prop.setUpdateTime(new Date());
+        }
         Db.updateEntitiesBatch(updateList);
         // 筛选出不带id的数据进行新增
         List<EndpointProperties> addList = propertiesList.stream().filter(property -> StringUtils.isBlank(property.getId())).toList();
