@@ -77,6 +77,19 @@ public class SysRoleServiceImpl implements ISysRoleService {
     }
 
     /**
+     * 检测角色编码是否存在
+     *
+     * @param roleCode 角色编码
+     * @return true 存在 false不存在
+     */
+    @Override
+    public Boolean checkRoleCodeExist(String roleCode) {
+        QueryWrapper wrapper = new QueryWrapper().eq(SysRole::getRoleCode, roleCode);
+        long l = sysRoleMapper.selectCountByQuery(wrapper);
+        return l > 0;
+    }
+
+    /**
      * 更新角色
      *
      * @param sysRole 系统角色

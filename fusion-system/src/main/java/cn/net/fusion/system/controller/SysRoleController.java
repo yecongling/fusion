@@ -58,6 +58,17 @@ public class SysRoleController {
     }
 
     /**
+     * 校验角色编码的唯一性
+     *
+     * @param roleCode 角色编码
+     * @return boolean
+     */
+    @GetMapping("/checkRoleCodeExist")
+    Response<Boolean> checkRoleCodeExist(@RequestParam String roleCode) {
+        return Response.success(sysRoleService.checkRoleCodeExist(roleCode));
+    }
+
+    /**
      * 编辑角色
      *
      * @param sysRole       角色数据

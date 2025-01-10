@@ -31,6 +31,14 @@ public interface ISysRoleService {
     Integer insertRole(SysRole sysRole);
 
     /**
+     * 检测角色编码是否存在
+     *
+     * @param roleCode 角色编码
+     * @return true 存在 false不存在
+     */
+    Boolean checkRoleCodeExist(String roleCode);
+
+    /**
      * 更新角色
      *
      * @param sysRole 系统角色
@@ -49,7 +57,7 @@ public interface ISysRoleService {
     /**
      * 给角色分配菜单权限
      *
-     * @param roleId 角色ID
+     * @param roleId  角色ID
      * @param menuIds 菜单ID
      * @return 分配结果
      */
