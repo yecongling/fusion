@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName SysRoleServiceImpl
@@ -123,30 +124,45 @@ public class SysRoleServiceImpl implements ISysRoleService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public Boolean assignRoleMenu(String roleId, List<String> menuIds) {
+        // 当前操作员
+        SysOpr sysOpr = servletUtils.getSysOpr();
+        // 当前操作IP
+        String currentIp = servletUtils.getCurrentIp();
         // 根据角色ID查询表中对应的菜单数据，以此确定是新增、修改还是删除
         QueryWrapper wrapper = new QueryWrapper().eq(SysRoleMenu::getRoleId, roleId);
         List<SysRoleMenu> sysRoleMenus = sysRoleMenuMapper.selectListByQuery(wrapper);
-        // 即将删除的数据
-        List<String> willDeleteData = new ArrayList<>();
         // 后台存在的角色对应的菜单ID
-        List<String> list = sysRoleMenus.stream().map(SysRoleMenu::getMenuId).toList();
-        // 筛选出需要更新的数据（因为roleId和menuId作为双主键，如果和传进来的数据一致，就不用更新，不一致的上一步删除的了）
-        List<SysRoleMenu> willUpdateData = new ArrayList<>();
-        // 需要新增的数据
-        List<SysRoleMenu> willAddData = new ArrayList<>();
-        SysOpr sysOpr = servletUtils.getSysOpr();
-        for (SysRoleMenu sysRoleMenu : sysRoleMenus) {
-            // 传进来的数据不包含后台查询到的数据，那不包含的数据则需要删除，否则就更新
-            if (!menuIds.contains(sysRoleMenu.getMenuId())) {
-                willDeleteData.add(sysRoleMenu.getMenuId());
-            } else {
-                // 需要更新的数据，设置操作IP
-                sysRoleMenu.setOperateIp(servletUtils.getCurrentIp());
-                sysRoleMenu.setUpdateBy(sysOpr.getUserId());
-                sysRoleMenu.setUpdateTime(new Date());
-                willUpdateData.add(sysRoleMenu);
-            }
-        }
+        Set<String> existingMenuIds = sysRoleMenus.stream()
+                .map(SysRoleMenu::getMenuId)
+                .collect(Collectors.toSet());
+
+        // 批量删除的菜单集合
+        List<String> willDeleteData = existingMenuIds.stream()
+                .filter(menuId -> !menuIds.contains(menuId))
+                .collect(Collectors.toList());
+
+        // 批量更新的菜单数据
+        List<SysRoleMenu> willUpdateData = sysRoleMenus.stream()
+                .filter(sysRoleMenu -> menuIds.contains(sysRoleMenu.getMenuId()))
+                .peek(sysRoleMenu -> {
+                    sysRoleMenu.setOperateIp(currentIp);
+                    sysRoleMenu.setUpdateBy(sysOpr.getUserId());
+                    sysRoleMenu.setUpdateTime(new Date());
+                })
+                .collect(Collectors.toList());
+
+        // 批量新增的数据
+        List<SysRoleMenu> willAddData = menuIds.stream()
+                .filter(menuId -> !existingMenuIds.contains(menuId))
+                .map(menuId -> {
+                    SysRoleMenu sysRoleMenu = new SysRoleMenu();
+                    sysRoleMenu.setRoleId(roleId);
+                    sysRoleMenu.setMenuId(menuId);
+                    sysRoleMenu.setOperateIp(currentIp);
+                    return sysRoleMenu;
+                })
+                .collect(Collectors.toList());
+
         // 删除数据
         if (!willDeleteData.isEmpty()) {
             QueryWrapper deleteWrapper = new QueryWrapper();
@@ -156,18 +172,14 @@ public class SysRoleServiceImpl implements ISysRoleService {
         }
 
         // 更新数据
-        Db.updateEntitiesBatch(willUpdateData);
-        // 新增数据（查询到的数据不包含传进来的数据，则就是需要新增的数据）
-        for (String s : menuIds) {
-            if (!list.contains(s)) {
-                SysRoleMenu roleMenu = new SysRoleMenu();
-                roleMenu.setRoleId(roleId);
-                roleMenu.setMenuId(s);
-                roleMenu.setOperateIp(servletUtils.getCurrentIp());
-                willAddData.add(roleMenu);
-            }
+        if (!willUpdateData.isEmpty()) {
+            Db.updateEntitiesBatch(willUpdateData);
         }
-        sysRoleMenuMapper.insertBatch(willAddData);
+
+        // 新增数据
+        if (!willAddData.isEmpty()) {
+            sysRoleMenuMapper.insertBatch(willAddData);
+        }
         return true;
     }
 
