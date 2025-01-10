@@ -18,10 +18,10 @@ SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
--- Table structure for t_engine_endpoint_properties
+-- Table structure for t_engine_endpoint_property
 -- ----------------------------
-DROP TABLE IF EXISTS `t_engine_endpoint_properties`;
-CREATE TABLE `t_engine_endpoint_properties` (
+DROP TABLE IF EXISTS `t_engine_endpoint_property`;
+CREATE TABLE `t_engine_endpoint_property` (
   `id` bigint unsigned NOT NULL COMMENT '主键id',
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '配置名',
   `config_id` bigint unsigned NOT NULL COMMENT '所属端点配置',

@@ -1,6 +1,6 @@
 package cn.net.fusion.engine.mapper;
 
-import cn.net.fusion.engine.entity.EndpointProperties;
+import cn.net.fusion.engine.entity.EndpointProperty;
 import com.mybatisflex.core.BaseMapper;
 
 /**
@@ -10,5 +10,5 @@ import com.mybatisflex.core.BaseMapper;
  * @Date 2024/12/18 09:11
  * @Version 1.0
  */
-public interface EndpointPropertiesMapper extends BaseMapper<EndpointProperties> {
+public interface EndpointPropertyMapper extends BaseMapper<EndpointProperty> {
 }
