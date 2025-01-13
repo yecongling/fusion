@@ -15,7 +15,6 @@ import cn.net.fusion.system.mapper.LoginMapper;
 import cn.net.fusion.system.model.SysLoginModel;
 import cn.net.fusion.system.service.ILoginService;
 import com.alibaba.fastjson2.JSONObject;
-import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,11 +39,14 @@ public class LoginServiceImpl implements ILoginService {
     // 消息生产者
     private final Producer<Object> producer;
 
+    private final ServletUtils servletUtils;
+
     @Autowired
-    public LoginServiceImpl(LoginMapper loginMapper, RedisUtil redisUtil, Producer<Object> producer) {
+    public LoginServiceImpl(LoginMapper loginMapper, RedisUtil redisUtil, Producer<Object> producer, ServletUtils servletUtils) {
         this.loginMapper = loginMapper;
         this.redisUtil = redisUtil;
         this.producer = producer;
+        this.servletUtils = servletUtils;
     }
 
     // 用于随机选择的字符
@@ -154,19 +156,18 @@ public class LoginServiceImpl implements ILoginService {
      */
     private void generateUserInfo(SysUser sysUser, Response<Object> response) {
         // 6、登录成功，生成token
-        StpUtil.login(sysUser.getUserName());
+        StpUtil.login(sysUser.getUsername());
 
         SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
         // 记录操作员登录地址
-        HttpServletRequest request = SpringContextUtils.getHttpServletRequest();
-        String localAddr = request.getLocalAddr();
+        String localAddr = servletUtils.getCurrentIp();
         sysUser.setLoginIp(localAddr);
         // 7、记录token，并记录token有效期(30分钟)（dev环境下暂时不过期）
         redisUtil.set(CommonConstant.PREFIX_USER_TOKEN + tokenInfo.tokenValue, sysUser, -1);
-        // 8、获取用户相关信息
+        // 8、获取用户相关信息，查询用户角色、主菜单
         JSONObject result = new JSONObject();
         result.put("homePath", sysUser.getHomePath());
-        result.put("roleId", sysUser.getRoleId());
+        result.put("roleId", sysUser.getCurrentRoleId());
 
         response.setCode(HttpCodeEnum.SUCCESS.getCode());
         response.setMessage(HttpCodeEnum.SUCCESS.getMessage());

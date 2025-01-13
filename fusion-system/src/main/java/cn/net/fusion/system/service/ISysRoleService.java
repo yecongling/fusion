@@ -1,6 +1,7 @@
 package cn.net.fusion.system.service;
 
 import cn.net.fusion.system.entity.SysRole;
+import cn.net.fusion.system.entity.SysUserRole;
 import com.alibaba.fastjson2.JSONObject;
 
 import java.util.List;
@@ -53,6 +54,13 @@ public interface ISysRoleService {
      * @return 所有菜单和角色配置的菜单
      */
     JSONObject getRoleMenu(String roleId);
+
+    /**
+     * 根据角色获取该角色下的用户
+     * @param roleId 角色id
+     * @return 用户信息
+     */
+    List<SysUserRole> getRoleUser(String roleId);
 
     /**
      * 给角色分配菜单权限

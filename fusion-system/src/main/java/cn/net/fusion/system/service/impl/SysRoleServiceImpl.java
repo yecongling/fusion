@@ -5,9 +5,11 @@ import cn.net.fusion.framework.utils.ServletUtils;
 import cn.net.fusion.system.entity.SysMenu;
 import cn.net.fusion.system.entity.SysRole;
 import cn.net.fusion.system.entity.SysRoleMenu;
+import cn.net.fusion.system.entity.SysUserRole;
 import cn.net.fusion.system.mapper.SysMenuMapper;
 import cn.net.fusion.system.mapper.SysRoleMapper;
 import cn.net.fusion.system.mapper.SysRoleMenuMapper;
+import cn.net.fusion.system.mapper.SysUserRoleMapper;
 import cn.net.fusion.system.service.ISysRoleService;
 import com.alibaba.fastjson2.JSONObject;
 import com.mybatisflex.core.query.QueryWrapper;
@@ -36,15 +38,19 @@ public class SysRoleServiceImpl implements ISysRoleService {
 
     private final SysRoleMenuMapper sysRoleMenuMapper;
 
+    private final SysUserRoleMapper sysUserRoleMapper;
+
     private final ServletUtils servletUtils;
 
     @Autowired
     public SysRoleServiceImpl(SysRoleMapper sysRoleMapper, SysMenuMapper sysMenuMapper,
-                              SysRoleMenuMapper sysRoleMenuMapper, ServletUtils servletUtils) {
+                              SysRoleMenuMapper sysRoleMenuMapper, ServletUtils servletUtils,
+                              SysUserRoleMapper sysUserRoleMapper) {
         this.sysRoleMapper = sysRoleMapper;
         this.sysMenuMapper = sysMenuMapper;
         this.sysRoleMenuMapper = sysRoleMenuMapper;
         this.servletUtils = servletUtils;
+        this.sysUserRoleMapper = sysUserRoleMapper;
     }
 
     /**
@@ -126,6 +132,27 @@ public class SysRoleServiceImpl implements ISysRoleService {
         return jsonObject;
     }
 
+    /**
+     * 根据角色获取该角色下的用户
+     *
+     * @param roleId 角色id
+     * @return 用户信息
+     */
+    @Override
+    public List<SysUserRole> getRoleUser(String roleId) {
+        QueryWrapper queryWrapper = new QueryWrapper();
+        // 查询条件
+        queryWrapper.eq(SysUserRole::getRoleId, roleId);
+        // 需要的字段
+        queryWrapper.select(
+                SysUserRole::getId,
+                SysUserRole::getUserId,
+                SysUserRole::getUsername,
+                SysUserRole::getRealName,
+                SysUserRole::getSex);
+
+        return sysUserRoleMapper.selectListByQuery(queryWrapper);
+    }
 
     /**
      * 给角色分配菜单权限
