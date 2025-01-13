@@ -11,6 +11,7 @@ import cn.net.fusion.system.mapper.SysMenuMapper;
 import cn.net.fusion.system.service.ISysMenuService;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
+import com.mybatisflex.core.query.QueryMethods;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.core.row.Db;
 import com.mybatisflex.core.util.UpdateEntity;
@@ -29,7 +30,6 @@ import java.util.*;
  * @Version 1.0
  */
 @Service
-@SuppressWarnings({"varargs", "unchecked", "unused"})
 public class SysMenuServiceImpl implements ISysMenuService {
 
     private final SysMenuMapper sysMenuMapper;
@@ -89,7 +89,11 @@ public class SysMenuServiceImpl implements ISysMenuService {
     public JSONArray getDirectory() {
         QueryWrapper queryWrapper = new QueryWrapper();
         // 查询的字段
-        queryWrapper.select(SysMenu::getId, SysMenu::getParentId, SysMenu::getName);
+        queryWrapper.select(
+                QueryMethods.column(SysMenu::getId),
+                QueryMethods.column(SysMenu::getParentId),
+                QueryMethods.column(SysMenu::getName)
+        );
         // 排序
         queryWrapper.orderBy(SysMenu::getSortNo, true);
 

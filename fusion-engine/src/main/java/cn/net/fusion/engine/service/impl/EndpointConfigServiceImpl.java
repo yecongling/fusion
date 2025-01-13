@@ -10,6 +10,7 @@ import cn.net.fusion.engine.service.IEndpointConfigService;
 import cn.net.fusion.framework.core.SysOpr;
 import cn.net.fusion.framework.exception.BusinessException;
 import cn.net.fusion.framework.utils.ServletUtils;
+import com.mybatisflex.core.query.QueryMethods;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.core.row.Db;
 import org.apache.commons.lang3.StringUtils;
@@ -28,7 +29,6 @@ import java.util.stream.Collectors;
  * @Version 1.0
  */
 @Service
-@SuppressWarnings({"varargs", "unchecked", "unused"})
 public class EndpointConfigServiceImpl implements IEndpointConfigService {
 
     // 数据库操作接口
@@ -60,7 +60,11 @@ public class EndpointConfigServiceImpl implements IEndpointConfigService {
         // 传输的name不为空的时候查询
         queryWrapper.like(EndpointType::getTypeName, name);
         // 选择需要的字段
-        queryWrapper.select(EndpointType::getTypeName, EndpointType::getId, EndpointType::getParentId);
+        queryWrapper.select(
+                QueryMethods.column(EndpointType::getTypeName),
+                QueryMethods.column(EndpointType::getId),
+                QueryMethods.column(EndpointType::getParentId)
+        );
         List<EndpointType> endpointTypes = endpointTypeMapper.selectListByQuery(queryWrapper);
         Map<String, EndpointType> mapping = new HashMap<>();
         for (EndpointType endpointType : endpointTypes) {
@@ -71,7 +75,12 @@ public class EndpointConfigServiceImpl implements IEndpointConfigService {
         queryWrapper.clear();
         queryWrapper.like(EndpointConfig::getConfigName, name);
         // 选择需要的字段
-        queryWrapper.select(EndpointConfig::getId, EndpointConfig::getConfigName, EndpointConfig::getTypeId, EndpointConfig::getIcon);
+        queryWrapper.select(
+                QueryMethods.column(EndpointConfig::getId),
+                QueryMethods.column(EndpointConfig::getConfigName),
+                QueryMethods.column(EndpointConfig::getTypeId),
+                QueryMethods.column(EndpointConfig::getIcon)
+        );
         List<EndpointConfig> endpointConfigs = endpointConfigMapper.selectListByQuery(queryWrapper);
         // 将配置数据合并到映射中去
         for (EndpointConfig endpointConfig : endpointConfigs) {
@@ -187,7 +196,7 @@ public class EndpointConfigServiceImpl implements IEndpointConfigService {
         QueryWrapper queryWrapper = new QueryWrapper();
         queryWrapper.eq(EndpointProperty::getConfigId, endpointConfig.getId());
         // 只取id字段用于判定
-        queryWrapper.select(EndpointProperty::getId);
+        queryWrapper.select(QueryMethods.column(EndpointProperty::getId));
         // 查询存在的ID数据
         List<EndpointProperty> endpointProperties = endpointPropertyMapper.selectListByQuery(queryWrapper);
         List<String> existingIds = endpointProperties.stream().map(EndpointProperty::getId).toList();

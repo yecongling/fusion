@@ -12,6 +12,7 @@ import cn.net.fusion.system.mapper.SysRoleMenuMapper;
 import cn.net.fusion.system.mapper.SysUserRoleMapper;
 import cn.net.fusion.system.service.ISysRoleService;
 import com.alibaba.fastjson2.JSONObject;
+import com.mybatisflex.core.query.QueryMethods;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.core.row.Db;
 import org.apache.commons.lang3.StringUtils;
@@ -67,7 +68,14 @@ public class SysRoleServiceImpl implements ISysRoleService {
         queryWrapper.like(SysRole::getRoleCode, sysRole.getRoleCode());
         queryWrapper.eq(SysRole::getStatus, sysRole.getStatus());
         // 选择需要的字段
-        queryWrapper.select(SysRole::getId, SysRole::getRoleName, SysRole::getRoleCode, SysRole::getRoleName, SysRole::getStatus, SysRole::getRoleType, SysRole::getRemark);
+        queryWrapper.select(
+                QueryMethods.column(SysRole::getId),
+                QueryMethods.column(SysRole::getRoleName),
+                QueryMethods.column(SysRole::getRoleCode),
+                QueryMethods.column(SysRole::getStatus),
+                QueryMethods.column(SysRole::getRoleType),
+                QueryMethods.column(SysRole::getRemark)
+        );
         return sysRoleMapper.selectListByQuery(queryWrapper);
     }
 
@@ -145,11 +153,12 @@ public class SysRoleServiceImpl implements ISysRoleService {
         queryWrapper.eq(SysUserRole::getRoleId, roleId);
         // 需要的字段
         queryWrapper.select(
-                SysUserRole::getId,
-                SysUserRole::getUserId,
-                SysUserRole::getUsername,
-                SysUserRole::getRealName,
-                SysUserRole::getSex);
+                QueryMethods.column(SysUserRole::getId),
+                QueryMethods.column(SysUserRole::getUserId),
+                QueryMethods.column(SysUserRole::getUsername),
+                QueryMethods.column(SysUserRole::getRealName),
+                QueryMethods.column(SysUserRole::getSex)
+        );
 
         return sysUserRoleMapper.selectListByQuery(queryWrapper);
     }
