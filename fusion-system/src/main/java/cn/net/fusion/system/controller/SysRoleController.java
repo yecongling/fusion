@@ -3,7 +3,6 @@ package cn.net.fusion.system.controller;
 import cn.net.fusion.framework.core.Response;
 import cn.net.fusion.framework.enums.HttpCodeEnum;
 import cn.net.fusion.system.entity.SysRole;
-import cn.net.fusion.system.entity.SysUserRole;
 import cn.net.fusion.system.service.ISysRoleService;
 import com.alibaba.fastjson2.JSONObject;
 import jakarta.validation.Valid;
@@ -120,12 +119,15 @@ public class SysRoleController {
     /**
      * 根据角色获取用户
      *
-     * @param roleId 角色编码
+     * @param params 查询参数
      * @return 用户信息
      */
-    @GetMapping("/getRoleUser")
-    Response<List<SysUserRole>> getRoleUser(@RequestParam String roleId) {
-        return Response.success(sysRoleService.getRoleUser(roleId));
+    @PostMapping("/getRoleUser")
+    Response<JSONObject> getRoleUser(@RequestBody JSONObject params) {
+        String roleId = params.getString("roleId");
+        int pageNum = params.getIntValue("pageNum");
+        int pageSize = params.getIntValue("pageSize");
+        return Response.success(sysRoleService.getRoleUser(roleId, pageNum, pageSize, params.getJSONObject("searchParams")));
     }
 
     /**

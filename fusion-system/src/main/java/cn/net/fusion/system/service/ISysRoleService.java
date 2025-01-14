@@ -1,7 +1,6 @@
 package cn.net.fusion.system.service;
 
 import cn.net.fusion.system.entity.SysRole;
-import cn.net.fusion.system.entity.SysUserRole;
 import com.alibaba.fastjson2.JSONObject;
 
 import java.util.List;
@@ -60,7 +59,7 @@ public interface ISysRoleService {
      * @param roleId 角色id
      * @return 用户信息
      */
-    List<SysUserRole> getRoleUser(String roleId);
+    JSONObject getRoleUser(String roleId, int pageNum, int pageSize, JSONObject params);
 
     /**
      * 分页查询不在当前角色下的用户
@@ -79,4 +78,14 @@ public interface ISysRoleService {
      * @return 分配结果
      */
     Boolean assignRoleMenu(String roleId, List<String> menuIds);
+
+    /**
+     * 给角色分配用户
+     *
+     * @param roleId 角色ID
+     * @param operate 操作类型（add 添加 delete 删除（单个删除和批量删除））
+     * @param userIds 所有的用户ID
+     * @return 分配结果
+     */
+    boolean assignRoleUser(String roleId, String operate, List<String> userIds);
 }

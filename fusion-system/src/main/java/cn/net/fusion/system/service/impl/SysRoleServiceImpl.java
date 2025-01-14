@@ -145,9 +145,9 @@ public class SysRoleServiceImpl implements ISysRoleService {
      * @return 用户信息
      */
     @Override
-    public List<SysUserRole> getRoleUser(String roleId) {
+    public JSONObject getRoleUser(String roleId, int pageNum, int pageSize, JSONObject params) {
         QueryWrapper queryWrapper = new QueryWrapper();
-
+        JSONObject result = new JSONObject();
         // 需要的字段
         queryWrapper.select(
                         QueryMethods.column(SysUserRole::getId),
@@ -163,7 +163,33 @@ public class SysRoleServiceImpl implements ISysRoleService {
                 .on(SysUserRole::getUserId, SysUser::getId)
                 // 查询条件
                 .eq(SysUserRole::getRoleId, roleId);
-        return sysUserRoleMapper.selectListByQuery(queryWrapper);
+        // 如果传输进来的条件存在
+        queryWrapper.eq(SysUser::getUsername, params.getString("username"), StringUtils.isNotBlank(params.getString("realName")));
+        queryWrapper.eq(SysUser::getRealName, params.getString("realName"), StringUtils.isNotBlank(params.getString("realName")));
+        queryWrapper.eq(SysUser::getSex, params.getIntValue("sex"), StringUtils.isNotBlank(params.getString("sex")));
+        // 分页查询
+        return queryPage(pageNum, pageSize, queryWrapper, result);
+    }
+
+    /**
+     * 分页查询
+     *
+     * @param pageNum      页码
+     * @param pageSize     页大小
+     * @param queryWrapper 查询条件
+     * @param result       结果
+     * @return 分页数据
+     */
+    private JSONObject queryPage(int pageNum, int pageSize, QueryWrapper queryWrapper, JSONObject result) {
+        Page<SysUserRole> paginate;
+        if (pageNum == 1) {
+            paginate = sysUserRoleMapper.paginate(pageNum, pageSize, queryWrapper);
+            result.put("total", paginate.getTotalRow());
+        } else {
+            paginate = sysUserRoleMapper.paginate(pageNum, pageSize, 0, queryWrapper);
+        }
+        result.put("data", paginate.getRecords());
+        return result;
     }
 
     /**
@@ -196,16 +222,7 @@ public class SysRoleServiceImpl implements ISysRoleService {
                 )
                 .where(SysUserRole::getUserId).isNull();
         // 分页（第一页需要查询总页数，后续不需要）
-        Page<SysUserRole> paginate;
-        if (pageNum == 1) {
-            // 要查询总数据量
-            paginate = sysUserRoleMapper.paginate(pageNum, pageSize, -1, queryWrapper);
-            result.put("total", paginate.getTotalRow());
-        } else {
-            paginate = sysUserRoleMapper.paginate(pageNum, pageSize, 1, queryWrapper);
-        }
-        result.put("data", paginate.getRecords());
-        return result;
+        return queryPage(pageNum, pageSize, queryWrapper, result);
     }
 
     /**
@@ -273,6 +290,42 @@ public class SysRoleServiceImpl implements ISysRoleService {
         // 新增数据
         if (!willAddData.isEmpty()) {
             sysRoleMenuMapper.insertBatch(willAddData);
+        }
+        return true;
+    }
+
+    /**
+     * 给角色分配用户
+     *
+     * @param roleId  角色ID
+     * @param operate 操作类型（add 添加 delete 删除（单个删除和批量删除））
+     * @param userIds 所有的用户ID
+     * @return 分配结果
+     */
+    @Override
+    public boolean assignRoleUser(String roleId, String operate, List<String> userIds) {
+        // 当前操作IP
+        String currentIp = servletUtils.getCurrentIp();
+        // 新增
+        if ("add".equals(operate)) {
+            List<SysUserRole> userRoles = userIds.stream().map(userId -> {
+                SysUserRole sysUserRole = new SysUserRole();
+                sysUserRole.setRoleId(roleId);
+                sysUserRole.setUserId(userId);
+                sysUserRole.setOperateIp(currentIp);
+                return sysUserRole;
+            }).toList();
+            if (!userRoles.isEmpty()) {
+                sysUserRoleMapper.insertBatch(userRoles);
+            }
+        } else {
+            // 删除
+            if (!userIds.isEmpty()) {
+                QueryWrapper deleteWrapper = new QueryWrapper();
+                deleteWrapper.eq(SysRoleMenu::getRoleId, roleId);
+                deleteWrapper.in(SysRoleMenu::getMenuId, userIds);
+                sysRoleMenuMapper.deleteByQuery(deleteWrapper);
+            }
         }
         return true;
     }
