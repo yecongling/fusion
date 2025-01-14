@@ -9,6 +9,7 @@ import cn.net.fusion.system.mapper.SysRoleMenuMapper;
 import cn.net.fusion.system.mapper.SysUserRoleMapper;
 import cn.net.fusion.system.service.ISysRoleService;
 import com.alibaba.fastjson2.JSONObject;
+import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryMethods;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.core.row.Db;
@@ -163,6 +164,48 @@ public class SysRoleServiceImpl implements ISysRoleService {
                 // 查询条件
                 .eq(SysUserRole::getRoleId, roleId);
         return sysUserRoleMapper.selectListByQuery(queryWrapper);
+    }
+
+    /**
+     * 分页查询不在当前角色下的用户
+     *
+     * @param roleId   角色ID
+     * @param pageNum  页码
+     * @param pageSize 数量
+     * @return 数据（包含用户数据、分页数据）
+     */
+    @Override
+    public JSONObject getUserNotInRoleByPage(String roleId, int pageNum, int pageSize) {
+        JSONObject result = new JSONObject();
+        QueryWrapper queryWrapper = new QueryWrapper();
+        // 筛选字段
+        queryWrapper.select(
+                        QueryMethods.column(SysUser::getId),
+                        QueryMethods.column(SysUser::getUsername),
+                        QueryMethods.column(SysUser::getRealName),
+                        QueryMethods.column(SysUser::getSex)
+                )
+                // 查询用户表数据
+                .from(SysUser.class).as("user")
+                // 关联用户角色表数据
+                .leftJoin(SysUserRole.class).as("role")
+                // 条件
+                .on(wrapper -> wrapper
+                        .and(SysUser::getId).eq(SysUserRole::getUserId)
+                        .eq(SysUserRole::getRoleId, roleId)
+                )
+                .where(SysUserRole::getUserId).isNull();
+        // 分页（第一页需要查询总页数，后续不需要）
+        Page<SysUserRole> paginate;
+        if (pageNum == 1) {
+            // 要查询总数据量
+            paginate = sysUserRoleMapper.paginate(pageNum, pageSize, -1, queryWrapper);
+            result.put("total", paginate.getTotalRow());
+        } else {
+            paginate = sysUserRoleMapper.paginate(pageNum, pageSize, 1, queryWrapper);
+        }
+        result.put("data", paginate.getRecords());
+        return result;
     }
 
     /**

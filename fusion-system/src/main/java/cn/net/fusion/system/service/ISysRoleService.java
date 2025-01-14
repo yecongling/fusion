@@ -63,6 +63,15 @@ public interface ISysRoleService {
     List<SysUserRole> getRoleUser(String roleId);
 
     /**
+     * 分页查询不在当前角色下的用户
+     * @param roleId 角色ID
+     * @param pageNum 页码
+     * @param pageSize 数量
+     * @return 数据（包含用户数据、分页数据）
+     */
+    JSONObject getUserNotInRoleByPage(String roleId, int pageNum, int pageSize);
+
+    /**
      * 给角色分配菜单权限
      *
      * @param roleId  角色ID

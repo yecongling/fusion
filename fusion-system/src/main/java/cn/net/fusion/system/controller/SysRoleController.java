@@ -127,4 +127,22 @@ public class SysRoleController {
     Response<List<SysUserRole>> getRoleUser(@RequestParam String roleId) {
         return Response.success(sysRoleService.getRoleUser(roleId));
     }
+
+    /**
+     * 分页查询用户信息
+     *
+     * @param roleId   角色ID
+     * @param pageNum  页码
+     * @param pageSize 每页大小
+     * @return 角色信息
+     */
+    @GetMapping("/getUserNotInRoleByPage")
+    Response<JSONObject> getUserNotInRoleByPage(
+            @RequestParam String roleId,
+            @RequestParam(defaultValue = "1") int pageNum,
+            @RequestParam(defaultValue = "10") int pageSize
+    ) {
+
+        return Response.success(sysRoleService.getUserNotInRoleByPage(roleId, pageNum, pageSize));
+    }
 }
