@@ -63,7 +63,8 @@ public class SysOpr extends BaseEntity{
     }
 
     public String getHomePath() {
-        return homePath;
+        // @TODO 暂时这么写
+        return StringUtils.isBlank(homePath) ? "/home" : homePath;
     }
 
     public void setHomePath(String homePath) {

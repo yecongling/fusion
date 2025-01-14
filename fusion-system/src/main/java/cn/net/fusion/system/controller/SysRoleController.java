@@ -3,7 +3,7 @@ package cn.net.fusion.system.controller;
 import cn.net.fusion.framework.core.Response;
 import cn.net.fusion.framework.enums.HttpCodeEnum;
 import cn.net.fusion.system.entity.SysRole;
-import cn.net.fusion.system.entity.SysUser;
+import cn.net.fusion.system.entity.SysUserRole;
 import cn.net.fusion.system.service.ISysRoleService;
 import com.alibaba.fastjson2.JSONObject;
 import jakarta.validation.Valid;
@@ -124,7 +124,7 @@ public class SysRoleController {
      * @return 用户信息
      */
     @GetMapping("/getRoleUser")
-    Response<SysUser> getRoleUser(@RequestParam String roleId) {
-        return null;
+    Response<List<SysUserRole>> getRoleUser(@RequestParam String roleId) {
+        return Response.success(sysRoleService.getRoleUser(roleId));
     }
 }

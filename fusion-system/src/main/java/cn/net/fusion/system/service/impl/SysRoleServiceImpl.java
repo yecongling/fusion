@@ -2,10 +2,7 @@ package cn.net.fusion.system.service.impl;
 
 import cn.net.fusion.framework.core.SysOpr;
 import cn.net.fusion.framework.utils.ServletUtils;
-import cn.net.fusion.system.entity.SysMenu;
-import cn.net.fusion.system.entity.SysRole;
-import cn.net.fusion.system.entity.SysRoleMenu;
-import cn.net.fusion.system.entity.SysUserRole;
+import cn.net.fusion.system.entity.*;
 import cn.net.fusion.system.mapper.SysMenuMapper;
 import cn.net.fusion.system.mapper.SysRoleMapper;
 import cn.net.fusion.system.mapper.SysRoleMenuMapper;
@@ -149,17 +146,22 @@ public class SysRoleServiceImpl implements ISysRoleService {
     @Override
     public List<SysUserRole> getRoleUser(String roleId) {
         QueryWrapper queryWrapper = new QueryWrapper();
-        // 查询条件
-        queryWrapper.eq(SysUserRole::getRoleId, roleId);
+
         // 需要的字段
         queryWrapper.select(
-                QueryMethods.column(SysUserRole::getId),
-                QueryMethods.column(SysUserRole::getUserId),
-                QueryMethods.column(SysUserRole::getUsername),
-                QueryMethods.column(SysUserRole::getRealName),
-                QueryMethods.column(SysUserRole::getSex)
-        );
-
+                        QueryMethods.column(SysUserRole::getId),
+                        QueryMethods.column(SysUser::getId).as(SysUserRole::getUserId),
+                        QueryMethods.column(SysUser::getUsername),
+                        QueryMethods.column(SysUser::getRealName),
+                        QueryMethods.column(SysUser::getSex)
+                )
+                // 查询用户角色表
+                .from(SysUserRole.class).as("role")
+                // 关联用户表
+                .leftJoin(SysUser.class).as("user")
+                .on(SysUserRole::getUserId, SysUser::getId)
+                // 查询条件
+                .eq(SysUserRole::getRoleId, roleId);
         return sysUserRoleMapper.selectListByQuery(queryWrapper);
     }
 
