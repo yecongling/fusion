@@ -23,7 +23,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `t_sys_role`;
 CREATE TABLE `t_sys_role`
 (
-    `id`          bigint unsigned                                              NOT NULL COMMENT '主键id',
+    `id`          bigint                                                       NOT NULL COMMENT '主键id',
     `role_code`   varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '角色编码（用户自定义）',
     `role_name`   varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '角色名称',
     `role_type`   tinyint                                                      NOT NULL DEFAULT '1' COMMENT '角色类型(1、普通角色 0、管理员角色)',

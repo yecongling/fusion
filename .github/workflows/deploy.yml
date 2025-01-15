@@ -35,5 +35,11 @@ jobs:
         echo "$PRIVATE_KEY" > private_key.pem
         chmod 600 private_key.pem
         scp -i private_key.pem fusion-admin/target/fusion-admin-1.0.0.jar $USERNAME@$HOST:/home/admin/jars
-        ssh -i private_key.pem $USERNAME@$HOST "sh /home/admin/jars/fusion_start.sh restart"
         rm private_key.pem
+    - name: Execute deploy script on Alibaba Cloud server
+      env:
+        HOST: ${{ secrets.ALIYUN_HOST }}
+        USERNAME: ${{ secrets.ALIYUN_USERNAME }}
+        PRIVATE_KEY: ${{ secrets.ALIYUN_PRIVATE_KEY }}
+      run: |
+        ssh -i $PRIVATE_KEY $USERNAME@$HOST 'bash -s' < /home/admin/jars/fusion_start.sh restart

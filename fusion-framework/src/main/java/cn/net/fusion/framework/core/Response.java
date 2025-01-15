@@ -1,6 +1,7 @@
 package cn.net.fusion.framework.core;
 
 import cn.net.fusion.framework.enums.HttpCodeEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * @ClassName Response
@@ -122,6 +123,7 @@ public class Response<T> {
      *
      * @return true 成功 false 失败
      */
+    @JsonIgnore
     public boolean isSuccess() {
         return this.code != null && this.code == 200;
     }

@@ -4,15 +4,15 @@ import cn.net.fusion.framework.core.Response;
 import cn.net.fusion.framework.enums.HttpCodeEnum;
 import cn.net.fusion.system.entity.SysRole;
 import cn.net.fusion.system.service.ISysRoleService;
+import com.alibaba.fastjson2.JSONObject;
 import jakarta.validation.Valid;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName SysRoleController
@@ -53,9 +53,20 @@ public class SysRoleController {
     @PostMapping("/addRole")
     Response<Integer> addRole(@RequestBody @Valid SysRole sysRole, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return Response.fail(HttpCodeEnum.RC400.getCode(), bindingResult.getAllErrors().get(0).getDefaultMessage());
+            return Response.fail(HttpCodeEnum.RC400.getCode(), bindingResult.getAllErrors().getFirst().getDefaultMessage());
         }
         return Response.success(sysRoleService.insertRole(sysRole));
+    }
+
+    /**
+     * 校验角色编码的唯一性
+     *
+     * @param roleCode 角色编码
+     * @return boolean
+     */
+    @GetMapping("/checkRoleCodeExist")
+    Response<Boolean> checkRoleCodeExist(@RequestParam String roleCode) {
+        return Response.success(sysRoleService.checkRoleCodeExist(roleCode));
     }
 
     /**
@@ -68,8 +79,86 @@ public class SysRoleController {
     @PostMapping("/editRole")
     Response<Integer> editRole(@RequestBody @Valid SysRole sysRole, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return Response.fail(HttpCodeEnum.RC400.getCode(), bindingResult.getAllErrors().get(0).getDefaultMessage());
+            return Response.fail(HttpCodeEnum.RC400.getCode(), bindingResult.getAllErrors().getFirst().getDefaultMessage());
         }
+        return Response.success(sysRoleService.updateRole(sysRole));
+    }
+
+    /**
+     * 改变角色状态
+     *
+     * @param sysRole 角色信息 包含角色id和status
+     * @return 结果
+     */
+    @PatchMapping("/changeStatus")
+    Response<Integer> changeRoleStatus(@RequestBody Map<String, Object> sysRole) {
         return null;
+    }
+
+    /**
+     * 获取所有菜单和角色对应选中的菜单
+     *
+     * @param roleId 角色
+     * @return 包含所有菜单和选中的菜单的id
+     */
+    @GetMapping("/getRoleMenu")
+    Response<JSONObject> getRoleMenu(@RequestParam String roleId) {
+        return Response.success(sysRoleService.getRoleMenu(roleId));
+    }
+
+    /**
+     * 给角色分配菜单权限
+     *
+     * @param params 参数，包含角色编码和对应的菜单编码
+     * @return 结果
+     */
+    @PostMapping("/assignRoleMenu")
+    Response<Boolean> assignRoleMenu(@RequestBody JSONObject params) {
+        return Response.success(sysRoleService.assignRoleMenu(params.getString("roleId"), params.getJSONArray("menuIds").toList(String.class)));
+    }
+
+    /**
+     * 给角色分配用户
+     *
+     * @param params 参数
+     * @return 结果
+     */
+    @PostMapping("/assignRoleUser")
+    Response<Boolean> assignRoleUser(@RequestBody JSONObject params) {
+        String operate = params.getString("operate");
+        if (StringUtils.isBlank(operate)) {
+            operate = "add";
+        }
+        // ID列表
+        List<String> ids = params.getJSONArray("ids").toList(String.class);
+        return Response.success(sysRoleService.assignRoleUser(params.getString("roleId"), operate, ids));
+    }
+
+    /**
+     * 根据角色获取用户
+     *
+     * @param params 查询参数
+     * @return 用户信息
+     */
+    @PostMapping("/getRoleUser")
+    Response<JSONObject> getRoleUser(@RequestBody JSONObject params) {
+        String roleId = params.getString("roleId");
+        int pageNum = params.getIntValue("pageNum");
+        int pageSize = params.getIntValue("pageSize");
+        return Response.success(sysRoleService.getRoleUser(roleId, pageNum, pageSize, params.getJSONObject("searchParams")));
+    }
+
+    /**
+     * 分页查询用户信息
+     *
+     * @param params 查询参数
+     * @return 用户信息
+     */
+    @PostMapping("/getUserNotInRoleByPage")
+    Response<JSONObject> getUserNotInRoleByPage(@RequestBody JSONObject params) {
+        String roleId = params.getString("roleId");
+        int pageNum = params.getIntValue("pageNum");
+        int pageSize = params.getIntValue("pageSize");
+        return Response.success(sysRoleService.getUserNotInRoleByPage(roleId, pageNum, pageSize, params.getJSONObject("searchParams")));
     }
 }

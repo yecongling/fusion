@@ -23,9 +23,9 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `t_engine_endpoint_type`;
 CREATE TABLE `t_engine_endpoint_type`
 (
-    `id`          bigint unsigned                         NOT NULL COMMENT '主键，类型id\n',
+    `id`          bigint                                  NOT NULL COMMENT '主键，类型id\n',
     `type_name`   varchar(255) COLLATE utf8mb4_general_ci NOT NULL COMMENT '类型名称',
-    `parent_id`   bigint unsigned DEFAULT NULL COMMENT '上级分类id',
+    `parent_id`   bigint DEFAULT NULL COMMENT '上级分类id',
     `create_by`   varchar(16) COLLATE utf8mb4_general_ci  NOT NULL COMMENT '创建人',
     `create_time` datetime                                NOT NULL COMMENT '创建时间',
     `update_by`   varchar(16) COLLATE utf8mb4_general_ci  NOT NULL COMMENT '更新人',

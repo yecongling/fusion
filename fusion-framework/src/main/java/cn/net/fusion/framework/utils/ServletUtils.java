@@ -53,4 +53,31 @@ public class ServletUtils {
         return (SysOpr) o;
     }
 
+    /**
+     * 获取当前请求的IP地址（处理了代理服务器或者负载均衡服务器的情况）
+     *
+     * @return ip地址
+     */
+    public String getCurrentIp() {
+        HttpServletRequest request = SpringContextUtils.getHttpServletRequest();
+        String ip = request.getHeader("X-forwarded-for");
+        // 如果获取到的是代理服务器的地址，有可能存在多个IP，且IP地址逗号分隔，取第一个即可
+        if (ip != null && ip.contains(",")) {
+            ip = ip.split(",")[0].trim();
+        }
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("Proxy-Client-IP");
+        }
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("X-Real-IP");
+        }
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getRemoteAddr();
+        }
+        return ip;
+    }
+
 }

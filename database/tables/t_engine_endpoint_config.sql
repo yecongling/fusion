@@ -23,10 +23,10 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `t_engine_endpoint_config`;
 CREATE TABLE `t_engine_endpoint_config`
 (
-    `id`             bigint unsigned                        NOT NULL COMMENT '端点配置id',
+    `id`             bigint                                 NOT NULL COMMENT '端点配置id',
     `config_name`    varchar(64) COLLATE utf8mb4_general_ci NOT NULL COMMENT '端点配置名称',
     `supported_mode` varchar(64) COLLATE utf8mb4_general_ci NOT NULL COMMENT '支持的模式',
-    `type_id`        bigint unsigned                        NOT NULL COMMENT '所属分类的id',
+    `type_id`        bigint                                 NOT NULL COMMENT '所属分类的id',
     `icon`           varchar(32) COLLATE utf8mb4_general_ci  DEFAULT NULL COMMENT '图标',
     `create_by`      varchar(16) COLLATE utf8mb4_general_ci NOT NULL COMMENT '创建人',
     `create_time`    datetime                               NOT NULL COMMENT '创建时间',

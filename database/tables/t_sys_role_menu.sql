@@ -23,13 +23,13 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `t_sys_role_menu`;
 CREATE TABLE `t_sys_role_menu`
 (
-    `id`          bigint unsigned                                              NOT NULL COMMENT '主键ID',
-    `role_id`     bigint unsigned                                              NOT NULL COMMENT '角色ID',
-    `menu_id`     bigint unsigned                                              NOT NULL COMMENT '菜单id',
+    `id`          bigint                                                       NOT NULL COMMENT '主键ID',
+    `role_id`     bigint                                                       NOT NULL COMMENT '角色ID',
+    `menu_id`     bigint                                                       NOT NULL COMMENT '菜单id',
     `operate_ip`  varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '操作IP',
-    `create_by`   bigint unsigned                                              NOT NULL COMMENT '创建人',
+    `create_by`   bigint                                                       NOT NULL COMMENT '创建人',
     `create_time` datetime                                                     NOT NULL COMMENT '创建时间',
-    `update_by`   bigint unsigned                                              NOT NULL COMMENT '更新人',
+    `update_by`   bigint                                                       NOT NULL COMMENT '更新人',
     `update_time` datetime                                                     NOT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
