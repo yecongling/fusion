@@ -44,5 +44,5 @@ jobs:
       run: |
         echo "$PRIVATE_KEY" > private_key.pem
         chmod 600 private_key.pem
-        ssh -i private_key.pem $USERNAME@$HOST "nohup sh /home/admin/jars/fusion_start.sh restart > /home/admin/logs/fusion_start.log 2>&1 &"
+        ssh -i private_key.pem $USERNAME@$HOST "sh /home/admin/jars/fusion_start.sh restart"
         rm private_key.pem
