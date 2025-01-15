@@ -6,6 +6,7 @@ import cn.net.fusion.system.entity.SysRole;
 import cn.net.fusion.system.service.ISysRoleService;
 import com.alibaba.fastjson2.JSONObject;
 import jakarta.validation.Valid;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -117,6 +118,23 @@ public class SysRoleController {
     }
 
     /**
+     * 给角色分配用户
+     *
+     * @param params 参数
+     * @return 结果
+     */
+    @PostMapping("/assignRoleUser")
+    Response<Boolean> assignRoleUser(@RequestBody JSONObject params) {
+        String operate = params.getString("operate");
+        if (StringUtils.isBlank(operate)) {
+            operate = "add";
+        }
+        // ID列表
+        List<String> ids = params.getJSONArray("ids").toList(String.class);
+        return Response.success(sysRoleService.assignRoleUser(params.getString("roleId"), operate, ids));
+    }
+
+    /**
      * 根据角色获取用户
      *
      * @param params 查询参数
@@ -133,18 +151,14 @@ public class SysRoleController {
     /**
      * 分页查询用户信息
      *
-     * @param roleId   角色ID
-     * @param pageNum  页码
-     * @param pageSize 每页大小
-     * @return 角色信息
+     * @param params 查询参数
+     * @return 用户信息
      */
-    @GetMapping("/getUserNotInRoleByPage")
-    Response<JSONObject> getUserNotInRoleByPage(
-            @RequestParam String roleId,
-            @RequestParam(defaultValue = "1") int pageNum,
-            @RequestParam(defaultValue = "10") int pageSize
-    ) {
-
-        return Response.success(sysRoleService.getUserNotInRoleByPage(roleId, pageNum, pageSize));
+    @PostMapping("/getUserNotInRoleByPage")
+    Response<JSONObject> getUserNotInRoleByPage(@RequestBody JSONObject params) {
+        String roleId = params.getString("roleId");
+        int pageNum = params.getIntValue("pageNum");
+        int pageSize = params.getIntValue("pageSize");
+        return Response.success(sysRoleService.getUserNotInRoleByPage(roleId, pageNum, pageSize, params.getJSONObject("searchParams")));
     }
 }

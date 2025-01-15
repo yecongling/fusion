@@ -68,7 +68,7 @@ public interface ISysRoleService {
      * @param pageSize 数量
      * @return 数据（包含用户数据、分页数据）
      */
-    JSONObject getUserNotInRoleByPage(String roleId, int pageNum, int pageSize);
+    JSONObject getUserNotInRoleByPage(String roleId, int pageNum, int pageSize, JSONObject params);
 
     /**
      * 给角色分配菜单权限
