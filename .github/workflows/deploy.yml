@@ -42,4 +42,7 @@ jobs:
         USERNAME: ${{ secrets.ALIYUN_USERNAME }}
         PRIVATE_KEY: ${{ secrets.ALIYUN_PRIVATE_KEY }}
       run: |
-        ssh -i $PRIVATE_KEY $USERNAME@$HOST "sh /home/admin/jars/fusion_start.sh restart"
+        echo "$PRIVATE_KEY" > private_key.pem
+        chmod 600 private_key.pem
+        ssh -i private_key.pem $USERNAME@$HOST "sh /home/admin/jars/fusion_start.sh restart"
+        rm private_key.pem
