@@ -1,5 +1,7 @@
 package cn.net.fusion.system.entity;
 
+import cn.net.fusion.framework.config.EntityInsertListener;
+import cn.net.fusion.framework.config.EntityUpdateListener;
 import cn.net.fusion.framework.core.SysOpr;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -24,7 +26,7 @@ import java.util.Date;
  * @Version 1.0
  **/
 @JsonIgnoreProperties(value = {"password"}, allowSetters = true)
-@Table("t_sys_user")
+@Table(value = "t_sys_user", onInsert = EntityInsertListener.class, onUpdate = EntityUpdateListener.class)
 public class SysUser extends SysOpr implements Serializable {
     @Serial
     private static final long serialVersionUID = -1283938764867538048L;
@@ -140,8 +142,6 @@ public class SysUser extends SysOpr implements Serializable {
      * 设备id uniapp推送用
      */
     private String clientId;
-
-
 
     public String getId() {
         return id;

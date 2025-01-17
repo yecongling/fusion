@@ -1,6 +1,7 @@
 package cn.net.fusion.system.service;
 
 import cn.net.fusion.system.entity.SysUser;
+import com.alibaba.fastjson2.JSONObject;
 
 import java.util.List;
 
@@ -14,20 +15,24 @@ import java.util.List;
 public interface ISysUserService {
 
     /**
-     * 查询所有用户信息（非删除标记的用户）
+     * 查询所有用户信息（非删除标记的用户），分页查询
      *
-     * @param sysUser 检索条件
+     * @param pageNum      分页数
+     * @param pageSize     分页大小
+     * @param searchParams 检索条件
      * @return 所有用户
      */
-    List<SysUser> getAllUser(SysUser sysUser);
+    List<SysUser> getAllUser(int pageNum, int pageSize, JSONObject searchParams);
 
     /**
-     * 获取回收站的用户
+     * 获取回收站的用户，分页查询
      *
-     * @param sysUser 用户查询条件
+     * @param pageNum      分页数
+     * @param pageSize     分页大小
+     * @param searchParams 用户查询条件
      * @return 用户信息
      */
-    List<SysUser> getUserListRecycle(SysUser sysUser);
+    List<SysUser> getUserListRecycle(int pageNum, int pageSize, JSONObject searchParams);
 
     /**
      * 校验用户名唯一
@@ -62,6 +67,14 @@ public interface ISysUserService {
     boolean deleteBatchUser(List<Long> userIds);
 
     /**
+     * 从回收站批量恢复用户
+     *
+     * @param userIds 用户ID
+     * @return 恢复结果
+     */
+    boolean recoverFromRecycle(List<Long> userIds);
+
+    /**
      * 批量锁定用户
      *
      * @param userIds 用户ID
@@ -86,11 +99,11 @@ public interface ISysUserService {
     boolean resetPwd(SysUser sysUser);
 
     /**
-     * 更新用户密码
+     * 修改用户密码
      *
      * @param userId 用户ID
      * @param newPwd 新密码
      * @return true| false
      */
-    boolean resetPwd(String userId, String newPwd);
+    boolean modifyPwd(String userId, String newPwd);
 }
