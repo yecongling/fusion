@@ -139,7 +139,7 @@ public class SysUser extends SysOpr implements Serializable {
     private String relTenantIds;
 
     /**
-     * 设备id uniapp推送用
+     * 设备id taro（React开发）推送用
      */
     private String clientId;
 
