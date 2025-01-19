@@ -11,10 +11,13 @@ import cn.net.fusion.framework.event.Producer;
 import cn.net.fusion.framework.redis.RedisUtil;
 import cn.net.fusion.framework.utils.*;
 import cn.net.fusion.system.entity.SysUser;
+import cn.net.fusion.system.entity.SysUserRole;
 import cn.net.fusion.system.mapper.LoginMapper;
 import cn.net.fusion.system.model.SysLoginModel;
 import cn.net.fusion.system.service.ILoginService;
 import com.alibaba.fastjson2.JSONObject;
+import com.mybatisflex.core.query.QueryMethods;
+import com.mybatisflex.core.query.QueryWrapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,8 +64,8 @@ public class LoginServiceImpl implements ILoginService {
     @Override
     public Response<Object> login(SysLoginModel loginModel) throws Exception {
         String username = loginModel.getUsername();
-        // 1、验证用户名是否存在
-        SysUser sysUser = loginMapper.getUserByName(username);
+        // 1、验证用户名是否存在(查询的时候带上用户角色的查询)
+        SysUser sysUser = this.getUserByName(username);
         if (sysUser == null) {
             return Response.fail(HttpCodeEnum.RC107.getCode(), HttpCodeEnum.RC107.getMessage());
         }
@@ -146,6 +149,31 @@ public class LoginServiceImpl implements ILoginService {
         redisUtil.set(realKey, lowerCode, 60);
         // 将数据返回给前端
         return RandImageUtils.generate(code);
+    }
+
+    /**
+     * 根据用户名查询用户的信息、以及角色
+     *
+     * @param username 用户名
+     * @return 用户信息
+     */
+    private SysUser getUserByName(String username) {
+        // 查询条件
+        QueryWrapper queryWrapper = new QueryWrapper();
+        // 查询的字段（用户表+用户角色表）
+        queryWrapper.select(
+                        QueryMethods.column(SysUser::getId),
+                        QueryMethods.column(SysUser::getUsername),
+                        QueryMethods.column(SysUser::getSalt),
+                        QueryMethods.column(SysUser::getPassword),
+                        QueryMethods.column(SysUser::getStatus),
+                        QueryMethods.column(SysUserRole::getRoleId).as(SysUser::getCurrentRoleId)
+                )
+                .from(SysUser.class).as("user")
+                .leftJoin(SysUserRole.class).as("user_role")
+                .on(SysUser::getId, SysUserRole::getUserId)
+                .eq(SysUser::getUsername, username);
+        return loginMapper.selectOneByQuery(queryWrapper);
     }
 
     /**

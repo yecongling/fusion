@@ -76,7 +76,30 @@ public class SysMenuServiceImpl implements ISysMenuService {
         // 根据userId获取对应的菜单
         QueryWrapper queryWrapper = new QueryWrapper();
         // 查询菜单表的字段
-        queryWrapper.select()
+        queryWrapper.select(
+                        QueryMethods.column(SysMenu::getId),
+                        QueryMethods.column(SysMenu::getParentId),
+                        QueryMethods.column(SysMenu::getName),
+                        QueryMethods.column(SysMenu::getUrl),
+                        QueryMethods.column(SysMenu::getComponent),
+                        QueryMethods.column(SysMenu::getComponentName),
+                        QueryMethods.column(SysMenu::getRedirect),
+                        QueryMethods.column(SysMenu::getMenuType),
+                        QueryMethods.column(SysMenu::getPerms),
+                        QueryMethods.column(SysMenu::getPermsType),
+                        QueryMethods.column(SysMenu::getSortNo),
+                        QueryMethods.column(SysMenu::getIcon),
+                        QueryMethods.column(SysMenu::isLeaf),
+                        QueryMethods.column(SysMenu::isAlwaysShow),
+                        QueryMethods.column(SysMenu::isRoute),
+                        QueryMethods.column(SysMenu::isKeepAlive),
+                        QueryMethods.column(SysMenu::isHidden),
+                        QueryMethods.column(SysMenu::isHideTab),
+                        QueryMethods.column(SysMenu::getDelFlag),
+                        QueryMethods.column(SysMenu::getRuleFlag),
+                        QueryMethods.column(SysMenu::getStatus),
+                        QueryMethods.column(SysMenu::isInternalOrExternal)
+                )
                 // 从角色菜单表
                 .from(SysRoleMenu.class).as("role_menu")
                 // 关联菜单表
