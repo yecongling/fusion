@@ -54,7 +54,7 @@ public class EndpointConfig extends BaseEntity implements Serializable {
 
     // 使用flex对实体进行操作时，忽略该字段的操作，自己手动处理
     @Column(ignore = true)
-    private List<EndpointProperty> endpointProperties;
+    private List<EndpointConfigProperty> endpointProperties;
 
     public String getId() {
         return id;
@@ -112,14 +112,14 @@ public class EndpointConfig extends BaseEntity implements Serializable {
         isConfig = config;
     }
 
-    public List<EndpointProperty> getEndpointProperties() {
+    public List<EndpointConfigProperty> getEndpointProperties() {
         if (endpointProperties == null) {
             endpointProperties = new ArrayList<>();
         }
         return endpointProperties;
     }
 
-    public void setEndpointProperties(List<EndpointProperty> endpointProperties) {
+    public void setEndpointProperties(List<EndpointConfigProperty> endpointProperties) {
         this.endpointProperties = endpointProperties;
     }
 }

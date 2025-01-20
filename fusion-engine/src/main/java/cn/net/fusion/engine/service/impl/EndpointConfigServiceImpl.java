@@ -1,7 +1,7 @@
 package cn.net.fusion.engine.service.impl;
 
 import cn.net.fusion.engine.entity.EndpointConfig;
-import cn.net.fusion.engine.entity.EndpointProperty;
+import cn.net.fusion.engine.entity.EndpointConfigProperty;
 import cn.net.fusion.engine.entity.EndpointType;
 import cn.net.fusion.engine.mapper.EndpointConfigMapper;
 import cn.net.fusion.engine.mapper.EndpointPropertyMapper;
@@ -157,7 +157,7 @@ public class EndpointConfigServiceImpl implements IEndpointConfigService {
         // 查询端点配置
         EndpointConfig endpointConfig = endpointConfigMapper.selectOneById(id);
         // 查询端点对应的属性配置
-        List<EndpointProperty> endpointProperties = endpointPropertyMapper.selectListByQuery(new QueryWrapper().eq(EndpointConfig::getConfig, id));
+        List<EndpointConfigProperty> endpointProperties = endpointPropertyMapper.selectListByQuery(new QueryWrapper().eq(EndpointConfig::getConfig, id));
         endpointConfig.setEndpointProperties(endpointProperties);
         return endpointConfig;
     }
@@ -173,7 +173,7 @@ public class EndpointConfigServiceImpl implements IEndpointConfigService {
     public Boolean addEndpointConfig(EndpointConfig endpointConfig) {
         // 直接对配置表、属性配置表进行新增操作
         // 新增配置表
-        List<EndpointProperty> properties = endpointConfig.getEndpointProperties();
+        List<EndpointConfigProperty> properties = endpointConfig.getEndpointProperties();
         endpointConfigMapper.insert(endpointConfig);
         // 新增属性配置表
         endpointPropertyMapper.insertBatch(properties);
@@ -194,15 +194,15 @@ public class EndpointConfigServiceImpl implements IEndpointConfigService {
         SysOpr sysOpr = servletUtils.getSysOpr();
         // 首先通过配置查询其含有的属性配置数据（以此来确定哪些数据需要进行删除处理）
         QueryWrapper queryWrapper = new QueryWrapper();
-        queryWrapper.eq(EndpointProperty::getConfigId, endpointConfig.getId());
+        queryWrapper.eq(EndpointConfigProperty::getConfigId, endpointConfig.getId());
         // 只取id字段用于判定
-        queryWrapper.select(QueryMethods.column(EndpointProperty::getId));
+        queryWrapper.select(QueryMethods.column(EndpointConfigProperty::getId));
         // 查询存在的ID数据
-        List<EndpointProperty> endpointProperties = endpointPropertyMapper.selectListByQuery(queryWrapper);
-        List<String> existingIds = endpointProperties.stream().map(EndpointProperty::getId).toList();
+        List<EndpointConfigProperty> endpointProperties = endpointPropertyMapper.selectListByQuery(queryWrapper);
+        List<String> existingIds = endpointProperties.stream().map(EndpointConfigProperty::getId).toList();
 
         // 从endpointConfig获取有ID的数据，从endpointProperties中剔除
-        List<EndpointProperty> propertiesList = endpointConfig.getEndpointProperties();
+        List<EndpointConfigProperty> propertiesList = endpointConfig.getEndpointProperties();
 
         // 获取需要删除的ID（在数据库存在但传入的参数中不存在）
         List<String> willDeleteData = existingIds.stream()
@@ -210,7 +210,7 @@ public class EndpointConfigServiceImpl implements IEndpointConfigService {
                 .collect(Collectors.toList());
 
         // 筛选出带id的数据进行修改
-        List<EndpointProperty> updateList = propertiesList.stream()
+        List<EndpointConfigProperty> updateList = propertiesList.stream()
                 .filter(property -> StringUtils.isNotBlank(property.getId()))
                 .peek(property -> {
                     property.setUpdateBy(sysOpr.getUserId());
@@ -219,7 +219,7 @@ public class EndpointConfigServiceImpl implements IEndpointConfigService {
                 .collect(Collectors.toList());
 
         // 筛选出不带id的数据进行新增
-        List<EndpointProperty> addList = propertiesList.stream()
+        List<EndpointConfigProperty> addList = propertiesList.stream()
                 .filter(property -> StringUtils.isBlank(property.getId()))
                 .collect(Collectors.toList());
 
@@ -253,7 +253,7 @@ public class EndpointConfigServiceImpl implements IEndpointConfigService {
     @Override
     public Object deleteEndpointConfig(String endpointConfigId) {
         QueryWrapper queryWrapper = new QueryWrapper();
-        queryWrapper.where(EndpointProperty::getConfigId).eq(endpointConfigId);
+        queryWrapper.where(EndpointConfigProperty::getConfigId).eq(endpointConfigId);
         // 先删除属性配置表
         endpointPropertyMapper.deleteByQuery(queryWrapper);
         // 删除端点配置表
