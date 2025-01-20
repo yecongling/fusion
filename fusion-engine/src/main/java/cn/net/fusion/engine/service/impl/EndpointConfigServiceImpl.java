@@ -79,7 +79,10 @@ public class EndpointConfigServiceImpl implements IEndpointConfigService {
                 QueryMethods.column(EndpointConfig::getId),
                 QueryMethods.column(EndpointConfig::getConfigName),
                 QueryMethods.column(EndpointConfig::getTypeId),
-                QueryMethods.column(EndpointConfig::getIcon)
+                QueryMethods.column(EndpointConfig::getIcon),
+                QueryMethods.column(EndpointConfig::getSupportedMode),
+                QueryMethods.column(EndpointConfig::isSupportRetry),
+                QueryMethods.column(EndpointConfig::isStrategy)
         );
         List<EndpointConfig> endpointConfigs = endpointConfigMapper.selectListByQuery(queryWrapper);
         // 将配置数据合并到映射中去
