@@ -77,28 +77,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
         QueryWrapper queryWrapper = new QueryWrapper();
         // 查询菜单表的字段
         queryWrapper.select(
-                        QueryMethods.column(SysMenu::getId),
-                        QueryMethods.column(SysMenu::getParentId),
-                        QueryMethods.column(SysMenu::getName),
-                        QueryMethods.column(SysMenu::getUrl),
-                        QueryMethods.column(SysMenu::getComponent),
-                        QueryMethods.column(SysMenu::getComponentName),
-                        QueryMethods.column(SysMenu::getRedirect),
-                        QueryMethods.column(SysMenu::getMenuType),
-                        QueryMethods.column(SysMenu::getPerms),
-                        QueryMethods.column(SysMenu::getPermsType),
-                        QueryMethods.column(SysMenu::getSortNo),
-                        QueryMethods.column(SysMenu::getIcon),
-                        QueryMethods.column(SysMenu::isLeaf),
-                        QueryMethods.column(SysMenu::isAlwaysShow),
-                        QueryMethods.column(SysMenu::isRoute),
-                        QueryMethods.column(SysMenu::isKeepAlive),
-                        QueryMethods.column(SysMenu::isHidden),
-                        QueryMethods.column(SysMenu::isHideTab),
-                        QueryMethods.column(SysMenu::getDelFlag),
-                        QueryMethods.column(SysMenu::getRuleFlag),
-                        QueryMethods.column(SysMenu::getStatus),
-                        QueryMethods.column(SysMenu::isInternalOrExternal)
+                        QueryMethods.allColumns(SysMenu.class)
                 )
                 // 从角色菜单表
                 .from(SysRoleMenu.class).as("role_menu")
@@ -265,7 +244,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
                     jsonArray.add(json);
                     parentJSON.put("children", jsonArray);
                 }
-                if (!menu.isLeaf()) {
+                if (!menu.getLeaf()) {
                     buildDirectory(array, menus, json);
                 }
             }
@@ -305,7 +284,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
             }
             if (parentJSON == null && StringUtils.isEmpty(parentId)) {
                 array.add(json);
-                if (!menu.isLeaf()) {
+                if (!menu.getLeaf()) {
                     getPermissionJsonArray(array, permissions, json);
                 }
             } else if (parentJSON != null && StringUtils.isNotEmpty(parentId) && parentId.equals(parentJSON.get("id"))) {
@@ -327,7 +306,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
                         children.add(json);
                         parentJSON.put("children", children);
                     }
-                    if (!menu.isLeaf()) {
+                    if (!menu.getLeaf()) {
                         getPermissionJsonArray(array, permissions, json);
                     }
                 } else if (menu.getMenuType().equals(CommonConstant.MENU_TYPE_2)) {
@@ -360,7 +339,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
             return null;
         }
         // 表示生成路由
-        json.put("route", permission.isRoute() ? "1" : "0");
+        json.put("route", permission.getRoute() ? "1" : "0");
         json.put("path", permission.getUrl());
         if (StringUtils.isNotEmpty(permission.getComponentName())) {
             json.put("name", permission.getComponentName());
