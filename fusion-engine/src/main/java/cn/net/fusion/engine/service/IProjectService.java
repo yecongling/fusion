@@ -30,7 +30,7 @@ public interface IProjectService {
     boolean addProject(Project project);
 
     /**
-     * 更新项目
+     * 更新项目基础信息
      *
      * @param project 项目
      * @return true | false

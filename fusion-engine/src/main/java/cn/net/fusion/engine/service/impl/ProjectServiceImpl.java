@@ -3,6 +3,8 @@ package cn.net.fusion.engine.service.impl;
 import cn.net.fusion.engine.entity.Project;
 import cn.net.fusion.engine.mapper.ProjectMapper;
 import cn.net.fusion.engine.service.IProjectService;
+import com.mybatisflex.core.query.QueryMethods;
+import com.mybatisflex.core.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,7 @@ import java.util.List;
 public class ProjectServiceImpl implements IProjectService {
 
     private final ProjectMapper projectMapper;
+
     @Autowired
     public ProjectServiceImpl(ProjectMapper projectMapper) {
         this.projectMapper = projectMapper;
@@ -32,8 +35,21 @@ public class ProjectServiceImpl implements IProjectService {
      */
     @Override
     public List<Project> getProjects(Project project) {
-
-        return List.of();
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.like("name", project.getName());
+        queryWrapper.eq("status", project.getStatus());
+        // 选择需要的字段
+        queryWrapper.select(
+                QueryMethods.column(Project::getId),
+                QueryMethods.column(Project::getName),
+                QueryMethods.column(Project::getType),
+                QueryMethods.column(Project::getStatus),
+                QueryMethods.column(Project::getPriority),
+                QueryMethods.column(Project::getLogLevel),
+                QueryMethods.column(Project::getBackground),
+                QueryMethods.column(Project::getRemark)
+        );
+        return projectMapper.selectListByQuery(queryWrapper);
     }
 
     /**
@@ -44,18 +60,19 @@ public class ProjectServiceImpl implements IProjectService {
      */
     @Override
     public boolean addProject(Project project) {
-        return false;
+        int insert = projectMapper.insert(project);
+        return insert > 0;
     }
 
     /**
-     * 更新项目
+     * 更新项目基础信息
      *
      * @param project 项目
      * @return true | false
      */
     @Override
     public boolean updateProject(Project project) {
-        return false;
+        return projectMapper.update(project) > 0;
     }
 
     /**
@@ -66,6 +83,7 @@ public class ProjectServiceImpl implements IProjectService {
      */
     @Override
     public boolean deleteProject(Project project) {
+        // 检查项目是否在运行中
         return false;
     }
 
