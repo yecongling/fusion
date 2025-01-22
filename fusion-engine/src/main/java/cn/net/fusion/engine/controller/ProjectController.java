@@ -1,5 +1,7 @@
 package cn.net.fusion.engine.controller;
 
+import cn.net.fusion.engine.service.IProjectService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,5 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/engine/project")
 public class ProjectController {
+
+    private final IProjectService projectService;
+    @Autowired
+    public ProjectController(IProjectService projectService) {
+        this.projectService = projectService;
+    }
+
+
 
 }
