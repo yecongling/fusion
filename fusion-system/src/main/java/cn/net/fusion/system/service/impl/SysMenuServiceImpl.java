@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -181,7 +182,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
             sysMenu.setId(id);
             sysMenu.setDelFlag(1);
             sysMenu.setUpdateBy(sysOpr.getUserId());
-            sysMenu.setUpdateTime(new Date());
+            sysMenu.setUpdateTime(LocalDateTime.now());
             menus.add(sysMenu);
         });
         int i = Db.updateEntitiesBatch(menus);
