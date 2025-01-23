@@ -3,8 +3,8 @@ package cn.net.fusion.engine.service.impl;
 import cn.net.fusion.engine.entity.Project;
 import cn.net.fusion.engine.mapper.ProjectMapper;
 import cn.net.fusion.engine.service.IProjectService;
-import com.mybatisflex.core.query.QueryMethods;
 import com.mybatisflex.core.query.QueryWrapper;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,19 +36,8 @@ public class ProjectServiceImpl implements IProjectService {
     @Override
     public List<Project> getProjects(Project project) {
         QueryWrapper queryWrapper = new QueryWrapper();
-        queryWrapper.like("name", project.getName());
-        queryWrapper.eq("status", project.getStatus());
-        // 选择需要的字段
-        queryWrapper.select(
-                QueryMethods.column(Project::getId),
-                QueryMethods.column(Project::getName),
-                QueryMethods.column(Project::getType),
-                QueryMethods.column(Project::getStatus),
-                QueryMethods.column(Project::getPriority),
-                QueryMethods.column(Project::getLogLevel),
-                QueryMethods.column(Project::getBackground),
-                QueryMethods.column(Project::getRemark)
-        );
+        queryWrapper.like(Project::getName, project.getName(), StringUtils.isNotBlank(project.getName()));
+        queryWrapper.eq(Project::getType, project.getType());
         return projectMapper.selectListByQuery(queryWrapper);
     }
 

@@ -3,10 +3,14 @@ package cn.net.fusion.engine.entity;
 import cn.net.fusion.framework.config.EntityInsertListener;
 import cn.net.fusion.framework.config.EntityUpdateListener;
 import cn.net.fusion.framework.core.BaseEntity;
+import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 import com.mybatisflex.core.keygen.KeyGenerators;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -27,32 +31,38 @@ public class Project extends BaseEntity implements Serializable {
      * 项目ID
      */
     @Id(keyType = KeyType.Generator, value = KeyGenerators.snowFlakeId)
-    private long id;
+    private String id;
 
     /**
      * 项目名称
      */
+    @NotBlank(message = "项目名称不能为空")
+    @Size(min = 1, max = 128)
     private String name;
 
     /**
      * 项目类型
      */
-    private int type;
+    @NotNull(message = "项目类型不能为空，type字段必传")
+    private Integer type;
 
     /**
      * 项目状态（正常、异常、部分异常、未启动）
      */
-    private int status;
+    @Column(onInsertValue = "0")
+    private Integer status;
 
     /**
-     * 优先级
+     * 优先级(默认值为5)
      */
-    private int priority;
+    @Column(onInsertValue = "5")
+    private Integer priority;
 
     /**
      * 日志级别
      */
-    private int logLevel;
+    @Column(onInsertValue = "1")
+    private Integer logLevel;
 
     /**
      * 背景图
@@ -64,11 +74,11 @@ public class Project extends BaseEntity implements Serializable {
      */
     private String remark;
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -80,35 +90,35 @@ public class Project extends BaseEntity implements Serializable {
         this.name = name;
     }
 
-    public int getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 
-    public int getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
-    public int getPriority() {
+    public Integer getPriority() {
         return priority;
     }
 
-    public void setPriority(int priority) {
+    public void setPriority(Integer priority) {
         this.priority = priority;
     }
 
-    public int getLogLevel() {
+    public Integer getLogLevel() {
         return logLevel;
     }
 
-    public void setLogLevel(int logLevel) {
+    public void setLogLevel(Integer logLevel) {
         this.logLevel = logLevel;
     }
 
