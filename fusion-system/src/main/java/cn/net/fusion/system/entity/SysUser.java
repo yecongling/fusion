@@ -6,10 +6,7 @@ import cn.net.fusion.framework.core.SysOpr;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.mybatisflex.annotation.ColumnMask;
-import com.mybatisflex.annotation.Id;
-import com.mybatisflex.annotation.KeyType;
-import com.mybatisflex.annotation.Table;
+import com.mybatisflex.annotation.*;
 import com.mybatisflex.core.keygen.KeyGenerators;
 import com.mybatisflex.core.mask.Masks;
 import jakarta.validation.constraints.NotEmpty;
@@ -106,6 +103,7 @@ public class SysUser extends SysOpr implements Serializable {
     /**
      * 删除状态（0，正常，1已删除）
      */
+    @Column(isLogicDelete = true)
     private Integer delFlag;
 
     /**

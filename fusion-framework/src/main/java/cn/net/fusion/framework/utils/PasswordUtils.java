@@ -32,18 +32,18 @@ public class PasswordUtils {
     /**
      * 加密明文字符串
      *
-     * @param plaintext 待加密的明文字符串
+     * @param username 用户名
      * @param password  生成密钥时所使用的密码
      * @param salt      盐值(通过base64转换过的)
      * @return 加密后的密文字符串
      */
-    public static String encrypt(String plaintext, String password, String salt) throws Exception {
+    public static String encrypt(String username, String password, String salt) throws Exception {
         Key key = getPbeKey(password);
         byte[] encipheredData;
         PBEParameterSpec parameterSpec = new PBEParameterSpec(Base64.getDecoder().decode(salt), ITERATION_COUNT);
         Cipher cipher = Cipher.getInstance(ALGORITHM);
         cipher.init(Cipher.ENCRYPT_MODE, key, parameterSpec);
-        encipheredData = cipher.doFinal(plaintext.getBytes(StandardCharsets.UTF_8));
+        encipheredData = cipher.doFinal(username.getBytes(StandardCharsets.UTF_8));
         return bytesToHexString(encipheredData);
     }
 

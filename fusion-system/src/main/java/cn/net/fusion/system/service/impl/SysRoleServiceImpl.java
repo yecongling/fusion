@@ -9,6 +9,7 @@ import cn.net.fusion.system.mapper.SysRoleMenuMapper;
 import cn.net.fusion.system.mapper.SysUserRoleMapper;
 import cn.net.fusion.system.service.ISysRoleService;
 import com.alibaba.fastjson2.JSONObject;
+import com.mybatisflex.core.logicdelete.LogicDeleteManager;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryMethods;
 import com.mybatisflex.core.query.QueryWrapper;
@@ -183,11 +184,12 @@ public class SysRoleServiceImpl implements ISysRoleService {
         queryWrapper.eq(SysUser::getRealName, queryParams.getString("realName"), StringUtils.isNotBlank(queryParams.getString("realName")));
         queryWrapper.eq(SysUser::getSex, queryParams.getIntValue("sex"), StringUtils.isNotBlank(queryParams.getString("sex")));
         Page<SysUserRole> paginate;
-        if (pageNum == 1) {
-            paginate = sysUserRoleMapper.paginate(pageNum, pageSize, queryWrapper);
+        boolean isFirstPage = pageNum == 1;
+        // flex totalRow参数，传入小于0的会查询总量， 否则不会查询总量
+        paginate = LogicDeleteManager.execWithoutLogicDelete(() -> sysUserRoleMapper.paginate(pageNum, pageSize, isFirstPage ? -1 : 0, queryWrapper));
+        // 第一页才返回查询的数据总量
+        if (isFirstPage) {
             result.put("total", paginate.getTotalRow());
-        } else {
-            paginate = sysUserRoleMapper.paginate(pageNum, pageSize, 0, queryWrapper);
         }
         result.put("data", paginate.getRecords());
         return result;
@@ -300,7 +302,7 @@ public class SysRoleServiceImpl implements ISysRoleService {
      *
      * @param roleId  角色ID
      * @param operate 操作类型（add 添加 delete 删除（单个删除和批量删除））
-     * @param ids 所有的ID
+     * @param ids     所有的ID
      * @return 分配结果
      */
     @Override

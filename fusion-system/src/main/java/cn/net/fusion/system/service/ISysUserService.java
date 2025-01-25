@@ -22,7 +22,7 @@ public interface ISysUserService {
      * @param searchParams 检索条件
      * @return 所有用户
      */
-    List<SysUser> getAllUser(int pageNum, int pageSize, JSONObject searchParams);
+    JSONObject getAllUser(int pageNum, int pageSize, JSONObject searchParams);
 
     /**
      * 获取回收站的用户，分页查询
@@ -32,7 +32,7 @@ public interface ISysUserService {
      * @param searchParams 用户查询条件
      * @return 用户信息
      */
-    List<SysUser> getUserListRecycle(int pageNum, int pageSize, JSONObject searchParams);
+    JSONObject getUserListRecycle(int pageNum, int pageSize, JSONObject searchParams);
 
     /**
      * 校验用户名唯一
@@ -48,7 +48,7 @@ public interface ISysUserService {
      * @param sysUser 用户信息
      * @return 结果
      */
-    boolean addUser(SysUser sysUser);
+    boolean addUser(SysUser sysUser) throws Exception;
 
     /**
      * 更新用户信息
@@ -59,12 +59,20 @@ public interface ISysUserService {
     boolean updateUser(SysUser sysUser);
 
     /**
-     * 批量删除用户信息（假删除-放入回收站）
+     * 批量删除用户信息（逻辑删除-放入回收站）
      *
      * @param userIds 用户ID集合
      * @return true｜false
      */
-    boolean deleteBatchUser(List<Long> userIds);
+    boolean logicDeleteBatchUser(List<String> userIds);
+
+    /**
+     * 批量删除用户（物理删除）
+     *
+     * @param userIds 用户ID
+     * @return 结果
+     */
+    boolean physicalDeleteBatchUsers(List<String> userIds);
 
     /**
      * 从回收站批量恢复用户
@@ -72,7 +80,7 @@ public interface ISysUserService {
      * @param userIds 用户ID
      * @return 恢复结果
      */
-    boolean recoverFromRecycle(List<Long> userIds);
+    boolean recoverFromRecycle(List<String> userIds);
 
     /**
      * 批量锁定用户
@@ -80,7 +88,7 @@ public interface ISysUserService {
      * @param userIds 用户ID
      * @return 锁定结果
      */
-    boolean lockBatchUser(List<Long> userIds);
+    boolean lockBatchUser(List<String> userIds);
 
     /**
      * 批量解锁用户
@@ -88,15 +96,15 @@ public interface ISysUserService {
      * @param userIds 用户ID
      * @return true ｜ false
      */
-    boolean unlockBatchUser(List<Long> userIds);
+    boolean unlockBatchUser(List<String> userIds);
 
     /**
      * 重置用户密码(重置为123456)
      *
-     * @param sysUser 用户
+     * @param userId 用户ID
      * @return true | false
      */
-    boolean resetPwd(SysUser sysUser);
+    boolean resetPwd(String userId) throws Exception;
 
     /**
      * 修改用户密码
@@ -105,5 +113,5 @@ public interface ISysUserService {
      * @param newPwd 新密码
      * @return true| false
      */
-    boolean modifyPwd(String userId, String newPwd);
+    boolean modifyPwd(String userId, String newPwd) throws Exception;
 }
