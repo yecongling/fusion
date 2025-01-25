@@ -6,7 +6,7 @@ import cn.net.fusion.framework.utils.ServletUtils;
 import cn.net.fusion.framework.utils.SpringContextUtils;
 import com.mybatisflex.annotation.UpdateListener;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * @ClassName EntityUpdateListener
@@ -30,6 +30,6 @@ public class EntityUpdateListener implements UpdateListener {
         SysOpr sysOpr = servletUtils.getSysOpr();
 
         baseEntity.setUpdateBy(sysOpr.getUserId());
-        baseEntity.setUpdateTime(new Date());
+        baseEntity.setUpdateTime(LocalDateTime.now());
     }
 }

@@ -1,7 +1,6 @@
 package cn.net.fusion.framework.core;
 
 import com.mybatisflex.annotation.Column;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
@@ -63,8 +62,7 @@ public class SysOpr extends BaseEntity{
     }
 
     public String getHomePath() {
-        // @TODO 暂时这么写
-        return StringUtils.isBlank(homePath) ? "/home" : homePath;
+        return homePath;
     }
 
     public void setHomePath(String homePath) {
@@ -80,8 +78,7 @@ public class SysOpr extends BaseEntity{
     }
 
     public String getCurrentRoleId() {
-        //TODO 这里暂定这么写
-        return StringUtils.isBlank(currentRoleId) ? "admin" : currentRoleId;
+        return currentRoleId;
     }
 
     public void setCurrentRoleId(String currentRoleId) {

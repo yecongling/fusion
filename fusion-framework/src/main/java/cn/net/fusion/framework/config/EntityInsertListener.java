@@ -6,7 +6,7 @@ import cn.net.fusion.framework.utils.ServletUtils;
 import cn.net.fusion.framework.utils.SpringContextUtils;
 import com.mybatisflex.annotation.InsertListener;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * @ClassName EntityInsertListener
@@ -31,7 +31,7 @@ public class EntityInsertListener implements InsertListener {
 
         baseEntity.setCreateBy(sysOpr.getUserId());
         baseEntity.setUpdateBy(sysOpr.getUserId());
-        baseEntity.setCreateTime(new Date());
-        baseEntity.setUpdateTime(new Date());
+        baseEntity.setCreateTime(LocalDateTime.now());
+        baseEntity.setUpdateTime(LocalDateTime.now());
     }
 }

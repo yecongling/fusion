@@ -13,14 +13,14 @@ import java.io.Serial;
 import java.io.Serializable;
 
 /**
- * @ClassName EndpointProperty
+ * @ClassName EndpointConfigProperty
  * @Description 端点配置属性
  * @Author ycl
  * @Date 2024/11/28 11:17
  * @Version 1.0
  */
-@Table(value = "t_engine_endpoint_property", onInsert = EntityInsertListener.class, onUpdate = EntityUpdateListener.class)
-public class EndpointProperty extends BaseEntity implements Serializable {
+@Table(value = "t_engine_endpoint_config_property", onInsert = EntityInsertListener.class, onUpdate = EntityUpdateListener.class)
+public class EndpointConfigProperty extends BaseEntity implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 241343699855628548L;

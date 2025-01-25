@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -258,7 +259,7 @@ public class SysRoleServiceImpl implements ISysRoleService {
                 .peek(sysRoleMenu -> {
                     sysRoleMenu.setOperateIp(currentIp);
                     sysRoleMenu.setUpdateBy(sysOpr.getUserId());
-                    sysRoleMenu.setUpdateTime(new Date());
+                    sysRoleMenu.setUpdateTime(LocalDateTime.now());
                 })
                 .collect(Collectors.toList());
 

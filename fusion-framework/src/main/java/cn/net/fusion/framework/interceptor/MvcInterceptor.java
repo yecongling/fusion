@@ -2,6 +2,7 @@ package cn.net.fusion.framework.interceptor;
 
 import cn.dev33.satoken.interceptor.SaInterceptor;
 import cn.dev33.satoken.stp.StpUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -16,6 +17,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class MvcInterceptor implements WebMvcConfigurer {
 
+    private final RateLimitingInterceptor rateLimitingInterceptor;
+    @Autowired
+    public MvcInterceptor(RateLimitingInterceptor rateLimitingInterceptor) {
+        this.rateLimitingInterceptor = rateLimitingInterceptor;
+    }
+
     /**
      * 添加拦截器
      *
@@ -24,5 +31,7 @@ public class MvcInterceptor implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         // 添加登录验证拦截器，但是需要排除一些拦截登录验证的路径(登录地址、退出登录地址、获取验证码地址不需要验证)
         registry.addInterceptor(new SaInterceptor(handle -> StpUtil.checkLogin())).addPathPatterns("/**").excludePathPatterns("/login", "/logout", "/getCaptcha/*");
+        // 限流
+        registry.addInterceptor(rateLimitingInterceptor).addPathPatterns("/**");
     }
 }

@@ -7,6 +7,7 @@ import cn.net.fusion.framework.core.SysOpr;
 import cn.net.fusion.framework.utils.ServletUtils;
 import cn.net.fusion.framework.utils.SnowFlakeGenerator;
 import cn.net.fusion.system.entity.SysMenu;
+import cn.net.fusion.system.entity.SysRoleMenu;
 import cn.net.fusion.system.mapper.SysMenuMapper;
 import cn.net.fusion.system.service.ISysMenuService;
 import com.alibaba.fastjson2.JSONArray;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -73,7 +75,22 @@ public class SysMenuServiceImpl implements ISysMenuService {
     @Override
     public JSONArray getMenusByRoleId(String roleId) {
         // 根据userId获取对应的菜单
-        List<SysMenu> permissions = sysMenuMapper.queryByUser(roleId);
+        QueryWrapper queryWrapper = new QueryWrapper();
+        // 查询菜单表的字段
+        queryWrapper.select(
+                        QueryMethods.allColumns(SysMenu.class)
+                )
+                // 从角色菜单表
+                .from(SysRoleMenu.class).as("role_menu")
+                // 关联菜单表
+                .leftJoin(SysMenu.class).as("menu")
+                .on(SysRoleMenu::getMenuId, SysMenu::getId)
+                // 查询条件
+                .eq(SysRoleMenu::getRoleId, roleId).and(SysMenu::getDelFlag).eq(0)
+                // 根据序号排序
+                .orderBy(SysMenu::getSortNo, true);
+
+        List<SysMenu> permissions = sysMenuMapper.selectListByQuery(queryWrapper);
         // 将平级的菜单构建成上下结构的格式
         JSONArray array = new JSONArray();
         this.getPermissionJsonArray(array, permissions, null);
@@ -165,7 +182,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
             sysMenu.setId(id);
             sysMenu.setDelFlag(1);
             sysMenu.setUpdateBy(sysOpr.getUserId());
-            sysMenu.setUpdateTime(new Date());
+            sysMenu.setUpdateTime(LocalDateTime.now());
             menus.add(sysMenu);
         });
         int i = Db.updateEntitiesBatch(menus);
@@ -228,7 +245,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
                     jsonArray.add(json);
                     parentJSON.put("children", jsonArray);
                 }
-                if (!menu.isLeaf()) {
+                if (!menu.getLeaf()) {
                     buildDirectory(array, menus, json);
                 }
             }
@@ -268,7 +285,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
             }
             if (parentJSON == null && StringUtils.isEmpty(parentId)) {
                 array.add(json);
-                if (!menu.isLeaf()) {
+                if (!menu.getLeaf()) {
                     getPermissionJsonArray(array, permissions, json);
                 }
             } else if (parentJSON != null && StringUtils.isNotEmpty(parentId) && parentId.equals(parentJSON.get("id"))) {
@@ -290,7 +307,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
                         children.add(json);
                         parentJSON.put("children", children);
                     }
-                    if (!menu.isLeaf()) {
+                    if (!menu.getLeaf()) {
                         getPermissionJsonArray(array, permissions, json);
                     }
                 } else if (menu.getMenuType().equals(CommonConstant.MENU_TYPE_2)) {
@@ -314,14 +331,16 @@ public class SysMenuServiceImpl implements ISysMenuService {
      * @return json
      */
     private JSONObject getPermissionJsonObject(SysMenu permission) {
-        // 类型 0 一级菜单  1 子菜单  2 子路由 3 按钮
-        if (permission.getMenuType().equals(CommonConstant.MENU_TYPE_3)) {
-            return null;
-        }
         JSONObject json = new JSONObject();
         json.put("id", permission.getId());
+        // 类型 0 一级菜单  1 子菜单  2 子路由 3 按钮
+        if (permission.getMenuType().equals(CommonConstant.MENU_TYPE_3)) {
+            // 如果是按钮，则构建其他形式的结构
+
+            return null;
+        }
         // 表示生成路由
-        json.put("route", permission.isRoute() ? "1" : "0");
+        json.put("route", permission.getRoute() ? "1" : "0");
         json.put("path", permission.getUrl());
         if (StringUtils.isNotEmpty(permission.getComponentName())) {
             json.put("name", permission.getComponentName());

@@ -86,12 +86,14 @@ public class SysMenu extends BaseEntity implements Serializable {
     /**
      * 是否叶子节点: 1:是  0:不是
      */
-    private boolean isLeaf;
+    @Column("is_leaf")
+    private boolean leaf;
 
     /**
      * 是否路由菜单: 0:不是  1:是（默认值1）
      */
-    private boolean isRoute = true;
+    @Column("is_route")
+    private boolean route = false;
 
     /**
      * 是否缓存页面: 0:不是  1:是（默认值1）
@@ -240,20 +242,20 @@ public class SysMenu extends BaseEntity implements Serializable {
         this.menuType = menuType;
     }
 
-    public boolean isLeaf() {
-        return isLeaf;
+    public boolean getLeaf() {
+        return leaf;
     }
 
-    public void setLeaf(boolean leaf) {
-        isLeaf = leaf;
+    public void setLeaf(boolean isLeaf) {
+        this.leaf = isLeaf;
     }
 
-    public boolean isRoute() {
-        return isRoute;
+    public boolean getRoute() {
+        return route;
     }
 
-    public void setRoute(boolean route) {
-        isRoute = route;
+    public void setRoute(boolean isRoute) {
+        route = isRoute;
     }
 
     public boolean isKeepAlive() {

@@ -13,12 +13,4 @@ import org.apache.ibatis.annotations.Mapper;
  **/
 @Mapper
 public interface LoginMapper extends BaseMapper<SysUser> {
-
-    /**
-     * 根据用户名查询用户信息，用于登录监测
-     *
-     * @param username 用户名
-     * @return 用户信息
-     */
-    SysUser getUserByName(String username);
 }

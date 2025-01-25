@@ -1,13 +1,17 @@
 package cn.net.fusion.system.entity;
 
+import cn.net.fusion.framework.config.EntityInsertListener;
+import cn.net.fusion.framework.config.EntityUpdateListener;
 import cn.net.fusion.framework.core.SysOpr;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.mybatisflex.annotation.ColumnMask;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 import com.mybatisflex.core.keygen.KeyGenerators;
+import com.mybatisflex.core.mask.Masks;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -24,7 +28,7 @@ import java.util.Date;
  * @Version 1.0
  **/
 @JsonIgnoreProperties(value = {"password"}, allowSetters = true)
-@Table("t_sys_user")
+@Table(value = "t_sys_user", onInsert = EntityInsertListener.class, onUpdate = EntityUpdateListener.class)
 public class SysUser extends SysOpr implements Serializable {
     @Serial
     private static final long serialVersionUID = -1283938764867538048L;
@@ -75,11 +79,13 @@ public class SysUser extends SysOpr implements Serializable {
     /**
      * 电子邮件
      */
+    @ColumnMask(Masks.EMAIL)
     private String email;
 
     /**
      * 电话
      */
+    @ColumnMask(Masks.MOBILE)
     private String phone;
 
     /**
@@ -137,11 +143,9 @@ public class SysUser extends SysOpr implements Serializable {
     private String relTenantIds;
 
     /**
-     * 设备id uniapp推送用
+     * 设备id taro（React开发）推送用
      */
     private String clientId;
-
-
 
     public String getId() {
         return id;

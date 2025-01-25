@@ -2,9 +2,6 @@ package cn.net.fusion.system.mapper;
 
 import cn.net.fusion.system.entity.SysMenu;
 import com.mybatisflex.core.BaseMapper;
-import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
 
 /**
  * @ClassName SysMenuMapper
@@ -14,12 +11,4 @@ import java.util.List;
  * @Version 1.0
  */
 public interface SysMenuMapper extends BaseMapper<SysMenu> {
-
-    /**
-     * 查询用户菜单，是根据用户所处的角色
-     *
-     * @param roleId 角色ID
-     * @return 用户权限
-     */
-    List<SysMenu> queryByUser(@Param("roleId") String roleId);
 }

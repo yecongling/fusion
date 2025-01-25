@@ -42,6 +42,12 @@ public class EndpointConfig extends BaseEntity implements Serializable {
     // 所属分类
     private String typeId;
 
+    // 支持重试（0、不支持 1、支持）
+    private boolean supportRetry = false;
+
+    // 支持调用处理策略（0、不支持 1、支持）
+    private boolean strategy = false;
+
     // 支持的模式
     @NotBlank(message = "端点支持模式不能为空！")
     private String supportedMode;
@@ -54,7 +60,7 @@ public class EndpointConfig extends BaseEntity implements Serializable {
 
     // 使用flex对实体进行操作时，忽略该字段的操作，自己手动处理
     @Column(ignore = true)
-    private List<EndpointProperty> endpointProperties;
+    private List<EndpointConfigProperty> endpointProperties;
 
     public String getId() {
         return id;
@@ -112,14 +118,30 @@ public class EndpointConfig extends BaseEntity implements Serializable {
         isConfig = config;
     }
 
-    public List<EndpointProperty> getEndpointProperties() {
+    public List<EndpointConfigProperty> getEndpointProperties() {
         if (endpointProperties == null) {
             endpointProperties = new ArrayList<>();
         }
         return endpointProperties;
     }
 
-    public void setEndpointProperties(List<EndpointProperty> endpointProperties) {
+    public void setEndpointProperties(List<EndpointConfigProperty> endpointProperties) {
         this.endpointProperties = endpointProperties;
+    }
+
+    public boolean isSupportRetry() {
+        return supportRetry;
+    }
+
+    public void setSupportRetry(boolean supportRetry) {
+        this.supportRetry = supportRetry;
+    }
+
+    public boolean isStrategy() {
+        return strategy;
+    }
+
+    public void setStrategy(boolean strategy) {
+        this.strategy = strategy;
     }
 }
