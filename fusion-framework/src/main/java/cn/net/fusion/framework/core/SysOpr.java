@@ -16,21 +16,25 @@ public class SysOpr extends BaseEntity{
     /**
      * 当前登录的用户ID
      */
+    @Column(ignore = true)
     private String userId;
 
     /**
      * 当前登录的用户名
      */
+    @Column(ignore = true)
     private String userName;
 
     /**
      * 登录首页地址
      */
+    @Column(ignore = true)
     private String homePath;
 
     /**
      * 用户当前登录的ip
      */
+    @Column(ignore = true)
     private String loginIp;
 
     /**
