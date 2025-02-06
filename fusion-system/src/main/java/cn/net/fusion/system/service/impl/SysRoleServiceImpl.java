@@ -179,6 +179,10 @@ public class SysRoleServiceImpl implements ISysRoleService {
      * @return 分页数据
      */
     private JSONObject queryPage(int pageNum, int pageSize, QueryWrapper queryWrapper, JSONObject result, JSONObject queryParams) {
+        // 处理searchParams为null的情况
+        if (queryParams == null) {
+            queryParams = new JSONObject();
+        }
         // 拼接其他的查询条件
         queryWrapper.eq(SysUser::getUsername, queryParams.getString("username"), StringUtils.isNotBlank(queryParams.getString("realName")));
         queryWrapper.eq(SysUser::getRealName, queryParams.getString("realName"), StringUtils.isNotBlank(queryParams.getString("realName")));

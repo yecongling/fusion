@@ -2,6 +2,7 @@ package cn.net.fusion.system.service.impl;
 
 import cn.net.fusion.framework.constant.CommonConstant;
 import cn.net.fusion.framework.core.SysOpr;
+import cn.net.fusion.framework.exception.BusinessException;
 import cn.net.fusion.framework.utils.PasswordUtils;
 import cn.net.fusion.framework.utils.ServletUtils;
 import cn.net.fusion.system.entity.SysUser;
@@ -226,12 +227,26 @@ public class SysUserServiceImpl implements ISysUserService {
      * @return true | false
      */
     @Override
-    public boolean resetPwd(String userId) {
+    public boolean resetPwd(String userId) throws Exception {
         // 从数据库查询用户信息（需要用户名）
         // 需要新的密码盐值
         String salt = PasswordUtils.generateSalt();
-
-        return false;
+        SysUser sysUser = sysUserMapper.selectOneById(userId);
+        if (sysUser == null) {
+            throw new BusinessException("用户不存在，无法进行密码重置！");
+        }
+        String encrypted = PasswordUtils.encrypt(sysUser.getUsername(), "123456", salt);
+        // 这么写是为了只更新其中调用了setter的字段
+        SysUser user = UpdateEntity.of(SysUser.class);
+        user.setPassword(encrypted);
+        user.setSalt(salt);
+        user.setId(userId);
+        // 更新操作时间
+        user.setUpdateTime(LocalDateTime.now());
+        // 更新操作人
+        user.setUpdateBy(servletUtils.getSysOpr().getUserId());
+        int update = sysUserMapper.update(user);
+        return update > 0;
     }
 
     /**
@@ -242,8 +257,25 @@ public class SysUserServiceImpl implements ISysUserService {
      * @return true| false
      */
     @Override
-    public boolean modifyPwd(String userId, String newPwd) {
-        return false;
+    public boolean modifyPwd(String userId, String newPwd) throws Exception {
+        // 从数据库查询用户信息（需要用户名）
+        // 需要新的密码盐值
+        SysUser sysUser = sysUserMapper.selectOneById(userId);
+        if (sysUser == null) {
+            throw new BusinessException("用户不存在，无法进行密码修改！");
+        }
+        String salt = PasswordUtils.generateSalt();
+        String encrypted = PasswordUtils.encrypt(sysUser.getUsername(), newPwd, salt);
+        SysUser user = UpdateEntity.of(SysUser.class);
+        user.setPassword(encrypted);
+        user.setSalt(salt);
+        user.setId(userId);
+        // 更新操作时间
+        user.setUpdateTime(LocalDateTime.now());
+        // 更新操作人
+        user.setUpdateBy(servletUtils.getSysOpr().getUserId());
+        int update = sysUserMapper.update(user);
+        return update > 0;
     }
 
     /**
@@ -256,6 +288,10 @@ public class SysUserServiceImpl implements ISysUserService {
      * @return 分页数据
      */
     private JSONObject queryPage(int pageNum, int pageSize, QueryWrapper queryWrapper, JSONObject result, JSONObject searchParams) {
+        // 处理searchParams为null的情况
+        if (searchParams == null) {
+            searchParams = new JSONObject();
+        }
         // 拼接其他的查询条件
         queryWrapper.like(SysUser::getUsername, searchParams.getString("username"), StringUtils.isNotBlank(searchParams.getString("username")));
         queryWrapper.eq(SysUser::getStatus, searchParams.getIntValue("status"), StringUtils.isNotBlank(searchParams.getString("status")));
