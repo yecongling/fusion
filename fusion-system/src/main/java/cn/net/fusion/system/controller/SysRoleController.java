@@ -114,7 +114,8 @@ public class SysRoleController {
      */
     @PostMapping("/assignRoleMenu")
     Response<Boolean> assignRoleMenu(@RequestBody JSONObject params) {
-        return Response.success(sysRoleService.assignRoleMenu(params.getString("roleId"), params.getJSONArray("menuIds").toList(String.class)));
+        JSONObject menuIds = params.getJSONObject("menuIds");
+        return Response.success(sysRoleService.assignRoleMenu(params.getString("roleId"), menuIds.getJSONArray("checked").toList(String.class)));
     }
 
     /**

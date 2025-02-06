@@ -129,9 +129,6 @@ public class SysMenuServiceImpl implements ISysMenuService {
      */
     @Override
     public Response<Integer> addMenu(SysMenu menu) {
-        // 新增需要生成唯一ID和操作员相关信息
-        String id = snowFlakeGenerator.generateUniqueId();
-        menu.setId(id);
         // 受影响的行数
         int num = sysMenuMapper.insert(menu);
         return num > 0 ? Response.success() : Response.fail();

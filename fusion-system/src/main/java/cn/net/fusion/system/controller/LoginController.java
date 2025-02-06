@@ -4,9 +4,7 @@ import cn.net.fusion.framework.core.Response;
 import cn.net.fusion.framework.enums.HttpCodeEnum;
 import cn.net.fusion.system.model.SysLoginModel;
 import cn.net.fusion.system.service.ILoginService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +38,7 @@ public class LoginController {
     public Response<Object> login(@RequestBody @Valid SysLoginModel loginModel, BindingResult bindingResult) throws Exception {
         // 如果校验有误，直接返回参数错误信息
         if (bindingResult.hasErrors()) {
-            return Response.fail(HttpCodeEnum.RC400.getCode(), bindingResult.getAllErrors().get(0).getDefaultMessage());
+            return Response.fail(HttpCodeEnum.RC400.getCode(), bindingResult.getAllErrors().getFirst().getDefaultMessage());
         }
         // 调用业务接口
         return loginService.login(loginModel);
