@@ -1,6 +1,8 @@
 package cn.net.fusion.engine.service;
 
 import cn.net.fusion.engine.entity.Project;
+import com.alibaba.fastjson2.JSONObject;
+import org.apache.camel.ServiceStatus;
 
 import java.util.List;
 
@@ -38,6 +40,12 @@ public interface IProjectService {
     boolean updateProject(Project project);
 
     /**
+     * 检测服务运行状态
+     * @param projectId 项目id
+     */
+    ServiceStatus checkServiceStatus(String projectId);
+
+    /**
      * 删除项目
      *
      * @param project 项目
@@ -52,4 +60,20 @@ public interface IProjectService {
      * @return 结果
      */
     Object changeServiceStatus(Project project);
+
+    /**
+     * 导出项目
+     *
+     * @param projectId 项目id
+     * @return 结果
+     */
+    Object exportProject(String projectId);
+
+    /**
+     * 导入项目
+     *
+     * @param project 项目数据（目前暂定为JSON结构）
+     * @return 结果
+     */
+    Object importProject(JSONObject project);
 }
