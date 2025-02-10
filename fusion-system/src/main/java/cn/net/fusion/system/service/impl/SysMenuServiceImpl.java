@@ -5,7 +5,6 @@ import cn.net.fusion.framework.constant.SymbolConstant;
 import cn.net.fusion.framework.core.Response;
 import cn.net.fusion.framework.core.SysOpr;
 import cn.net.fusion.framework.utils.ServletUtils;
-import cn.net.fusion.framework.utils.SnowFlakeGenerator;
 import cn.net.fusion.system.entity.SysMenu;
 import cn.net.fusion.system.entity.SysRoleMenu;
 import cn.net.fusion.system.mapper.SysMenuMapper;
@@ -22,7 +21,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName SysMenuServiceImpl
@@ -36,16 +38,13 @@ public class SysMenuServiceImpl implements ISysMenuService {
 
     private final SysMenuMapper sysMenuMapper;
 
-    // 雪花id生成算法
-    private final SnowFlakeGenerator snowFlakeGenerator;
 
     // 获取操作员
     private final ServletUtils servletUtils;
 
     @Autowired
-    public SysMenuServiceImpl(SysMenuMapper sysMenuMapper, SnowFlakeGenerator snowFlakeGenerator, ServletUtils servletUtils) {
+    public SysMenuServiceImpl(SysMenuMapper sysMenuMapper, ServletUtils servletUtils) {
         this.sysMenuMapper = sysMenuMapper;
-        this.snowFlakeGenerator = snowFlakeGenerator;
         this.servletUtils = servletUtils;
     }
 
