@@ -58,7 +58,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>cn.net.fusion.admin.FusionApplication</mainClass>
+                    <mainClass>cn.fusion.admin.FusionApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>

@@ -1,2 +1,2 @@
 mybatis-flex:
-  mapper-locations: classpath*:mapper/*.xml
+  mapper-locations: classpath*:mapper/**/*.xml
