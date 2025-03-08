@@ -61,7 +61,8 @@ mybatis-flex:
 logging:
   level:
     root: info
-    cn.fusion: debug
+    cn.fusion: info
+    org.springframework: error
     org.springframework.web: error
   file:
     path: ${user.home}/fusionLog

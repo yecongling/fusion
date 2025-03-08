@@ -50,7 +50,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
         String uid = jsonObject.getString("uid");
         NettyConfig.getChannelMap().put(uid, ctx.channel());
         // 将用户ID作为自定义属性加入到channel中，方便随时channel中获取用户ID
-        AttributeKey<String> key = AttributeKey.valueOf("userId");
+        AttributeKey<String> key = AttributeKey.valueOf("token");
         ctx.channel().attr(key).setIfAbsent(uid);
 
         // 回复消息
@@ -65,7 +65,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) {
         log.info("客户端断开连接：[{}]", ctx.channel().id().asLongText());
-        removeUserId(ctx);
+        removeSession(ctx);
     }
 
     /**
@@ -79,16 +79,16 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
         log.info("异常：{}", cause.getMessage());
         // 删除通道
         NettyConfig.getChannelGroup().remove(ctx.channel());
-        removeUserId(ctx);
+        removeSession(ctx);
         ctx.close();
     }
 
     /**
      * 删除用户与channel的对应关系
      */
-    private void removeUserId(ChannelHandlerContext ctx) {
-        AttributeKey<String> key = AttributeKey.valueOf("userId");
-        String userId = ctx.channel().attr(key).get();
-        NettyConfig.getChannelMap().remove(userId);
+    private void removeSession(ChannelHandlerContext ctx) {
+        AttributeKey<String> key = AttributeKey.valueOf("token");
+        String token = ctx.channel().attr(key).get();
+        NettyConfig.getChannelMap().remove(token);
     }
 }

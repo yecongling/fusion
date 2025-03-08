@@ -21,15 +21,15 @@ public class PushMsgServiceImpl implements IPushMsgService {
     /**
      * 推送消息给指定用户
      *
-     * @param userId 用户id
+     * @param token 用户会话id
      * @param msg    消息
      */
     @Override
-    public void pushMsgToOne(String userId, String msg) {
-        if (StringUtils.isBlank(userId)) {
+    public void pushMsgToOne(String token, String msg) {
+        if (StringUtils.isBlank(token)) {
             return;
         }
-        Channel channel = NettyConfig.getChannel(userId);
+        Channel channel = NettyConfig.getChannel(token);
         if (Objects.isNull(channel)) {
             return;
         }

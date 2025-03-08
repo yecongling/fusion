@@ -1,8 +1,11 @@
 package cn.fusion.framework.config;
 
+import com.mybatisflex.core.FlexGlobalConfig;
 import com.mybatisflex.core.audit.AuditManager;
+import com.mybatisflex.spring.boot.MyBatisFlexCustomizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,17 +17,23 @@ import org.springframework.context.annotation.Configuration;
  * @Version 1.0
  **/
 @Configuration
-public class MybatisFlexConfig {
+public class MybatisFlexConfig implements MyBatisFlexCustomizer {
     private static final Logger logger = LoggerFactory.getLogger("mybatis-flex-sql");
 
     @Value("${mybatis.sqlLog:true}")
     private boolean interceptorEnabled;
 
-    public MybatisFlexConfig() {
+    private final FlexSqlMessageReporter flexSqlMessageReporter;
+    @Autowired
+    public MybatisFlexConfig(FlexSqlMessageReporter flexSqlMessageReporter) {
+        this.flexSqlMessageReporter = flexSqlMessageReporter;
+    }
+
+    @Override
+    public void customize(FlexGlobalConfig globalConfig) {
         // 根据配置来决定是否开启sql记录
         AuditManager.setAuditEnable(interceptorEnabled);
         // 设置SQL审计收集器
-        AuditManager.setMessageCollector(auditMessage -> logger.info("{},{}ms", auditMessage.getFullSql()
-                , auditMessage.getElapsedTime()));
+        AuditManager.setMessageReporter(flexSqlMessageReporter);
     }
 }

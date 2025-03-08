@@ -67,13 +67,13 @@ public class NettyConfig {
     /**
      * 根据用户ID获取对应的channel
      *
-     * @param userId 用户id
+     * @param token 会话id 这里要更改，改为每次的会话id
      * @return channel
      */
-    public static Channel getChannel(String userId) {
+    public static Channel getChannel(String token) {
         if (null == channelMap) {
-            return getChannelMap().get(userId);
+            return getChannelMap().get(token);
         }
-        return channelMap.get(userId);
+        return channelMap.get(token);
     }
 }
