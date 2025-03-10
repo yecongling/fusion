@@ -50,13 +50,13 @@ public class SysMenuController {
     }
 
     /**
-     * 获取所有的菜单目录（非子菜单）
+     * 获取所有的菜单目录，针对按钮则需要查所有目录
      *
      * @return 菜单目录
      */
     @GetMapping("/getDirectory")
-    public JSONArray getMenuDirectory() {
-        return sysMenuService.getDirectory();
+    public JSONArray getMenuDirectory(@RequestParam(name = "menuType") String menuType) {
+        return sysMenuService.getDirectory(menuType);
     }
 
     /**

@@ -102,7 +102,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
      * @return 目录
      */
     @Override
-    public JSONArray getDirectory() {
+    public JSONArray getDirectory(String menuType) {
         QueryWrapper queryWrapper = new QueryWrapper();
         // 查询的字段
         queryWrapper.select(
@@ -110,6 +110,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
                 QueryMethods.column(SysMenu::getParentId),
                 QueryMethods.column(SysMenu::getName)
         );
+        queryWrapper.eq(SysMenu::getMenuType, menuType);
         // 排序
         queryWrapper.orderBy(SysMenu::getSortNo, true);
 
