@@ -11,12 +11,12 @@ public interface CommonConstant {
     /**
      * 正常状态
      */
-    Integer STATUS_NORMAL = 0;
+    Integer STATUS_NORMAL = 1;
 
     /**
      * 禁用状态
      */
-    Integer STATUS_DISABLE = -1;
+    Integer STATUS_DISABLE = 0;
 
     /**
      * 删除标志

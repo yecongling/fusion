@@ -86,6 +86,8 @@ public class SysMenuServiceImpl implements ISysMenuService {
                 .on(SysRoleMenu::getMenuId, SysMenu::getId)
                 // 查询条件
                 .eq(SysRoleMenu::getRoleId, roleId).and(SysMenu::getDelFlag).eq(0)
+                // 去除禁用状态的
+                .eq(SysMenu::getStatus, CommonConstant.STATUS_NORMAL)
                 // 根据序号排序
                 .orderBy(SysMenu::getSortNo, true);
 
@@ -102,7 +104,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
      * @return 目录
      */
     @Override
-    public JSONArray getDirectory(String menuType) {
+    public JSONArray getDirectory(int menuType) {
         QueryWrapper queryWrapper = new QueryWrapper();
         // 查询的字段
         queryWrapper.select(
@@ -110,7 +112,10 @@ public class SysMenuServiceImpl implements ISysMenuService {
                 QueryMethods.column(SysMenu::getParentId),
                 QueryMethods.column(SysMenu::getName)
         );
-        queryWrapper.eq(SysMenu::getMenuType, menuType);
+        // 如果是权限按钮的，则选择不是当前类型的
+        if (CommonConstant.MENU_TYPE_3 == menuType) {
+            queryWrapper.ne(SysMenu::getMenuType, CommonConstant.MENU_TYPE_3);
+        }
         // 排序
         queryWrapper.orderBy(SysMenu::getSortNo, true);
 
@@ -234,7 +239,10 @@ public class SysMenuServiceImpl implements ISysMenuService {
             String parentId = menu.getParentId();
             if (parentJSON == null && StringUtils.isEmpty(parentId)) {
                 array.add(json);
-            } else if (parentJSON != null && StringUtils.isNotEmpty(parentId) && parentId.equals(parentJSON.get("id"))) {
+                if (!menu.getLeaf()) {
+                    buildDirectory(array, menus, json);
+                }
+            } else if (parentJSON != null && StringUtils.isNotEmpty(parentId) && parentId.equals(parentJSON.get("value"))) {
                 if (parentJSON.containsKey("children")) {
                     parentJSON.getJSONArray("children").add(json);
                 } else {

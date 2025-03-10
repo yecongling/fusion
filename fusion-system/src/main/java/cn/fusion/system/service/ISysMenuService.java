@@ -36,7 +36,7 @@ public interface ISysMenuService {
      *
      * @return 目录
      */
-    JSONArray getDirectory(String menuType);
+    JSONArray getDirectory(int menuType);
 
     /**
      * 新增菜单
