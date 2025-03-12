@@ -22,10 +22,10 @@ spring:
     resources:
       add-mappings: false
   datasource:
-    url: YK3pbx9cTsIhhPnvLJL/GYRd7xlHazaBl65hy9a95bEWFe3Zb6K4z4RUpPgNBvpv
-    username: 3lzIZLhMtUObcSs4SkhlCQ==
+    url: MFACjKALPqKdW8XlhZbu1J3vvlpcLjAntE5j2trzYgDtfyfd92M/TobpBQDyP8egDw1xRxKQHc2NeZzw97i9JqNvx0Gy3EH/vYGjTk5b+rswk+UGwQBz5fssCR8615fPVLOeSsqD+M7q9Et6bjkYOHCE1ENJ+nuiTcQXrclrED1lqf13qGOye+e7uLV18jUeknykhKvztqO+45ROzD0sjajoXlaO8ocq4AqMNYbSOYi1EJY5r5wSgBhxNH9OVZEs
+    username: HFundkUyNJ6IqZX+sDMeFg==
     password: QA2Cr8IO+jgJWrcIZZZZmw==
-    driver-class-name: org.postgresql.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.zaxxer.hikari.HikariDataSource
     # 连接池
     hikari:

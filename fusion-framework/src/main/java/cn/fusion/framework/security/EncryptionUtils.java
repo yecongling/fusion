@@ -32,4 +32,13 @@ public class EncryptionUtils {
         byte[] result = cipher.doFinal(Base64.getDecoder().decode(encryptedData));
         return new String(result);
     }
+
+    public static void main(String[] args) throws Exception {
+        String key = System.getenv("FUSION_SECRET_KEY");
+        System.out.println("key:" + key);
+        String encrypt = EncryptionUtils.encrypt("jdbc:postgresql://localhost:5432/fusion", key);
+        System.out.println("url:" + encrypt);
+        String username = EncryptionUtils.encrypt("postgres", key);
+        System.out.println("username:" + username);
+    }
 }
