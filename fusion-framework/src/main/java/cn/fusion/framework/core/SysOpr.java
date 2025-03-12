@@ -17,7 +17,7 @@ public class SysOpr extends BaseEntity{
      * 当前登录的用户ID
      */
     @Column(ignore = true)
-    private String userId;
+    private Long userId;
 
     /**
      * 当前登录的用户名
@@ -49,11 +49,11 @@ public class SysOpr extends BaseEntity{
     @Column(ignore = true)
     private List<String> roleIds;
 
-    public String getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

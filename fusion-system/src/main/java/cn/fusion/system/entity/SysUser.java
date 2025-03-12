@@ -11,6 +11,7 @@ import com.mybatisflex.core.keygen.KeyGenerators;
 import com.mybatisflex.core.mask.Masks;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+import org.apache.ibatis.type.JdbcType;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serial;
@@ -34,7 +35,7 @@ public class SysUser extends SysOpr implements Serializable {
      * 数据库主键，唯一ID
      */
     @Id(keyType = KeyType.Generator, value = KeyGenerators.snowFlakeId)
-    private String id;
+    private Long id;
 
     /* 用户登录账号 */
     @NotEmpty(message = "用户名不能为空！")
@@ -104,7 +105,7 @@ public class SysUser extends SysOpr implements Serializable {
      * 删除状态（0，正常，1已删除）
      */
     @Column(isLogicDelete = true)
-    private Integer delFlag;
+    private Boolean delFlag;
 
     /**
      * 工号，唯一键
@@ -123,7 +124,7 @@ public class SysUser extends SysOpr implements Serializable {
     /**
      * 同步工作流引擎1同步0不同步
      */
-    private Integer activitySync;
+    private Boolean activitySync;
 
     /**
      * 身份（0 普通成员 1 上级）
@@ -145,11 +146,11 @@ public class SysUser extends SysOpr implements Serializable {
      */
     private String clientId;
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
         // 设置父级属性
         this.setUserId(id);
@@ -252,11 +253,11 @@ public class SysUser extends SysOpr implements Serializable {
         this.status = status;
     }
 
-    public Integer getDelFlag() {
+    public Boolean getDelFlag() {
         return delFlag;
     }
 
-    public void setDelFlag(Integer delFlag) {
+    public void setDelFlag(Boolean delFlag) {
         this.delFlag = delFlag;
     }
 
@@ -284,11 +285,11 @@ public class SysUser extends SysOpr implements Serializable {
         this.telephone = telephone;
     }
 
-    public Integer getActivitySync() {
+    public Boolean getActivitySync() {
         return activitySync;
     }
 
-    public void setActivitySync(Integer activitySync) {
+    public void setActivitySync(Boolean activitySync) {
         this.activitySync = activitySync;
     }
 

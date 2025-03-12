@@ -162,7 +162,7 @@ public class SysUserServiceImpl implements ISysUserService {
         SysOpr sysOpr = servletUtils.getSysOpr();
         List<SysUser> sysUsers = userIds.stream().map(userId -> {
             SysUser sysUser = UpdateEntity.of(SysUser.class, userId);
-            sysUser.setDelFlag(CommonConstant.DEL_FLAG_0);
+            sysUser.setDelFlag(Boolean.FALSE);
             sysUser.setUpdateBy(sysOpr.getUserId());
             sysUser.setUpdateTime(LocalDateTime.now());
             return sysUser;
