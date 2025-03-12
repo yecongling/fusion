@@ -102,7 +102,7 @@ public class SysUserController {
      * @return true｜false
      */
     @PostMapping("/logicDeleteBatchUser")
-    public boolean logicDeleteBatchUser(@RequestBody List<String> userIds) {
+    public boolean logicDeleteBatchUser(@RequestBody List<Long> userIds) {
         return sysUserService.logicDeleteBatchUser(userIds);
     }
 
@@ -113,7 +113,7 @@ public class SysUserController {
      * @return 结果
      */
     @PostMapping("/physicalDeleteBatchUsers")
-    public boolean physicalDeleteBatchUsers(@RequestBody List<String> userIds) {
+    public boolean physicalDeleteBatchUsers(@RequestBody List<Long> userIds) {
         return sysUserService.physicalDeleteBatchUsers(userIds);
     }
 
@@ -124,7 +124,7 @@ public class SysUserController {
      * @return 恢复结果
      */
     @PostMapping("/recoverFromRecycle")
-    public boolean recoverFromRecycle(@RequestBody List<String> userIds) {
+    public boolean recoverFromRecycle(@RequestBody List<Long> userIds) {
         return sysUserService.recoverFromRecycle(userIds);
     }
 
@@ -135,7 +135,7 @@ public class SysUserController {
      * @return 锁定结果
      */
     @PostMapping("/lockBatchUser")
-    public boolean lockBatchUser(@RequestBody List<String> userIds) {
+    public boolean lockBatchUser(@RequestBody List<Long> userIds) {
         return sysUserService.lockBatchUser(userIds);
     }
 
@@ -146,7 +146,7 @@ public class SysUserController {
      * @return true ｜ false
      */
     @PostMapping("/unlockBatchUser")
-    public boolean unlockBatchUser(@RequestBody List<String> userIds) {
+    public boolean unlockBatchUser(@RequestBody List<Long> userIds) {
         return sysUserService.unlockBatchUser(userIds);
     }
 
@@ -157,7 +157,7 @@ public class SysUserController {
      * @return true | false
      */
     @PostMapping("/resetPwd/{userId}")
-    public boolean resetPwd(@PathVariable String userId) throws Exception {
+    public boolean resetPwd(@PathVariable Long userId) throws Exception {
         return sysUserService.resetPwd(userId);
     }
 
@@ -169,7 +169,7 @@ public class SysUserController {
      * @return true| false
      */
     @PostMapping("/modifyPwd/{userId}")
-    public boolean modifyPwd(@PathVariable String userId, @RequestParam String newPwd) throws Exception {
+    public boolean modifyPwd(@PathVariable Long userId, @RequestParam String newPwd) throws Exception {
         return sysUserService.modifyPwd(userId, newPwd);
     }
 }

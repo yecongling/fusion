@@ -30,12 +30,12 @@ public class SysMenu extends BaseEntity implements Serializable {
      * id
      */
     @Id(keyType = KeyType.Generator, value = KeyGenerators.snowFlakeId)
-    private String id;
+    private Long id;
 
     /**
      * 父id
      */
-    private String parentId;
+    private Long parentId;
 
     /**
      * 菜单名称
@@ -110,12 +110,13 @@ public class SysMenu extends BaseEntity implements Serializable {
     /**
      * 删除状态 0正常 1已删除
      */
-    private Integer delFlag = 0;
+    @Column(isLogicDelete = true)
+    private Boolean delFlag = false;
 
     /**
      * 是否配置菜单的数据权限 1是0否 默认0
      */
-    private Integer ruleFlag = 0;
+    private Boolean ruleFlag = Boolean.FALSE;
 
     /**
      * 是否隐藏路由菜单: 0否,1是（默认值0）
@@ -130,7 +131,7 @@ public class SysMenu extends BaseEntity implements Serializable {
     /**
      * 按钮权限状态(0无效1有效)
      */
-    private Integer status;
+    private Boolean status;
 
     /**
      * alwaysShow
@@ -148,19 +149,19 @@ public class SysMenu extends BaseEntity implements Serializable {
     @Column(ignore = true)
     private List<SysMenu> children;
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getParentId() {
+    public Long getParentId() {
         return parentId;
     }
 
-    public void setParentId(String parentId) {
+    public void setParentId(Long parentId) {
         this.parentId = parentId;
     }
 
@@ -276,19 +277,19 @@ public class SysMenu extends BaseEntity implements Serializable {
         this.description = description;
     }
 
-    public Integer getDelFlag() {
+    public Boolean getDelFlag() {
         return delFlag;
     }
 
-    public void setDelFlag(Integer delFlag) {
+    public void setDelFlag(Boolean delFlag) {
         this.delFlag = delFlag;
     }
 
-    public Integer getRuleFlag() {
+    public Boolean getRuleFlag() {
         return ruleFlag;
     }
 
-    public void setRuleFlag(Integer ruleFlag) {
+    public void setRuleFlag(Boolean ruleFlag) {
         this.ruleFlag = ruleFlag;
     }
 
@@ -308,11 +309,11 @@ public class SysMenu extends BaseEntity implements Serializable {
         this.hideTab = hideTab;
     }
 
-    public Integer getStatus() {
+    public Boolean getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(Boolean status) {
         this.status = status;
     }
 

@@ -72,7 +72,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
      * @return 菜单信息
      */
     @Override
-    public JSONArray getMenusByRoleId(String roleId) {
+    public JSONArray getMenusByRoleId(Long roleId) {
         // 根据userId获取对应的菜单
         QueryWrapper queryWrapper = new QueryWrapper();
         // 查询菜单表的字段
@@ -85,9 +85,9 @@ public class SysMenuServiceImpl implements ISysMenuService {
                 .leftJoin(SysMenu.class).as("menu")
                 .on(SysRoleMenu::getMenuId, SysMenu::getId)
                 // 查询条件
-                .eq(SysRoleMenu::getRoleId, roleId).and(SysMenu::getDelFlag).eq(0)
+                .eq(SysRoleMenu::getRoleId, roleId)
                 // 去除禁用状态的
-                .eq(SysMenu::getStatus, CommonConstant.STATUS_NORMAL)
+                .eq(SysMenu::getStatus, Boolean.TRUE)
                 // 根据序号排序
                 .orderBy(SysMenu::getSortNo, true);
 
@@ -158,10 +158,10 @@ public class SysMenuServiceImpl implements ISysMenuService {
      * @return -
      */
     @Override
-    public Response<Integer> deleteMenu(String id) {
+    public Response<Integer> deleteMenu(Long id) {
         // 这里需要判断菜单是否在使用中（如果菜单在使用中，则不允许删除）
         SysMenu sysMenu = UpdateEntity.of(SysMenu.class, id);
-        sysMenu.setDelFlag(1);
+        sysMenu.setDelFlag(Boolean.TRUE);
 
         int update = sysMenuMapper.update(sysMenu);
         return update > 0 ? Response.success() : Response.fail();
@@ -175,14 +175,14 @@ public class SysMenuServiceImpl implements ISysMenuService {
      */
     @Transactional
     @Override
-    public Boolean deleteBatch(List<String> ids) {
+    public Boolean deleteBatch(List<Long> ids) {
         SysOpr sysOpr = servletUtils.getSysOpr();
         // 利用id转换为menu对象
         List<SysMenu> menus = new ArrayList<>();
         ids.forEach(id -> {
             SysMenu sysMenu = new SysMenu();
             sysMenu.setId(id);
-            sysMenu.setDelFlag(1);
+            sysMenu.setDelFlag(Boolean.TRUE);
             sysMenu.setUpdateBy(sysOpr.getUserId());
             sysMenu.setUpdateTime(LocalDateTime.now());
             menus.add(sysMenu);
@@ -201,14 +201,14 @@ public class SysMenuServiceImpl implements ISysMenuService {
      */
     private List<SysMenu> buildMenus(List<SysMenu> menus) {
         // 做id和菜单的映射，方便后续查找父级菜单
-        Map<String, SysMenu> idToMenuMap = new HashMap<>();
+        Map<Long, SysMenu> idToMenuMap = new HashMap<>();
         for (SysMenu menu : menus) {
             idToMenuMap.put(menu.getId(), menu);
         }
         List<SysMenu> root = new ArrayList<>();
         for (SysMenu menu : menus) {
-            String parentId = menu.getParentId();
-            if (StringUtils.isBlank(parentId)) {
+            Long parentId = menu.getParentId();
+            if (parentId == null) {
                 root.add(menu);
             } else {
                 SysMenu parent = idToMenuMap.get(parentId);
@@ -236,13 +236,13 @@ public class SysMenuServiceImpl implements ISysMenuService {
         }
         for (SysMenu menu : menus) {
             JSONObject json = getMenuDirectory(menu);
-            String parentId = menu.getParentId();
-            if (parentJSON == null && StringUtils.isEmpty(parentId)) {
+            Long parentId = menu.getParentId();
+            if (parentJSON == null && parentId == null) {
                 array.add(json);
                 if (!menu.getLeaf()) {
                     buildDirectory(array, menus, json);
                 }
-            } else if (parentJSON != null && StringUtils.isNotEmpty(parentId) && parentId.equals(parentJSON.get("value"))) {
+            } else if (parentJSON != null && parentId != null && parentId.equals(parentJSON.get("value"))) {
                 if (parentJSON.containsKey("children")) {
                     parentJSON.getJSONArray("children").add(json);
                 } else {
@@ -283,17 +283,17 @@ public class SysMenuServiceImpl implements ISysMenuService {
             if (menu.getMenuType() == null) {
                 continue;
             }
-            String parentId = menu.getParentId();
+            Long parentId = menu.getParentId();
             JSONObject json = getPermissionJsonObject(menu);
             if (json == null) {
                 continue;
             }
-            if (parentJSON == null && StringUtils.isEmpty(parentId)) {
+            if (parentJSON == null && parentId == null) {
                 array.add(json);
                 if (!menu.getLeaf()) {
                     getPermissionJsonArray(array, permissions, json);
                 }
-            } else if (parentJSON != null && StringUtils.isNotEmpty(parentId) && parentId.equals(parentJSON.get("id"))) {
+            } else if (parentJSON != null && parentId != null && parentId.equals(parentJSON.get("id"))) {
                 // 类型( 0：一级菜单 1：子菜单 2：子路由  3：按钮 )
                 if (menu.getMenuType().equals(CommonConstant.MENU_TYPE_3)) {
                     JSONObject meta = parentJSON.getJSONObject("meta");
@@ -345,7 +345,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
             return null;
         }
         // 表示生成路由
-        json.put("route", permission.getRoute() ? "1" : "0");
+        json.put("route", permission.getRoute());
         json.put("path", permission.getUrl());
         if (StringUtils.isNotEmpty(permission.getComponentName())) {
             json.put("name", permission.getComponentName());
@@ -364,7 +364,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
         meta.put("internalOrExternal", permission.isInternalOrExternal());
         meta.put("title", permission.getName());
         meta.put("componentName", permission.getComponentName());
-        if (StringUtils.isEmpty(permission.getParentId())) {
+        if (permission.getParentId() == null) {
             // 一级菜单跳转地址
             json.put("redirect", permission.getRedirect());
         }

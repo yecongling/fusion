@@ -29,7 +29,7 @@ public class SysRole extends BaseEntity implements Serializable {
      * id 后端生成
      */
     @Id(keyType = KeyType.Generator, value = KeyGenerators.snowFlakeId)
-    private String id;
+    private Long id;
 
     /**
      * 角色编码 用户填写
@@ -58,11 +58,11 @@ public class SysRole extends BaseEntity implements Serializable {
      */
     private String remark;
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

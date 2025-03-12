@@ -29,7 +29,7 @@ public interface ISysMenuService {
      * @param roleId 角色id
      * @return 菜单信息
      */
-    JSONArray getMenusByRoleId(String roleId);
+    JSONArray getMenusByRoleId(Long roleId);
 
     /**
      * 获取一级菜单，用于构建菜单的上级
@@ -60,7 +60,7 @@ public interface ISysMenuService {
      * @param id 菜单ID
      * @return -
      */
-    Response<Integer> deleteMenu(String id);
+    Response<Integer> deleteMenu(Long id);
 
     /**
      * 批量删除
@@ -68,5 +68,5 @@ public interface ISysMenuService {
      * @param ids 菜单id
      * @return true 删除成功 false 删除失败
      */
-    Boolean deleteBatch(List<String> ids);
+    Boolean deleteBatch(List<Long> ids);
 }

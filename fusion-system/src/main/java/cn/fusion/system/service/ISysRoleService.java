@@ -52,14 +52,14 @@ public interface ISysRoleService {
      * @param roleId 角色id
      * @return 所有菜单和角色配置的菜单
      */
-    JSONObject getRoleMenu(String roleId);
+    JSONObject getRoleMenu(Long roleId);
 
     /**
      * 根据角色获取该角色下的用户
      * @param roleId 角色id
      * @return 用户信息
      */
-    JSONObject getRoleUser(String roleId, int pageNum, int pageSize, JSONObject params);
+    JSONObject getRoleUser(Long roleId, int pageNum, int pageSize, JSONObject params);
 
     /**
      * 分页查询不在当前角色下的用户
@@ -68,7 +68,7 @@ public interface ISysRoleService {
      * @param pageSize 数量
      * @return 数据（包含用户数据、分页数据）
      */
-    JSONObject getUserNotInRoleByPage(String roleId, int pageNum, int pageSize, JSONObject params);
+    JSONObject getUserNotInRoleByPage(Long roleId, int pageNum, int pageSize, JSONObject params);
 
     /**
      * 给角色分配菜单权限
@@ -77,7 +77,7 @@ public interface ISysRoleService {
      * @param menuIds 菜单ID
      * @return 分配结果
      */
-    Boolean assignRoleMenu(String roleId, List<String> menuIds);
+    Boolean assignRoleMenu(Long roleId, List<Long> menuIds);
 
     /**
      * 给角色分配用户
@@ -87,5 +87,5 @@ public interface ISysRoleService {
      * @param userIds 所有的用户ID
      * @return 分配结果
      */
-    boolean assignRoleUser(String roleId, String operate, List<String> userIds);
+    boolean assignRoleUser(Long roleId, String operate, List<Long> userIds);
 }

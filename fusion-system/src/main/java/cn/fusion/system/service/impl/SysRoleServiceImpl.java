@@ -121,7 +121,7 @@ public class SysRoleServiceImpl implements ISysRoleService {
      * @return 所有菜单和角色配置的菜单
      */
     @Override
-    public JSONObject getRoleMenu(String roleId) {
+    public JSONObject getRoleMenu(Long roleId) {
         JSONObject jsonObject = new JSONObject();
         // 查询所有的菜单数据
         List<SysMenu> menuList = sysMenuMapper.selectAll();
@@ -132,7 +132,7 @@ public class SysRoleServiceImpl implements ISysRoleService {
         QueryWrapper queryWrapper = new QueryWrapper();
         queryWrapper.eq(SysRoleMenu::getRoleId, roleId);
         List<SysRoleMenu> sysRoleMenus = sysRoleMenuMapper.selectListByQuery(queryWrapper);
-        List<String> menuIds = new ArrayList<>();
+        List<Long> menuIds = new ArrayList<>();
         sysRoleMenus.forEach(sysRoleMenu -> {
             menuIds.add(sysRoleMenu.getMenuId());
         });
@@ -147,7 +147,7 @@ public class SysRoleServiceImpl implements ISysRoleService {
      * @return 用户信息
      */
     @Override
-    public JSONObject getRoleUser(String roleId, int pageNum, int pageSize, JSONObject params) {
+    public JSONObject getRoleUser(Long roleId, int pageNum, int pageSize, JSONObject params) {
         QueryWrapper queryWrapper = new QueryWrapper();
         JSONObject result = new JSONObject();
         // 需要的字段
@@ -208,7 +208,7 @@ public class SysRoleServiceImpl implements ISysRoleService {
      * @return 数据（包含用户数据、分页数据）
      */
     @Override
-    public JSONObject getUserNotInRoleByPage(String roleId, int pageNum, int pageSize, JSONObject queryParams) {
+    public JSONObject getUserNotInRoleByPage(Long roleId, int pageNum, int pageSize, JSONObject queryParams) {
         JSONObject result = new JSONObject();
         QueryWrapper queryWrapper = new QueryWrapper();
         // 筛选字段
@@ -241,7 +241,7 @@ public class SysRoleServiceImpl implements ISysRoleService {
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Boolean assignRoleMenu(String roleId, List<String> menuIds) {
+    public Boolean assignRoleMenu(Long roleId, List<Long> menuIds) {
         // 当前操作员
         SysOpr sysOpr = servletUtils.getSysOpr();
         // 当前操作IP
@@ -250,12 +250,12 @@ public class SysRoleServiceImpl implements ISysRoleService {
         QueryWrapper wrapper = new QueryWrapper().eq(SysRoleMenu::getRoleId, roleId);
         List<SysRoleMenu> sysRoleMenus = sysRoleMenuMapper.selectListByQuery(wrapper);
         // 后台存在的角色对应的菜单ID
-        Set<String> existingMenuIds = sysRoleMenus.stream()
+        Set<Long> existingMenuIds = sysRoleMenus.stream()
                 .map(SysRoleMenu::getMenuId)
                 .collect(Collectors.toSet());
 
         // 批量删除的菜单集合
-        List<String> willDeleteData = existingMenuIds.stream()
+        List<Long> willDeleteData = existingMenuIds.stream()
                 .filter(menuId -> !menuIds.contains(menuId))
                 .collect(Collectors.toList());
 
@@ -310,7 +310,7 @@ public class SysRoleServiceImpl implements ISysRoleService {
      * @return 分配结果
      */
     @Override
-    public boolean assignRoleUser(String roleId, String operate, List<String> ids) {
+    public boolean assignRoleUser(Long roleId, String operate, List<Long> ids) {
         // 当前操作IP
         String currentIp = servletUtils.getCurrentIp();
         // 新增
@@ -344,14 +344,14 @@ public class SysRoleServiceImpl implements ISysRoleService {
      */
     private List<SysMenu> buildMenus(List<SysMenu> menus) {
         // 做id和菜单的映射，方便后续查找父级菜单
-        Map<String, SysMenu> idToMenuMap = new HashMap<>();
+        Map<Long, SysMenu> idToMenuMap = new HashMap<>();
         for (SysMenu menu : menus) {
             idToMenuMap.put(menu.getId(), menu);
         }
         List<SysMenu> root = new ArrayList<>();
         for (SysMenu menu : menus) {
-            String parentId = menu.getParentId();
-            if (StringUtils.isBlank(parentId)) {
+            Long parentId = menu.getParentId();
+            if (parentId == null) {
                 root.add(menu);
             } else {
                 SysMenu parent = idToMenuMap.get(parentId);

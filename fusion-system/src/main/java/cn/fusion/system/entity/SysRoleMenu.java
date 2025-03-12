@@ -26,38 +26,38 @@ public class SysRoleMenu extends BaseEntity implements Serializable {
 
     // 配置id
     @Id(keyType = KeyType.Generator, value = KeyGenerators.snowFlakeId)
-    private String id;
+    private Long id;
 
     // 角色id
-    private String roleId;
+    private Long roleId;
 
     // 菜单id
-    private String menuId;
+    private Long menuId;
 
     // 操作ip
     private String operateIp;
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getRoleId() {
+    public Long getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(String roleId) {
+    public void setRoleId(Long roleId) {
         this.roleId = roleId;
     }
 
-    public String getMenuId() {
+    public Long getMenuId() {
         return menuId;
     }
 
-    public void setMenuId(String menuId) {
+    public void setMenuId(Long menuId) {
         this.menuId = menuId;
     }
 

@@ -102,7 +102,7 @@ public class SysRoleController {
      * @return 包含所有菜单和选中的菜单的id
      */
     @GetMapping("/getRoleMenu")
-    Response<JSONObject> getRoleMenu(@RequestParam String roleId) {
+    Response<JSONObject> getRoleMenu(@RequestParam Long roleId) {
         return Response.success(sysRoleService.getRoleMenu(roleId));
     }
 
@@ -114,7 +114,7 @@ public class SysRoleController {
      */
     @PostMapping("/assignRoleMenu")
     Response<Boolean> assignRoleMenu(@RequestBody JSONObject params) {
-        return Response.success(sysRoleService.assignRoleMenu(params.getString("roleId"), params.getJSONArray("menuIds").toList(String.class)));
+        return Response.success(sysRoleService.assignRoleMenu(params.getLong("roleId"), params.getJSONArray("menuIds").toList(Long.class)));
     }
 
     /**
@@ -130,8 +130,8 @@ public class SysRoleController {
             operate = "add";
         }
         // ID列表
-        List<String> ids = params.getJSONArray("ids").toList(String.class);
-        return Response.success(sysRoleService.assignRoleUser(params.getString("roleId"), operate, ids));
+        List<Long> ids = params.getJSONArray("ids").toList(Long.class);
+        return Response.success(sysRoleService.assignRoleUser(params.getLong("roleId"), operate, ids));
     }
 
     /**
@@ -142,7 +142,7 @@ public class SysRoleController {
      */
     @PostMapping("/getRoleUser")
     Response<JSONObject> getRoleUser(@RequestBody JSONObject params) {
-        String roleId = params.getString("roleId");
+        Long roleId = params.getLong("roleId");
         int pageNum = params.getIntValue("pageNum");
         int pageSize = params.getIntValue("pageSize");
         return Response.success(sysRoleService.getRoleUser(roleId, pageNum, pageSize, params.getJSONObject("searchParams")));
@@ -156,7 +156,7 @@ public class SysRoleController {
      */
     @PostMapping("/getUserNotInRoleByPage")
     Response<JSONObject> getUserNotInRoleByPage(@RequestBody JSONObject params) {
-        String roleId = params.getString("roleId");
+        Long roleId = params.getLong("roleId");
         int pageNum = params.getIntValue("pageNum");
         int pageSize = params.getIntValue("pageSize");
         return Response.success(sysRoleService.getUserNotInRoleByPage(roleId, pageNum, pageSize, params.getJSONObject("searchParams")));

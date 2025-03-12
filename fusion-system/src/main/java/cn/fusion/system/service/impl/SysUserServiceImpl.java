@@ -122,7 +122,7 @@ public class SysUserServiceImpl implements ISysUserService {
      * @return true｜false
      */
     @Override
-    public boolean logicDeleteBatchUser(List<String> userIds) {
+    public boolean logicDeleteBatchUser(List<Long> userIds) {
         // 更新用户的del_flag = 1
         if (userIds == null || userIds.isEmpty()) {
             return true;
@@ -139,7 +139,7 @@ public class SysUserServiceImpl implements ISysUserService {
      * @return 结果
      */
     @Override
-    public boolean physicalDeleteBatchUsers(List<String> userIds) {
+    public boolean physicalDeleteBatchUsers(List<Long> userIds) {
         if (userIds == null || userIds.isEmpty()) {
             return true;
         }
@@ -155,7 +155,7 @@ public class SysUserServiceImpl implements ISysUserService {
      * @return 恢复结果
      */
     @Override
-    public boolean recoverFromRecycle(List<String> userIds) {
+    public boolean recoverFromRecycle(List<Long> userIds) {
         if (userIds == null || userIds.isEmpty()) {
             return true;
         }
@@ -179,7 +179,7 @@ public class SysUserServiceImpl implements ISysUserService {
      * @return 锁定结果
      */
     @Override
-    public boolean lockBatchUser(List<String> userIds) {
+    public boolean lockBatchUser(List<Long> userIds) {
         if (userIds == null || userIds.isEmpty()) {
             return true;
         }
@@ -203,7 +203,7 @@ public class SysUserServiceImpl implements ISysUserService {
      * @return true ｜ false
      */
     @Override
-    public boolean unlockBatchUser(List<String> userIds) {
+    public boolean unlockBatchUser(List<Long> userIds) {
         if (userIds == null || userIds.isEmpty()) {
             return true;
         }
@@ -227,7 +227,7 @@ public class SysUserServiceImpl implements ISysUserService {
      * @return true | false
      */
     @Override
-    public boolean resetPwd(String userId) throws Exception {
+    public boolean resetPwd(Long userId) throws Exception {
         // 从数据库查询用户信息（需要用户名）
         // 需要新的密码盐值
         String salt = PasswordUtils.generateSalt();
@@ -257,7 +257,7 @@ public class SysUserServiceImpl implements ISysUserService {
      * @return true| false
      */
     @Override
-    public boolean modifyPwd(String userId, String newPwd) throws Exception {
+    public boolean modifyPwd(Long userId, String newPwd) throws Exception {
         // 从数据库查询用户信息（需要用户名）
         // 需要新的密码盐值
         SysUser sysUser = sysUserMapper.selectOneById(userId);

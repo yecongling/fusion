@@ -64,7 +64,7 @@ public interface ISysUserService {
      * @param userIds 用户ID集合
      * @return true｜false
      */
-    boolean logicDeleteBatchUser(List<String> userIds);
+    boolean logicDeleteBatchUser(List<Long> userIds);
 
     /**
      * 批量删除用户（物理删除）
@@ -72,7 +72,7 @@ public interface ISysUserService {
      * @param userIds 用户ID
      * @return 结果
      */
-    boolean physicalDeleteBatchUsers(List<String> userIds);
+    boolean physicalDeleteBatchUsers(List<Long> userIds);
 
     /**
      * 从回收站批量恢复用户
@@ -80,7 +80,7 @@ public interface ISysUserService {
      * @param userIds 用户ID
      * @return 恢复结果
      */
-    boolean recoverFromRecycle(List<String> userIds);
+    boolean recoverFromRecycle(List<Long> userIds);
 
     /**
      * 批量锁定用户
@@ -88,7 +88,7 @@ public interface ISysUserService {
      * @param userIds 用户ID
      * @return 锁定结果
      */
-    boolean lockBatchUser(List<String> userIds);
+    boolean lockBatchUser(List<Long> userIds);
 
     /**
      * 批量解锁用户
@@ -96,7 +96,7 @@ public interface ISysUserService {
      * @param userIds 用户ID
      * @return true ｜ false
      */
-    boolean unlockBatchUser(List<String> userIds);
+    boolean unlockBatchUser(List<Long> userIds);
 
     /**
      * 重置用户密码(重置为123456)
@@ -104,7 +104,7 @@ public interface ISysUserService {
      * @param userId 用户ID
      * @return true | false
      */
-    boolean resetPwd(String userId) throws Exception;
+    boolean resetPwd(Long userId) throws Exception;
 
     /**
      * 修改用户密码
@@ -113,5 +113,5 @@ public interface ISysUserService {
      * @param newPwd 新密码
      * @return true| false
      */
-    boolean modifyPwd(String userId, String newPwd) throws Exception;
+    boolean modifyPwd(Long userId, String newPwd) throws Exception;
 }

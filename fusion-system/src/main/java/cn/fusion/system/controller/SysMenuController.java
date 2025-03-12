@@ -45,7 +45,7 @@ public class SysMenuController {
      * @return 菜单信息
      */
     @GetMapping("/getMenusByRole")
-    public JSONArray getMenusByRoleId(@RequestParam(name = "roleId") String roleId) {
+    public JSONArray getMenusByRoleId(@RequestParam(name = "roleId") Long roleId) {
         return sysMenuService.getMenusByRoleId(roleId);
     }
 
@@ -88,7 +88,7 @@ public class SysMenuController {
      * @return 删除结果
      */
     @DeleteMapping("/deleteMenu")
-    public Response<Integer> deleteMenu(@RequestParam(name = "id") String id) {
+    public Response<Integer> deleteMenu(@RequestParam(name = "id") Long id) {
         return sysMenuService.deleteMenu(id);
     }
 
@@ -99,7 +99,7 @@ public class SysMenuController {
      * @return 删除结果
      */
     @DeleteMapping("/deleteMenuBatch")
-    public Response<Boolean> deleteMenuBatch(@RequestBody List<String> menusId) {
+    public Response<Boolean> deleteMenuBatch(@RequestBody List<Long> menusId) {
         Boolean b = sysMenuService.deleteBatch(menusId);
         return b ? Response.success() : Response.fail();
     }
