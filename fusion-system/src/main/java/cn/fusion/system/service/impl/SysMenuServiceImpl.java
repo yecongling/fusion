@@ -58,6 +58,9 @@ public class SysMenuServiceImpl implements ISysMenuService {
     public List<SysMenu> getAllMenus(SysMenu menu) {
         QueryWrapper queryWrapper = new QueryWrapper();
         queryWrapper.like("name", menu.getName());
+        // 添加类型和状态的查询参数
+        queryWrapper.eq(SysMenu::getMenuType, menu.getMenuType(), menu.getMenuType() != null)
+                .eq(SysMenu::getStatus, menu.getStatus(), menu.getStatus() != null);
 
         queryWrapper.orderBy("sort_no", true);
         List<SysMenu> sysMenus = sysMenuMapper.selectListByQuery(queryWrapper);

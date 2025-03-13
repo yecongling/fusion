@@ -6,12 +6,10 @@ import cn.fusion.framework.netty.service.PushMsgServiceImpl;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.mybatisflex.core.audit.AuditMessage;
-import com.mybatisflex.core.audit.MessageReporter;
+import com.mybatisflex.core.audit.MessageCollector;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 /**
  * @ClassName FlexSqlMessageReporter
@@ -21,16 +19,17 @@ import java.util.List;
  * @Version 1.0
  */
 @Component
-public class FlexSqlMessageReporter implements MessageReporter {
+public class FlexSqlMessageCollector implements MessageCollector {
 
     private final IPushMsgService pushMsgService;
+
     @Autowired
-    public FlexSqlMessageReporter(PushMsgServiceImpl pushMsgService) {
+    public FlexSqlMessageCollector(PushMsgServiceImpl pushMsgService) {
         this.pushMsgService = pushMsgService;
     }
 
     @Override
-    public void sendMessages(List<AuditMessage> messages) {
+    public void collect(AuditMessage message) {
         // 获取当前调用的用户会话
         String tokenValue = StpUtil.getTokenValue();
         if (StringUtils.isEmpty(tokenValue)) {
@@ -38,13 +37,14 @@ public class FlexSqlMessageReporter implements MessageReporter {
         }
         // 推送消息
         JSONArray jsonArray = new JSONArray();
-        messages.forEach(message -> {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("SQL", message.getFullSql());
-            jsonObject.put("times", message.getElapsedTime() + "ms");
-            jsonObject.put("business", "logSQL");
-            jsonArray.add(jsonObject);
-        });
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("SQL", message.getFullSql());
+        System.out.println("执行SQL：" + message.getQuery());
+        System.out.println("执行耗时：" + message.getElapsedTime() + "ms");
+        System.out.println("执行参数：" + message.getQueryParams());
+        jsonObject.put("times", message.getElapsedTime() + "ms");
+        jsonObject.put("business", "logSQL");
+        jsonArray.add(jsonObject);
         pushMsgService.pushMsgToOne(tokenValue, jsonArray.toJSONString());
     }
 }

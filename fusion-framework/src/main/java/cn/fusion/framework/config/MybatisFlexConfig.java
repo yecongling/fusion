@@ -26,10 +26,10 @@ public class MybatisFlexConfig implements MyBatisFlexCustomizer {
     @Value("${mybatis.sqlLog:true}")
     private boolean interceptorEnabled;
 
-    private final FlexSqlMessageReporter flexSqlMessageReporter;
+    private final FlexSqlMessageCollector flexSqlMessageCollector;
     @Autowired
-    public MybatisFlexConfig(FlexSqlMessageReporter flexSqlMessageReporter) {
-        this.flexSqlMessageReporter = flexSqlMessageReporter;
+    public MybatisFlexConfig(FlexSqlMessageCollector flexSqlMessageCollector) {
+        this.flexSqlMessageCollector = flexSqlMessageCollector;
     }
 
     @Override
@@ -37,7 +37,7 @@ public class MybatisFlexConfig implements MyBatisFlexCustomizer {
         // 根据配置来决定是否开启sql记录
         AuditManager.setAuditEnable(interceptorEnabled);
         // 设置SQL审计收集器
-        AuditManager.setMessageReporter(flexSqlMessageReporter);
+        AuditManager.setMessageCollector(flexSqlMessageCollector);
     }
 
     /**
