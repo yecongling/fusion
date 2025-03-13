@@ -3,6 +3,8 @@ package cn.fusion.system.entity;
 import cn.fusion.framework.config.EntityInsertListener;
 import cn.fusion.framework.config.EntityUpdateListener;
 import cn.fusion.framework.core.BaseEntity;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
@@ -30,11 +32,13 @@ public class SysMenu extends BaseEntity implements Serializable {
      * id
      */
     @Id(keyType = KeyType.Generator, value = KeyGenerators.snowFlakeId)
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
     /**
      * 父id
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long parentId;
 
     /**

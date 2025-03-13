@@ -3,6 +3,8 @@ package cn.fusion.system.entity;
 import cn.fusion.framework.config.EntityInsertListener;
 import cn.fusion.framework.config.EntityUpdateListener;
 import cn.fusion.framework.core.BaseEntity;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
@@ -29,11 +31,13 @@ public class SysUserRole extends BaseEntity implements Serializable {
      * id字段
      */
     @Id(keyType = KeyType.Generator, value = KeyGenerators.snowFlakeId)
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
     /**
      * 用户ID
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long userId;
 
     @Column(ignore = true)
@@ -46,6 +50,7 @@ public class SysUserRole extends BaseEntity implements Serializable {
     /**
      * 角色ID
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long roleId;
 
     /**

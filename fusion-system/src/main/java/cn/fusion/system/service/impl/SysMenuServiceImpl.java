@@ -266,7 +266,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
      */
     private JSONObject getMenuDirectory(SysMenu menu) {
         JSONObject json = new JSONObject();
-        json.put("value", menu.getId());
+        json.put("value", menu.getId().toString());
         json.put("title", menu.getName());
         return json;
     }
@@ -293,7 +293,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
                 if (!menu.getLeaf()) {
                     getPermissionJsonArray(array, permissions, json);
                 }
-            } else if (parentJSON != null && parentId != null && parentId.equals(parentJSON.get("id"))) {
+            } else if (parentJSON != null && parentId != null && parentId == parentJSON.getLongValue("id")) {
                 // 类型( 0：一级菜单 1：子菜单 2：子路由  3：按钮 )
                 if (menu.getMenuType().equals(CommonConstant.MENU_TYPE_3)) {
                     JSONObject meta = parentJSON.getJSONObject("meta");
@@ -337,7 +337,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
      */
     private JSONObject getPermissionJsonObject(SysMenu permission) {
         JSONObject json = new JSONObject();
-        json.put("id", permission.getId());
+        json.put("id", permission.getId().toString());
         // 类型 0 一级菜单  1 子菜单  2 子路由 3 按钮
         if (permission.getMenuType().equals(CommonConstant.MENU_TYPE_3)) {
             // 如果是按钮，则构建其他形式的结构

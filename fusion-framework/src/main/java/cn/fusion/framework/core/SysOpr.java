@@ -1,5 +1,7 @@
 package cn.fusion.framework.core;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.mybatisflex.annotation.Column;
 
 import java.util.List;
@@ -17,6 +19,7 @@ public class SysOpr extends BaseEntity{
      * 当前登录的用户ID
      */
     @Column(ignore = true)
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long userId;
 
     /**
@@ -47,7 +50,8 @@ public class SysOpr extends BaseEntity{
      * 用户的角色列表
      */
     @Column(ignore = true)
-    private List<String> roleIds;
+    @JsonSerialize(using = ToStringSerializer.class)
+    private List<Long> roleIds;
 
     public Long getUserId() {
         return userId;
@@ -89,11 +93,11 @@ public class SysOpr extends BaseEntity{
         this.currentRoleId = currentRoleId;
     }
 
-    public List<String> getRoleIds() {
+    public List<Long> getRoleIds() {
         return roleIds;
     }
 
-    public void setRoleIds(List<String> roleIds) {
+    public void setRoleIds(List<Long> roleIds) {
         this.roleIds = roleIds;
     }
 }

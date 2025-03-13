@@ -1,6 +1,8 @@
 package cn.fusion.framework.core;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import java.time.LocalDateTime;
 
@@ -13,6 +15,7 @@ import java.time.LocalDateTime;
  */
 public class BaseEntity {
     // 创建人
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long createBy;
 
     // 创建时间
@@ -20,6 +23,7 @@ public class BaseEntity {
     private LocalDateTime createTime;
 
     // 更新人
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long updateBy;
 
     // 更新时间

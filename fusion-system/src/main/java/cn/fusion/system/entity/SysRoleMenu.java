@@ -3,6 +3,8 @@ package cn.fusion.system.entity;
 import cn.fusion.framework.config.EntityInsertListener;
 import cn.fusion.framework.config.EntityUpdateListener;
 import cn.fusion.framework.core.BaseEntity;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
@@ -26,12 +28,15 @@ public class SysRoleMenu extends BaseEntity implements Serializable {
 
     // 配置id
     @Id(keyType = KeyType.Generator, value = KeyGenerators.snowFlakeId)
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
     // 角色id
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long roleId;
 
     // 菜单id
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long menuId;
 
     // 操作ip

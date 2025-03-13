@@ -6,6 +6,8 @@ import cn.fusion.framework.core.SysOpr;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.mybatisflex.annotation.*;
 import com.mybatisflex.core.keygen.KeyGenerators;
 import com.mybatisflex.core.mask.Masks;
@@ -35,6 +37,7 @@ public class SysUser extends SysOpr implements Serializable {
      * 数据库主键，唯一ID
      */
     @Id(keyType = KeyType.Generator, value = KeyGenerators.snowFlakeId)
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
     /* 用户登录账号 */

@@ -17,6 +17,9 @@ public class SysLoginModel {
     // 验证码key
     private String checkKey;
 
+    // 记住我
+    private boolean remember;
+
     public String getUsername() {
         return username;
     }
@@ -47,5 +50,13 @@ public class SysLoginModel {
 
     public void setCheckKey(String checkKey) {
         this.checkKey = checkKey;
+    }
+
+    public boolean isRemember() {
+        return remember;
+    }
+
+    public void setRemember(boolean remember) {
+        this.remember = remember;
     }
 }
