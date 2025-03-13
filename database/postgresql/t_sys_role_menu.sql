@@ -32,3 +32,4 @@ alter table t_sys_role_menu
 
 INSERT INTO public.t_sys_role_menu (id, role_id, menu_id, operate_ip, create_by, create_time, update_by, update_time) VALUES (235123826202185721, 235123826202185723, 235123826202185728, '127.0.0.1', 235123826202185728, '2025-03-12 15:09:46.000000', 235123826202185728, '2025-03-12 15:09:49.000000');
 INSERT INTO public.t_sys_role_menu (id, role_id, menu_id, operate_ip, create_by, create_time, update_by, update_time) VALUES (235123826202185722, 235123826202185723, 235123826202185729, '127.0.0.1', 235123826202185728, '2025-03-12 15:10:33.000000', 235123826202185728, '2025-03-12 15:10:37.000000');
+INSERT INTO public.t_sys_role_menu (id, role_id, menu_id, operate_ip, create_by, create_time, update_by, update_time) VALUES (235123826202185723, 235123826202185723, 257681744906833920, '127.0.0.1', 235123826202185728, '2025-03-13 14:39:11.000000', 235123826202185728, '2025-03-13 14:39:13.000000');
