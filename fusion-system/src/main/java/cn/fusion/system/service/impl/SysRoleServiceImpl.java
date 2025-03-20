@@ -187,6 +187,19 @@ public class SysRoleServiceImpl implements ISysRoleService {
         queryWrapper.eq(SysUser::getUsername, queryParams.getString("username"), StringUtils.isNotBlank(queryParams.getString("realName")));
         queryWrapper.eq(SysUser::getRealName, queryParams.getString("realName"), StringUtils.isNotBlank(queryParams.getString("realName")));
         queryWrapper.eq(SysUser::getSex, queryParams.getIntValue("sex"), StringUtils.isNotBlank(queryParams.getString("sex")));
+        return getPageData(pageNum, pageSize, queryWrapper, result);
+    }
+
+    /**
+     * 分页查询
+     *
+     * @param pageNum      页码
+     * @param pageSize     页大小
+     * @param queryWrapper 查询条件
+     * @param result       结果
+     * @return 分页数据
+     */
+    private JSONObject getPageData(int pageNum, int pageSize, QueryWrapper queryWrapper, JSONObject result) {
         Page<SysUserRole> paginate;
         boolean isFirstPage = pageNum == 1;
         // flex totalRow参数，传入小于0的会查询总量， 否则不会查询总量

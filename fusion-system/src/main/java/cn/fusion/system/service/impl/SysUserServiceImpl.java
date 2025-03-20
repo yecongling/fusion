@@ -52,7 +52,6 @@ public class SysUserServiceImpl implements ISysUserService {
     public JSONObject getAllUser(int pageNum, int pageSize, JSONObject searchParams) {
         QueryWrapper queryWrapper = new QueryWrapper();
         JSONObject result = new JSONObject();
-        queryWrapper.eq(SysUser::getDelFlag, 0);
         return queryPage(pageNum, pageSize, queryWrapper, result, searchParams);
     }
 
@@ -237,6 +236,18 @@ public class SysUserServiceImpl implements ISysUserService {
         }
         String encrypted = PasswordUtils.encrypt(sysUser.getUsername(), "123456", salt);
         // 这么写是为了只更新其中调用了setter的字段
+        return extracted(userId, encrypted, salt);
+    }
+
+    /**
+     * 提取公共方法
+     *
+     * @param userId      用户ID
+     * @param encrypted   加密后的密码
+     * @param salt        密码盐值
+     * @return true | false
+     */
+    private boolean extracted(Long userId, String encrypted, String salt) {
         SysUser user = UpdateEntity.of(SysUser.class);
         user.setPassword(encrypted);
         user.setSalt(salt);
@@ -266,16 +277,7 @@ public class SysUserServiceImpl implements ISysUserService {
         }
         String salt = PasswordUtils.generateSalt();
         String encrypted = PasswordUtils.encrypt(sysUser.getUsername(), newPwd, salt);
-        SysUser user = UpdateEntity.of(SysUser.class);
-        user.setPassword(encrypted);
-        user.setSalt(salt);
-        user.setId(userId);
-        // 更新操作时间
-        user.setUpdateTime(LocalDateTime.now());
-        // 更新操作人
-        user.setUpdateBy(servletUtils.getSysOpr().getUserId());
-        int update = sysUserMapper.update(user);
-        return update > 0;
+        return extracted(userId, encrypted, salt);
     }
 
     /**
@@ -296,6 +298,19 @@ public class SysUserServiceImpl implements ISysUserService {
         queryWrapper.like(SysUser::getUsername, searchParams.getString("username"), StringUtils.isNotBlank(searchParams.getString("username")));
         queryWrapper.eq(SysUser::getStatus, searchParams.getIntValue("status"), StringUtils.isNotBlank(searchParams.getString("status")));
         queryWrapper.eq(SysUser::getSex, searchParams.getIntValue("sex"), StringUtils.isNotBlank(searchParams.getString("sex")));
+        return getPageData(pageNum, pageSize, queryWrapper, result);
+    }
+
+    /**
+     * 分页查询
+     *
+     * @param pageNum      页码
+     * @param pageSize     页大小
+     * @param queryWrapper 查询条件
+     * @param result       结果
+     * @return 分页数据
+     */
+    private JSONObject getPageData(int pageNum, int pageSize, QueryWrapper queryWrapper, JSONObject result) {
         Page<SysUser> paginate;
         boolean isFirstPage = pageNum == 1;
         // flex totalRow参数，传入小于0的会查询总量， 否则不会查询总量
