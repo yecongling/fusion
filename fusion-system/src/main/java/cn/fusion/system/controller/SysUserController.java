@@ -101,7 +101,7 @@ public class SysUserController {
      * @param userIds 用户ID集合
      * @return true｜false
      */
-    @PostMapping("/logicDeleteBatchUser")
+    @PostMapping("/logicDeleteUsers")
     public boolean logicDeleteBatchUser(@RequestBody List<Long> userIds) {
         return sysUserService.logicDeleteBatchUser(userIds);
     }
@@ -112,7 +112,7 @@ public class SysUserController {
      * @param userIds 用户ID
      * @return 结果
      */
-    @PostMapping("/physicalDeleteBatchUsers")
+    @PostMapping("/deleteUsers")
     public boolean physicalDeleteBatchUsers(@RequestBody List<Long> userIds) {
         return sysUserService.physicalDeleteBatchUsers(userIds);
     }
