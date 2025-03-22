@@ -58,8 +58,8 @@
         <!-- mybatis-plex -->
         <dependency>
             <groupId>com.mybatis-flex</groupId>
-            <artifactId>mybatis-flex-spring-boot-starter</artifactId>
-            <version>1.10.8</version>
+            <artifactId>mybatis-flex-spring-boot3-starter</artifactId>
+            <version>1.10.9</version>
         </dependency>
         <dependency>
             <groupId>org.mybatis</groupId>
