@@ -35,12 +35,12 @@ public class SysRoleController {
     /**
      * 查询所有的系统角色
      *
-     * @param sysRole 查询条件
-     * @return 所有的系统角色
+     * @param params 查询条件
+     * @return 所有的系统角色（包括分页数据）
      */
     @PostMapping("/getRoleList")
-    List<SysRole> getRoleList(@RequestBody(required = false) SysRole sysRole) {
-        return sysRoleService.selectRoleList(sysRole);
+    JSONObject getRoleList(@RequestBody JSONObject params) {
+        return sysRoleService.getAllRoleList(params);
     }
 
     /**
@@ -143,9 +143,8 @@ public class SysRoleController {
     @PostMapping("/getRoleUser")
     Response<JSONObject> getRoleUser(@RequestBody JSONObject params) {
         Long roleId = params.getLong("roleId");
-        int pageNum = params.getIntValue("pageNum");
-        int pageSize = params.getIntValue("pageSize");
-        return Response.success(sysRoleService.getRoleUser(roleId, pageNum, pageSize, params.getJSONObject("searchParams")));
+        JSONObject searchParams = params.getJSONObject("searchParams");
+        return Response.success(sysRoleService.getRoleUser(roleId, searchParams));
     }
 
     /**
@@ -157,8 +156,7 @@ public class SysRoleController {
     @PostMapping("/getUserNotInRoleByPage")
     Response<JSONObject> getUserNotInRoleByPage(@RequestBody JSONObject params) {
         Long roleId = params.getLong("roleId");
-        int pageNum = params.getIntValue("pageNum");
-        int pageSize = params.getIntValue("pageSize");
-        return Response.success(sysRoleService.getUserNotInRoleByPage(roleId, pageNum, pageSize, params.getJSONObject("searchParams")));
+        JSONObject searchParams = params.getJSONObject("searchParams");
+        return Response.success(sysRoleService.getUserNotInRoleByPage(roleId, searchParams));
     }
 }

@@ -43,15 +43,16 @@ public class SysUserServiceImpl implements ISysUserService {
     /**
      * 查询所有用户信息（非删除标记的用户），分页查询
      *
-     * @param pageNum      分页数
-     * @param pageSize     分页大小
      * @param searchParams 检索条件（用户名、性别、状态）
      * @return 所有用户
      */
     @Override
-    public JSONObject getAllUser(int pageNum, int pageSize, JSONObject searchParams) {
+    public JSONObject getAllUser(JSONObject searchParams) {
         QueryWrapper queryWrapper = new QueryWrapper();
         JSONObject result = new JSONObject();
+        // 获取分页参数
+        int pageNum = searchParams.getIntValue("pageNum");
+        int pageSize = searchParams.getIntValue("pageSize");
         return queryPage(pageNum, pageSize, queryWrapper, result, searchParams);
     }
 

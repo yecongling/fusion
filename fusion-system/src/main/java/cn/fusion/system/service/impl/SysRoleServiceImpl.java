@@ -57,16 +57,12 @@ public class SysRoleServiceImpl implements ISysRoleService {
     /**
      * 查询所有角色
      *
-     * @param sysRole 系统角色
+     * @param params 系统角色
      * @return 符合条件的系统角色
      */
     @Override
-    public List<SysRole> selectRoleList(SysRole sysRole) {
+    public JSONObject getAllRoleList(JSONObject params) {
         QueryWrapper queryWrapper = new QueryWrapper();
-        // 根据角色名称、角色编码、状态进行查询
-        queryWrapper.like(SysRole::getRoleName, sysRole.getRoleName());
-        queryWrapper.like(SysRole::getRoleCode, sysRole.getRoleCode());
-        queryWrapper.eq(SysRole::getStatus, sysRole.getStatus());
         // 选择需要的字段
         queryWrapper.select(
                 QueryMethods.column(SysRole::getId),
@@ -76,7 +72,11 @@ public class SysRoleServiceImpl implements ISysRoleService {
                 QueryMethods.column(SysRole::getRoleType),
                 QueryMethods.column(SysRole::getRemark)
         );
-        return sysRoleMapper.selectListByQuery(queryWrapper);
+        JSONObject result = new JSONObject();
+        // 获取分页参数
+        int pageNum = params.getIntValue("pageNum");
+        int pageSize = params.getIntValue("pageSize");
+        return queryRolePage(pageNum, pageSize, queryWrapper, result, params);
     }
 
     /**
@@ -144,10 +144,11 @@ public class SysRoleServiceImpl implements ISysRoleService {
      * 根据角色获取该角色下的用户
      *
      * @param roleId 角色id
+     * params 查询参数（包括分页条件）
      * @return 用户信息
      */
     @Override
-    public JSONObject getRoleUser(Long roleId, int pageNum, int pageSize, JSONObject params) {
+    public JSONObject getRoleUser(Long roleId, JSONObject params) {
         QueryWrapper queryWrapper = new QueryWrapper();
         JSONObject result = new JSONObject();
         // 需要的字段
@@ -165,6 +166,8 @@ public class SysRoleServiceImpl implements ISysRoleService {
                 .on(SysUserRole::getUserId, SysUser::getId)
                 // 查询条件
                 .eq(SysUserRole::getRoleId, roleId);
+        int pageNum = params.getIntValue("pageNum");
+        int pageSize = params.getIntValue("pageSize");
         // 分页查询
         return queryPage(pageNum, pageSize, queryWrapper, result, params);
     }
@@ -216,12 +219,11 @@ public class SysRoleServiceImpl implements ISysRoleService {
      * 分页查询不在当前角色下的用户
      *
      * @param roleId   角色ID
-     * @param pageNum  页码
-     * @param pageSize 数量
+     * @param queryParams 查询参数（包括分页条件）
      * @return 数据（包含用户数据、分页数据）
      */
     @Override
-    public JSONObject getUserNotInRoleByPage(Long roleId, int pageNum, int pageSize, JSONObject queryParams) {
+    public JSONObject getUserNotInRoleByPage(Long roleId, JSONObject queryParams) {
         JSONObject result = new JSONObject();
         QueryWrapper queryWrapper = new QueryWrapper();
         // 筛选字段
@@ -241,6 +243,8 @@ public class SysRoleServiceImpl implements ISysRoleService {
                         .eq(SysUserRole::getRoleId, roleId)
                 )
                 .where(SysUserRole::getUserId).isNull();
+        int pageNum = queryParams.getIntValue("pageNum");
+        int pageSize = queryParams.getIntValue("pageSize");
         // 分页（第一页需要查询总页数，后续不需要）
         return queryPage(pageNum, pageSize, queryWrapper, result, queryParams);
     }
@@ -377,5 +381,49 @@ public class SysRoleServiceImpl implements ISysRoleService {
             }
         }
         return root;
+    }
+
+    /**
+     * 分页查询
+     *
+     * @param pageNum      页码
+     * @param pageSize     页大小
+     * @param queryWrapper 查询条件
+     * @param result       结果
+     * @return 分页数据
+     */
+    private JSONObject queryRolePage(int pageNum, int pageSize, QueryWrapper queryWrapper, JSONObject result, JSONObject searchParams) {
+        // 处理searchParams为null的情况
+        if (searchParams == null) {
+            searchParams = new JSONObject();
+        }
+        // 拼接其他的查询条件
+        queryWrapper.like(SysRole::getRoleCode, searchParams.getString("roleCode"), StringUtils.isNotBlank(searchParams.getString("roleCode")));
+        queryWrapper.eq(SysRole::getRoleName, searchParams.getIntValue("roleName"), StringUtils.isNotBlank(searchParams.getString("roleName")));
+        queryWrapper.eq(SysRole::getStatus, searchParams.getIntValue("status"), StringUtils.isNotBlank(searchParams.getString("status")));
+        return getRolePageData(pageNum, pageSize, queryWrapper, result);
+    }
+
+    /**
+     * 分页查询
+     *
+     * @param pageNum      页码
+     * @param pageSize     页大小
+     * @param queryWrapper 查询条件
+     * @param result       结果
+     * @return 分页数据
+     */
+    private JSONObject getRolePageData(int pageNum, int pageSize, QueryWrapper queryWrapper, JSONObject result) {
+        Page<SysRole> paginate;
+        boolean isFirstPage = pageNum == 1;
+        // flex totalRow参数，传入小于0的会查询总量， 否则不会查询总量
+        paginate = LogicDeleteManager.execWithoutLogicDelete(() -> sysRoleMapper.paginate(pageNum, pageSize, isFirstPage ? -1 : 0, queryWrapper));
+        // 第一页才返回查询的数据总量
+        if (isFirstPage) {
+            result.put("total", paginate.getTotalRow());
+        }
+
+        result.put("data", paginate.getRecords());
+        return result;
     }
 }

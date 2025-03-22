@@ -39,11 +39,8 @@ public class SysUserController {
      */
     @PostMapping("/queryUserList")
     public JSONObject queryUserList(@RequestBody JSONObject params) {
-        // 获取分页参数
-        int pageNum = params.getIntValue("pageNum");
-        int pageSize = params.getIntValue("pageSize");
         // 其他查询条件
-        return sysUserService.getAllUser(pageNum, pageSize, params.getJSONObject("searchParams"));
+        return sysUserService.getAllUser(params);
     }
 
     /**

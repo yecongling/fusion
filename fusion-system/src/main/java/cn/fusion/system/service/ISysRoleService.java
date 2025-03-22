@@ -17,10 +17,10 @@ public interface ISysRoleService {
     /**
      * 查询所有角色
      *
-     * @param sysRole 系统角色
+     * @param params 系统角色
      * @return 符合条件的系统角色
      */
-    List<SysRole> selectRoleList(SysRole sysRole);
+    JSONObject getAllRoleList(JSONObject params);
 
     /**
      * 插入角色
@@ -57,18 +57,18 @@ public interface ISysRoleService {
     /**
      * 根据角色获取该角色下的用户
      * @param roleId 角色id
+     * @param params 查询参数（包括分页条件）
      * @return 用户信息
      */
-    JSONObject getRoleUser(Long roleId, int pageNum, int pageSize, JSONObject params);
+    JSONObject getRoleUser(Long roleId, JSONObject params);
 
     /**
      * 分页查询不在当前角色下的用户
      * @param roleId 角色ID
-     * @param pageNum 页码
-     * @param pageSize 数量
+     * @param params 查询参数（包括分页条件）
      * @return 数据（包含用户数据、分页数据）
      */
-    JSONObject getUserNotInRoleByPage(Long roleId, int pageNum, int pageSize, JSONObject params);
+    JSONObject getUserNotInRoleByPage(Long roleId, JSONObject params);
 
     /**
      * 给角色分配菜单权限

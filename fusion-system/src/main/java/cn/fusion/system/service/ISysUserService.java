@@ -17,12 +17,10 @@ public interface ISysUserService {
     /**
      * 查询所有用户信息（非删除标记的用户），分页查询
      *
-     * @param pageNum      分页数
-     * @param pageSize     分页大小
      * @param searchParams 检索条件
      * @return 所有用户
      */
-    JSONObject getAllUser(int pageNum, int pageSize, JSONObject searchParams);
+    JSONObject getAllUser(JSONObject searchParams);
 
     /**
      * 获取回收站的用户，分页查询
