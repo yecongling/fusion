@@ -130,7 +130,7 @@ public class SysRoleController {
             operate = "add";
         }
         // ID列表
-        List<Long> ids = params.getJSONArray("ids").toList(Long.class);
+        List<Long> ids = params.getJSONArray("userIds").toList(Long.class);
         return Response.success(sysRoleService.assignRoleUser(params.getLong("roleId"), operate, ids));
     }
 
