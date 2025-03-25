@@ -75,6 +75,11 @@
         <!-- Sa-Token 整合 Redis （使用 fastjson2 序列化方式） -->
         <dependency>
             <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-redis-template</artifactId>
+            <version>1.41.0</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.dev33</groupId>
             <artifactId>sa-token-fastjson2</artifactId>
             <version>1.41.0</version>
         </dependency>
