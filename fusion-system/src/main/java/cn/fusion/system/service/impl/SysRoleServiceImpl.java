@@ -132,9 +132,9 @@ public class SysRoleServiceImpl implements ISysRoleService {
         QueryWrapper queryWrapper = new QueryWrapper();
         queryWrapper.eq(SysRoleMenu::getRoleId, roleId);
         List<SysRoleMenu> sysRoleMenus = sysRoleMenuMapper.selectListByQuery(queryWrapper);
-        List<Long> menuIds = new ArrayList<>();
+        List<String> menuIds = new ArrayList<>();
         sysRoleMenus.forEach(sysRoleMenu -> {
-            menuIds.add(sysRoleMenu.getMenuId());
+            menuIds.add(sysRoleMenu.getMenuId().toString());
         });
         jsonObject.put("menuIds", menuIds);
         return jsonObject;
