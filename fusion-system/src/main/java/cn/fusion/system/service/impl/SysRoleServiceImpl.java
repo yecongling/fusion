@@ -124,7 +124,9 @@ public class SysRoleServiceImpl implements ISysRoleService {
     public JSONObject getRoleMenu(Long roleId) {
         JSONObject jsonObject = new JSONObject();
         // 查询所有的菜单数据
-        List<SysMenu> menuList = sysMenuMapper.selectAll();
+        QueryWrapper menuWrapper = new QueryWrapper();
+        menuWrapper.orderBy(SysMenu::getSortNo, true);
+        List<SysMenu> menuList = sysMenuMapper.selectListByQuery(menuWrapper);
         // 将menuList构建成树结构
         List<SysMenu> sysMenus = this.buildMenus(menuList);
         jsonObject.put("menuList", sysMenus);
