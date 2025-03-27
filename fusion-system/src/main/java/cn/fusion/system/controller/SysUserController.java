@@ -161,12 +161,13 @@ public class SysUserController {
     /**
      * 修改用户密码
      *
-     * @param userId 用户ID
-     * @param newPwd 新密码
+     * @param params 包含用户ID和新密码的JSON对象
      * @return true| false
      */
-    @PostMapping("/modifyPwd/{userId}")
-    public boolean modifyPwd(@PathVariable Long userId, @RequestParam String newPwd) throws Exception {
+    @PostMapping("/modifyPwd")
+    public boolean modifyPwd(@RequestBody JSONObject params) throws Exception {
+        Long userId = params.getLong("id");
+        String newPwd = params.getString("password");
         return sysUserService.modifyPwd(userId, newPwd);
     }
 }
