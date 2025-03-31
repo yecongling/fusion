@@ -3,8 +3,13 @@ package cn.fusion.system.entity;
 import cn.fusion.framework.config.EntityInsertListener;
 import cn.fusion.framework.config.EntityUpdateListener;
 import cn.fusion.framework.core.BaseEntity;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
+import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
+import com.mybatisflex.core.keygen.KeyGenerators;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -21,11 +26,76 @@ public class SysDict extends BaseEntity implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
+    /**
+     * id
+     */
+    @Id(keyType = KeyType.Generator, value = KeyGenerators.snowFlakeId)
+    @JsonSerialize(using = ToStringSerializer.class)
+    private Long id;
 
     /**
      * 字典编码
      */
-    @Id
     private String dictCode;
 
+    // 字典名称
+    private String dictName;
+
+    // 字典类型
+    private Integer type;
+
+    // 备注
+    private String remark;
+
+    // 删除标记
+    @Column(isLogicDelete = true)
+    private Boolean delFlag;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getDictCode() {
+        return dictCode;
+    }
+
+    public void setDictCode(String dictCode) {
+        this.dictCode = dictCode;
+    }
+
+    public String getDictName() {
+        return dictName;
+    }
+
+    public void setDictName(String dictName) {
+        this.dictName = dictName;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public Boolean getDelFlag() {
+        return delFlag;
+    }
+
+    public void setDelFlag(Boolean delFlag) {
+        this.delFlag = delFlag;
+    }
 }
