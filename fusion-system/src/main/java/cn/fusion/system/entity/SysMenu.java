@@ -10,6 +10,8 @@ import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 import com.mybatisflex.core.keygen.KeyGenerators;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -23,7 +25,9 @@ import java.util.List;
  * @Date 2024/11/8 11:58
  * @Version 1.0
  */
+@Setter
 @Table(value = "t_sys_menu", onInsert = EntityInsertListener.class, onUpdate = EntityUpdateListener.class)
+@Getter
 public class SysMenu extends BaseEntity implements Serializable {
 
     @Serial
@@ -153,190 +157,6 @@ public class SysMenu extends BaseEntity implements Serializable {
     @Column(ignore = true)
     private List<SysMenu> children;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPerms() {
-        return perms;
-    }
-
-    public void setPerms(String perms) {
-        this.perms = perms;
-    }
-
-    public String getPermsType() {
-        return permsType;
-    }
-
-    public void setPermsType(String permsType) {
-        this.permsType = permsType;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
-    public String getComponent() {
-        return component;
-    }
-
-    public void setComponent(String component) {
-        this.component = component;
-    }
-
-    public String getComponentName() {
-        return componentName;
-    }
-
-    public void setComponentName(String componentName) {
-        this.componentName = componentName;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getRedirect() {
-        return redirect;
-    }
-
-    public void setRedirect(String redirect) {
-        this.redirect = redirect;
-    }
-
-    public Double getSortNo() {
-        return sortNo;
-    }
-
-    public void setSortNo(Double sortNo) {
-        this.sortNo = sortNo;
-    }
-
-    public Integer getMenuType() {
-        return menuType;
-    }
-
-    public void setMenuType(Integer menuType) {
-        this.menuType = menuType;
-    }
-
-    public boolean getLeaf() {
-        return leaf;
-    }
-
-    public void setLeaf(boolean isLeaf) {
-        this.leaf = isLeaf;
-    }
-
-    public boolean getRoute() {
-        return route;
-    }
-
-    public void setRoute(boolean isRoute) {
-        route = isRoute;
-    }
-
-    public boolean isKeepAlive() {
-        return keepAlive;
-    }
-
-    public void setKeepAlive(boolean keepAlive) {
-        this.keepAlive = keepAlive;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Boolean getDelFlag() {
-        return delFlag;
-    }
-
-    public void setDelFlag(Boolean delFlag) {
-        this.delFlag = delFlag;
-    }
-
-    public Boolean getRuleFlag() {
-        return ruleFlag;
-    }
-
-    public void setRuleFlag(Boolean ruleFlag) {
-        this.ruleFlag = ruleFlag;
-    }
-
-    public boolean isHidden() {
-        return hidden;
-    }
-
-    public void setHidden(boolean hidden) {
-        this.hidden = hidden;
-    }
-
-    public boolean isHideTab() {
-        return hideTab;
-    }
-
-    public void setHideTab(boolean hideTab) {
-        this.hideTab = hideTab;
-    }
-
-    public Boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(Boolean status) {
-        this.status = status;
-    }
-
-    public boolean isAlwaysShow() {
-        return alwaysShow;
-    }
-
-    public void setAlwaysShow(boolean alwaysShow) {
-        this.alwaysShow = alwaysShow;
-    }
-
-    public boolean isInternalOrExternal() {
-        return internalOrExternal;
-    }
-
-    public void setInternalOrExternal(boolean internalOrExternal) {
-        this.internalOrExternal = internalOrExternal;
-    }
-
     public List<SysMenu> getChildren() {
         if (children == null) {
             children = new ArrayList<>();
@@ -344,7 +164,4 @@ public class SysMenu extends BaseEntity implements Serializable {
         return children;
     }
 
-    public void setChildren(List<SysMenu> children) {
-        this.children = children;
-    }
 }

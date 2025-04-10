@@ -143,6 +143,10 @@
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
         <!-- excel操作 -->
         <!-- https://mvnrepository.com/artifact/cn.idev.excel/fastexcel -->
         <dependency>

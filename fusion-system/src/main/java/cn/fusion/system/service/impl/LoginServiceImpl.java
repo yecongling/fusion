@@ -200,7 +200,7 @@ public class LoginServiceImpl implements ILoginService {
         response.setCode(HttpCodeEnum.SUCCESS.getCode());
         response.setMessage(HttpCodeEnum.SUCCESS.getMessage());
         response.setData(result);
-        response.setStatus(true);
+        response.setSuccess(true);
     }
 
     /**

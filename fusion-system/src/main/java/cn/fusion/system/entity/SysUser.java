@@ -13,6 +13,8 @@ import com.mybatisflex.core.keygen.KeyGenerators;
 import com.mybatisflex.core.mask.Masks;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.ibatis.type.JdbcType;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -27,6 +29,8 @@ import java.util.Date;
  * @Date 2024/11/4 21:00
  * @Version 1.0
  **/
+@Getter
+@Setter
 @JsonIgnoreProperties(value = {"password"}, allowSetters = true)
 @Table(value = "t_sys_user", onInsert = EntityInsertListener.class, onUpdate = EntityUpdateListener.class)
 public class SysUser extends SysOpr implements Serializable {
@@ -149,182 +153,14 @@ public class SysUser extends SysOpr implements Serializable {
      */
     private String clientId;
 
-    public Long getId() {
-        return id;
-    }
-
     public void setId(Long id) {
         this.id = id;
         // 设置父级属性
         this.setUserId(id);
     }
 
-    public String getUsername() {
-        return username;
-    }
-
     public void setUsername(String username) {
         this.username = username;
         this.setUserName(username);
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getSalt() {
-        return salt;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
-
-    public String getRealName() {
-        return realName;
-    }
-
-    public void setRealName(String realName) {
-        this.realName = realName;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
-    public Date getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
-    }
-
-    public Integer getSex() {
-        return sex;
-    }
-
-    public void setSex(Integer sex) {
-        this.sex = sex;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getOrgCode() {
-        return orgCode;
-    }
-
-    public void setOrgCode(String orgCode) {
-        this.orgCode = orgCode;
-    }
-
-    public String getOrgCodeTxt() {
-        return orgCodeTxt;
-    }
-
-    public void setOrgCodeTxt(String orgCodeTxt) {
-        this.orgCodeTxt = orgCodeTxt;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public Boolean getDelFlag() {
-        return delFlag;
-    }
-
-    public void setDelFlag(Boolean delFlag) {
-        this.delFlag = delFlag;
-    }
-
-    public String getWorkNo() {
-        return workNo;
-    }
-
-    public void setWorkNo(String workNo) {
-        this.workNo = workNo;
-    }
-
-    public String getPost() {
-        return post;
-    }
-
-    public void setPost(String post) {
-        this.post = post;
-    }
-
-    public String getTelephone() {
-        return telephone;
-    }
-
-    public void setTelephone(String telephone) {
-        this.telephone = telephone;
-    }
-
-    public Boolean getActivitySync() {
-        return activitySync;
-    }
-
-    public void setActivitySync(Boolean activitySync) {
-        this.activitySync = activitySync;
-    }
-
-    public Integer getUserIdentity() {
-        return userIdentity;
-    }
-
-    public void setUserIdentity(Integer userIdentity) {
-        this.userIdentity = userIdentity;
-    }
-
-    public String getDepartIds() {
-        return departIds;
-    }
-
-    public void setDepartIds(String departIds) {
-        this.departIds = departIds;
-    }
-
-    public String getRelTenantIds() {
-        return relTenantIds;
-    }
-
-    public void setRelTenantIds(String relTenantIds) {
-        this.relTenantIds = relTenantIds;
-    }
-
-    public String getClientId() {
-        return clientId;
-    }
-
-    public void setClientId(String clientId) {
-        this.clientId = clientId;
     }
 }

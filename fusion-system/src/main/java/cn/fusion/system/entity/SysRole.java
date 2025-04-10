@@ -10,6 +10,8 @@ import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 import com.mybatisflex.core.keygen.KeyGenerators;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -21,6 +23,8 @@ import java.io.Serializable;
  * @Date 2024/12/26 13:35
  * @Version 1.0
  */
+@Setter
+@Getter
 @Table(value = "t_sys_role", onInsert = EntityInsertListener.class, onUpdate = EntityUpdateListener.class)
 public class SysRole extends BaseEntity implements Serializable {
 
@@ -61,51 +65,4 @@ public class SysRole extends BaseEntity implements Serializable {
      */
     private String remark;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getRoleCode() {
-        return roleCode;
-    }
-
-    public void setRoleCode(String roleCode) {
-        this.roleCode = roleCode;
-    }
-
-    public String getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
-    }
-
-    public Integer getRoleType() {
-        return roleType;
-    }
-
-    public void setRoleType(Integer roleType) {
-        this.roleType = roleType;
-    }
-
-    public Boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(Boolean status) {
-        this.status = status;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
 }

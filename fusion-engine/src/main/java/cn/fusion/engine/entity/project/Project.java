@@ -11,6 +11,8 @@ import com.mybatisflex.core.keygen.KeyGenerators;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -22,6 +24,8 @@ import java.io.Serializable;
  * @Date 2025/1/22 11:50
  * @Version 1.0
  */
+@Setter
+@Getter
 @Table(value = "t_engine_project", onInsert = EntityInsertListener.class, onUpdate = EntityUpdateListener.class)
 public class Project extends BaseEntity implements Serializable {
     @Serial
@@ -74,67 +78,4 @@ public class Project extends BaseEntity implements Serializable {
      */
     private String remark;
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public Integer getPriority() {
-        return priority;
-    }
-
-    public void setPriority(Integer priority) {
-        this.priority = priority;
-    }
-
-    public Integer getLogLevel() {
-        return logLevel;
-    }
-
-    public void setLogLevel(Integer logLevel) {
-        this.logLevel = logLevel;
-    }
-
-    public String getBackground() {
-        return background;
-    }
-
-    public void setBackground(String background) {
-        this.background = background;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
 }

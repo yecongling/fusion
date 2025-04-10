@@ -9,6 +9,8 @@ import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 import com.mybatisflex.core.keygen.KeyGenerators;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -20,6 +22,8 @@ import java.io.Serializable;
  * @Date 2025/3/31 20:30
  * @Version 1.0
  */
+@Setter
+@Getter
 @Table(value = "t_sys_dict", onInsert = EntityInsertListener.class, onUpdate = EntityUpdateListener.class)
 public class SysDictItem extends BaseEntity implements Serializable {
 
@@ -54,67 +58,4 @@ public class SysDictItem extends BaseEntity implements Serializable {
     // 字典状态
     private Integer status;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getDictId() {
-        return dictId;
-    }
-
-    public void setDictId(Long dictId) {
-        this.dictId = dictId;
-    }
-
-    public String getItemText() {
-        return itemText;
-    }
-
-    public void setItemText(String itemText) {
-        this.itemText = itemText;
-    }
-
-    public String getItemValue() {
-        return itemValue;
-    }
-
-    public void setItemValue(String itemValue) {
-        this.itemValue = itemValue;
-    }
-
-    public String getItemColor() {
-        return itemColor;
-    }
-
-    public void setItemColor(String itemColor) {
-        this.itemColor = itemColor;
-    }
-
-    public Integer getItemSort() {
-        return itemSort;
-    }
-
-    public void setItemSort(Integer itemSort) {
-        this.itemSort = itemSort;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
 }

@@ -10,6 +10,8 @@ import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 import com.mybatisflex.core.keygen.KeyGenerators;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -21,6 +23,8 @@ import java.io.Serializable;
  * @Date 2024/12/27 13:56
  * @Version 1.0
  */
+@Setter
+@Getter
 @Table(value = "t_sys_user_role", onInsert = EntityInsertListener.class, onUpdate = EntityUpdateListener.class)
 public class SysUserRole extends BaseEntity implements Serializable {
 
@@ -58,59 +62,4 @@ public class SysUserRole extends BaseEntity implements Serializable {
      */
     private String operateIp;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public Long getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
-    }
-
-    public String getOperateIp() {
-        return operateIp;
-    }
-
-    public void setOperateIp(String operateIp) {
-        this.operateIp = operateIp;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getRealName() {
-        return realName;
-    }
-
-    public void setRealName(String realName) {
-        this.realName = realName;
-    }
-
-    public int getSex() {
-        return sex;
-    }
-
-    public void setSex(int sex) {
-        this.sex = sex;
-    }
 }

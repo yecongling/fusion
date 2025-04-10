@@ -10,6 +10,8 @@ import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 import com.mybatisflex.core.keygen.KeyGenerators;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -21,6 +23,8 @@ import java.io.Serializable;
  * @Date 2025/3/27 13:37
  * @Version 1.0
  **/
+@Setter
+@Getter
 @Table(value = "t_sys_dict", onInsert = EntityInsertListener.class, onUpdate = EntityUpdateListener.class)
 public class SysDict extends BaseEntity implements Serializable {
 
@@ -51,51 +55,4 @@ public class SysDict extends BaseEntity implements Serializable {
     @Column(isLogicDelete = true)
     private Boolean delFlag;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getDictCode() {
-        return dictCode;
-    }
-
-    public void setDictCode(String dictCode) {
-        this.dictCode = dictCode;
-    }
-
-    public String getDictName() {
-        return dictName;
-    }
-
-    public void setDictName(String dictName) {
-        this.dictName = dictName;
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
-    public Boolean getDelFlag() {
-        return delFlag;
-    }
-
-    public void setDelFlag(Boolean delFlag) {
-        this.delFlag = delFlag;
-    }
 }

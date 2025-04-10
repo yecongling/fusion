@@ -2,6 +2,8 @@ package cn.fusion.framework.core;
 
 import cn.fusion.framework.enums.HttpCodeEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @ClassName Response
@@ -10,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * @Date 2024/11/1 17:41
  * @Version 1.0
  */
+@Setter
+@Getter
 public class Response<T> {
 
     /**
@@ -20,7 +24,7 @@ public class Response<T> {
     /**
      * 操作的状态 true 成功  false 失败
      */
-    private Boolean status;
+    private Boolean success;
 
     /**
      * 返回的信息 包括成功信息 失败信息等
@@ -38,9 +42,9 @@ public class Response<T> {
     public Response() {
     }
 
-    public Response(Integer code, Boolean status, String message, T data) {
+    public Response(Integer code, Boolean success, String message, T data) {
         this.code = code;
-        this.status = status;
+        this.success = success;
         this.message = message;
         this.data = data;
     }
@@ -52,7 +56,7 @@ public class Response<T> {
      */
     public static <T> Response<T> success() {
         Response<T> response = new Response<T>();
-        response.setStatus(true);
+        response.setSuccess(true);
         response.setCode(HttpCodeEnum.SUCCESS.getCode());
         response.setMessage(HttpCodeEnum.SUCCESS.getMessage());
         return response;
@@ -67,7 +71,7 @@ public class Response<T> {
      */
     public static <T> Response<T> success(T data) {
         Response<T> response = new Response<T>();
-        response.setStatus(true);
+        response.setSuccess(true);
         response.setCode(HttpCodeEnum.SUCCESS.getCode());
         response.setMessage(HttpCodeEnum.SUCCESS.getMessage());
         response.setData(data);
@@ -84,7 +88,7 @@ public class Response<T> {
      */
     public static <T> Response<T> success(String msg, T data) {
         Response<T> r = new Response<T>();
-        r.setStatus(true);
+        r.setSuccess(true);
         r.setCode(HttpCodeEnum.SUCCESS.getCode());
         r.setMessage(msg);
         r.setData(data);
@@ -93,7 +97,7 @@ public class Response<T> {
 
     public static <T> Response<T> fail() {
         Response<T> response = new Response<T>();
-        response.setStatus(false);
+        response.setSuccess(false);
         response.setCode(HttpCodeEnum.ERROR.getCode());
         response.setMessage(HttpCodeEnum.ERROR.getMessage());
         return response;
@@ -128,35 +132,4 @@ public class Response<T> {
         return this.code != null && this.code == 200;
     }
 
-    public Integer getCode() {
-        return code;
-    }
-
-    public void setCode(Integer code) {
-        this.code = code;
-    }
-
-    public Boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(Boolean status) {
-        this.status = status;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
-        this.data = data;
-    }
 }

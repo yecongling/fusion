@@ -242,7 +242,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
             Long parentId = menu.getParentId();
             if (parentJSON == null && parentId == null) {
                 array.add(json);
-                if (!menu.getLeaf()) {
+                if (!menu.isLeaf()) {
                     buildDirectory(array, menus, json);
                 }
             } else if (parentJSON != null && parentId != null && parentId.equals(parentJSON.get("value"))) {
@@ -253,7 +253,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
                     jsonArray.add(json);
                     parentJSON.put("children", jsonArray);
                 }
-                if (!menu.getLeaf()) {
+                if (!menu.isLeaf()) {
                     buildDirectory(array, menus, json);
                 }
             }
@@ -293,7 +293,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
             }
             if (parentJSON == null && parentId == null) {
                 array.add(json);
-                if (!menu.getLeaf()) {
+                if (!menu.isLeaf()) {
                     getPermissionJsonArray(array, permissions, json);
                 }
             } else if (parentJSON != null && parentId != null && parentId == parentJSON.getLongValue("id")) {
@@ -315,7 +315,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
                         children.add(json);
                         parentJSON.put("children", children);
                     }
-                    if (!menu.getLeaf()) {
+                    if (!menu.isLeaf()) {
                         getPermissionJsonArray(array, permissions, json);
                     }
                 } else if (menu.getMenuType().equals(CommonConstant.MENU_TYPE_2)) {
@@ -348,7 +348,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
             return null;
         }
         // 表示生成路由
-        json.put("route", permission.getRoute());
+        json.put("route", permission.isRoute());
         json.put("path", permission.getUrl());
         if (StringUtils.isNotEmpty(permission.getComponentName())) {
             json.put("name", permission.getComponentName());
