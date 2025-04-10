@@ -28,7 +28,7 @@ comment on column t_sys_user_role.update_by is '更新人';
 comment on column t_sys_user_role.update_time is '更新时间';
 
 alter table t_sys_user_role
-    owner to postgres;
+    owner to fusion;
 
 create index idx_sp_user_id
     on t_sys_user_role (user_id);

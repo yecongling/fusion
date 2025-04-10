@@ -28,7 +28,7 @@ comment on column t_sys_role_menu.update_by is '更新人';
 comment on column t_sys_role_menu.update_time is '更新时间';
 
 alter table t_sys_role_menu
-    owner to postgres;
+    owner to fusion;
 
 INSERT INTO public.t_sys_role_menu (id, role_id, menu_id, operate_ip, create_by, create_time, update_by, update_time) VALUES (235123826202185721, 235123826202185723, 235123826202185728, '127.0.0.1', 235123826202185728, '2025-03-12 15:09:46.000000', 235123826202185728, '2025-03-27 16:25:42.932738');
 INSERT INTO public.t_sys_role_menu (id, role_id, menu_id, operate_ip, create_by, create_time, update_by, update_time) VALUES (235123826202185722, 235123826202185723, 235123826202185729, '127.0.0.1', 235123826202185728, '2025-03-12 15:10:33.000000', 235123826202185728, '2025-03-27 16:25:42.942323');

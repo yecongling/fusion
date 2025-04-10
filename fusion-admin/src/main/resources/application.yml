@@ -23,7 +23,7 @@ spring:
       add-mappings: false
   datasource:
     url: YK3pbx9cTsIhhPnvLJL/GYRd7xlHazaBl65hy9a95bEWFe3Zb6K4z4RUpPgNBvpv
-    username: 3lzIZLhMtUObcSs4SkhlCQ==
+    username: Maccmmrq5WBTUh1l/jIY+g==
     password: QA2Cr8IO+jgJWrcIZZZZmw==
     driver-class-name: org.postgresql.Driver
     type: com.zaxxer.hikari.HikariDataSource

@@ -38,7 +38,7 @@ public class EncryptionUtils {
         System.out.println("key:" + key);
         String encrypt = EncryptionUtils.encrypt("jdbc:postgresql://localhost:5432/fusion", key);
         System.out.println("url:" + encrypt);
-        String username = EncryptionUtils.encrypt("postgres", key);
+        String username = EncryptionUtils.encrypt("fusion", key);
         System.out.println("username:" + username);
     }
 }

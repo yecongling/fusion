@@ -85,7 +85,7 @@ comment on column t_sys_menu.update_by is '更新人';
 comment on column t_sys_menu.update_time is '更新时间';
 
 alter table t_sys_menu
-    owner to postgres;
+    owner to fusion;
 
 create index idx_sp_sort_no
     on t_sys_menu (sort_no);
