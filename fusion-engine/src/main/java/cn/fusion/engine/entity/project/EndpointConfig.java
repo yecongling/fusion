@@ -9,6 +9,8 @@ import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 import com.mybatisflex.core.keygen.KeyGenerators;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -22,6 +24,8 @@ import java.util.List;
  * @Date 2024/11/26 09:19
  * @Version 1.0
  */
+@Getter
+@Setter
 @Table(value = "t_engine_endpoint_config", onInsert = EntityInsertListener.class, onUpdate = EntityUpdateListener.class)
 public class EndpointConfig extends BaseEntity implements Serializable {
 
@@ -62,86 +66,10 @@ public class EndpointConfig extends BaseEntity implements Serializable {
     @Column(ignore = true)
     private List<EndpointConfigProperty> endpointProperties;
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getConfigName() {
-        return configName;
-    }
-
-    public void setConfigName(String configName) {
-        this.configName = configName;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
-    public String getTypeId() {
-        return typeId;
-    }
-
-    public void setTypeId(String typeId) {
-        this.typeId = typeId;
-    }
-
-    public String getSupportedMode() {
-        return supportedMode;
-    }
-
-    public void setSupportedMode(String supportedMode) {
-        this.supportedMode = supportedMode;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Boolean getConfig() {
-        return isConfig;
-    }
-
-    public void setConfig(Boolean config) {
-        isConfig = config;
-    }
-
     public List<EndpointConfigProperty> getEndpointProperties() {
         if (endpointProperties == null) {
             endpointProperties = new ArrayList<>();
         }
         return endpointProperties;
-    }
-
-    public void setEndpointProperties(List<EndpointConfigProperty> endpointProperties) {
-        this.endpointProperties = endpointProperties;
-    }
-
-    public boolean isSupportRetry() {
-        return supportRetry;
-    }
-
-    public void setSupportRetry(boolean supportRetry) {
-        this.supportRetry = supportRetry;
-    }
-
-    public boolean isStrategy() {
-        return strategy;
-    }
-
-    public void setStrategy(boolean strategy) {
-        this.strategy = strategy;
     }
 }
