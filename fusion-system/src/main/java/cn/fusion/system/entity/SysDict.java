@@ -15,6 +15,7 @@ import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @ClassName SysDict
@@ -54,5 +55,11 @@ public class SysDict extends BaseEntity implements Serializable {
     // 删除标记
     @Column(isLogicDelete = true)
     private Boolean delFlag;
+
+    /**
+     * 字典项
+     */
+    @Column(ignore = true)
+    private List<SysDictItem> items;
 
 }

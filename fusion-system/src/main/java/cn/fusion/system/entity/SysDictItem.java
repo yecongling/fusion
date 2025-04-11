@@ -58,4 +58,7 @@ public class SysDictItem extends BaseEntity implements Serializable {
     // 字典状态
     private Integer status;
 
+    // 默认值
+    private Boolean defaultFlag;
+
 }
