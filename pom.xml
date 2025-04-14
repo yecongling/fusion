@@ -76,12 +76,12 @@
         <dependency>
             <groupId>cn.dev33</groupId>
             <artifactId>sa-token-redis-template</artifactId>
-            <version>1.41.0</version>
+            <version>1.42.0</version>
         </dependency>
         <dependency>
             <groupId>cn.dev33</groupId>
             <artifactId>sa-token-fastjson2</artifactId>
-            <version>1.41.0</version>
+            <version>1.42.0</version>
         </dependency>
 
         <!-- 切换默认的Web容器 -->
