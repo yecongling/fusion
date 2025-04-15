@@ -13,9 +13,8 @@ import com.mybatisflex.core.keygen.KeyGenerators;
 import com.mybatisflex.core.mask.Masks;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
-import org.apache.ibatis.type.JdbcType;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serial;
@@ -29,8 +28,8 @@ import java.util.Date;
  * @Date 2024/11/4 21:00
  * @Version 1.0
  **/
-@Getter
-@Setter
+@EqualsAndHashCode(callSuper = true)
+@Data
 @JsonIgnoreProperties(value = {"password"}, allowSetters = true)
 @Table(value = "t_sys_user", onInsert = EntityInsertListener.class, onUpdate = EntityUpdateListener.class)
 public class SysUser extends SysOpr implements Serializable {

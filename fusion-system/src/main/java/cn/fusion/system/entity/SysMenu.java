@@ -10,8 +10,8 @@ import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 import com.mybatisflex.core.keygen.KeyGenerators;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -25,9 +25,9 @@ import java.util.List;
  * @Date 2024/11/8 11:58
  * @Version 1.0
  */
-@Setter
+@EqualsAndHashCode(callSuper = true)
+@Data
 @Table(value = "t_sys_menu", onInsert = EntityInsertListener.class, onUpdate = EntityUpdateListener.class)
-@Getter
 public class SysMenu extends BaseEntity implements Serializable {
 
     @Serial

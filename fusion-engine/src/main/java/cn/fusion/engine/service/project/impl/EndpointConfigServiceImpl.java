@@ -161,7 +161,7 @@ public class EndpointConfigServiceImpl implements IEndpointConfigService {
         // 查询端点配置
         EndpointConfig endpointConfig = endpointConfigMapper.selectOneById(id);
         // 查询端点对应的属性配置
-        List<EndpointConfigProperty> endpointProperties = endpointPropertyMapper.selectListByQuery(new QueryWrapper().eq(EndpointConfig::getConfig, id));
+        List<EndpointConfigProperty> endpointProperties = endpointPropertyMapper.selectListByQuery(new QueryWrapper().eq(EndpointConfig::getIsConfig, id));
         endpointConfig.setEndpointProperties(endpointProperties);
         return endpointConfig;
     }

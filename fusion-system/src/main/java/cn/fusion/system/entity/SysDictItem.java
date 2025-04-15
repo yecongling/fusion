@@ -9,8 +9,8 @@ import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 import com.mybatisflex.core.keygen.KeyGenerators;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -22,8 +22,8 @@ import java.io.Serializable;
  * @Date 2025/3/31 20:30
  * @Version 1.0
  */
-@Setter
-@Getter
+@EqualsAndHashCode(callSuper = true)
+@Data
 @Table(value = "t_sys_dict", onInsert = EntityInsertListener.class, onUpdate = EntityUpdateListener.class)
 public class SysDictItem extends BaseEntity implements Serializable {
 

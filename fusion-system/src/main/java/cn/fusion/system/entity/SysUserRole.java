@@ -10,8 +10,8 @@ import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 import com.mybatisflex.core.keygen.KeyGenerators;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -23,8 +23,8 @@ import java.io.Serializable;
  * @Date 2024/12/27 13:56
  * @Version 1.0
  */
-@Setter
-@Getter
+@EqualsAndHashCode(callSuper = true)
+@Data
 @Table(value = "t_sys_user_role", onInsert = EntityInsertListener.class, onUpdate = EntityUpdateListener.class)
 public class SysUserRole extends BaseEntity implements Serializable {
 
