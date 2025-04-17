@@ -4,6 +4,7 @@ import cn.dev33.satoken.interceptor.SaInterceptor;
 import cn.dev33.satoken.stp.StpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class MvcInterceptor implements WebMvcConfigurer {
 
     private final RateLimitingInterceptor rateLimitingInterceptor;
+
     @Autowired
     public MvcInterceptor(RateLimitingInterceptor rateLimitingInterceptor) {
         this.rateLimitingInterceptor = rateLimitingInterceptor;
@@ -33,5 +35,19 @@ public class MvcInterceptor implements WebMvcConfigurer {
         registry.addInterceptor(new SaInterceptor(handle -> StpUtil.checkLogin())).addPathPatterns("/**").excludePathPatterns("/login", "/logout", "/getCaptcha/*");
         // 限流
         registry.addInterceptor(rateLimitingInterceptor).addPathPatterns("/**");
+    }
+
+    /**
+     * 开启跨域支持
+     *
+     * @param registry 跨域配置中心
+     */
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOriginPatterns("*")
+                .allowedMethods("*")
+                .allowedHeaders("*")
+                .allowCredentials(false).exposedHeaders("Authorization");
     }
 }

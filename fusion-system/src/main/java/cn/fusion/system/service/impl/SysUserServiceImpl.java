@@ -1,5 +1,6 @@
 package cn.fusion.system.service.impl;
 
+import cn.dev33.satoken.stp.StpUtil;
 import cn.fusion.framework.constant.CommonConstant;
 import cn.fusion.framework.core.SysOpr;
 import cn.fusion.framework.exception.BusinessException;
@@ -193,6 +194,11 @@ public class SysUserServiceImpl implements ISysUserService {
         }).toList();
         // 调用批量更新
         int i = Db.updateEntitiesBatch(sysUsers);
+        // 调用账号封禁
+        userIds.forEach(userId -> {
+            // 调用账号封禁
+            StpUtil.disable(userId, 3600 * 24 * 30);
+        });
         return i > 0;
     }
 
@@ -217,6 +223,9 @@ public class SysUserServiceImpl implements ISysUserService {
         }).toList();
         // 调用批量更新
         int i = Db.updateEntitiesBatch(sysUsers);
+        // 解除账号封禁
+        // 调用账号封禁
+        userIds.forEach(StpUtil::untieDisable);
         return i > 0;
     }
 
