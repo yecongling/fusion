@@ -22,10 +22,10 @@ spring:
     resources:
       add-mappings: false
   datasource:
-    url: YK3pbx9cTsIhhPnvLJL/GYRd7xlHazaBl65hy9a95bEWFe3Zb6K4z4RUpPgNBvpv
-    username: Maccmmrq5WBTUh1l/jIY+g==
+    url: MFACjKALPqKdW8XlhZbu1J3vvlpcLjAntE5j2trzYgDtfyfd92M/TobpBQDyP8egDw1xRxKQHc2NeZzw97i9JqNvx0Gy3EH/vYGjTk5b+rswk+UGwQBz5fssCR8615fPVLOeSsqD+M7q9Et6bjkYOHCE1ENJ+nuiTcQXrclrED1lqf13qGOye+e7uLV18jUeknykhKvztqO+45ROzD0sjajoXlaO8ocq4AqMNYbSOYi1EJY5r5wSgBhxNH9OVZEs
+    username: HFundkUyNJ6IqZX+sDMeFg==
     password: QA2Cr8IO+jgJWrcIZZZZmw==
-    driver-class-name: org.postgresql.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.zaxxer.hikari.HikariDataSource
     # 连接池
     hikari:
@@ -47,21 +47,15 @@ spring:
       host: localhost
       port: 6379
       password: QA2Cr8IO+jgJWrcIZZZZmw==
-      database: 1
-      timeout: 10s
+      database: 0
       lettuce:
         pool:
-          # 连接池最大连接数
-          max-active: 200
-          # 连接池最大阻塞等待时间（使用负值表示没有限制）
-          max-wait: -1ms
-          # 连接池中的最大空闲连接
-          max-idle: 10
-          # 连接池中的最小空闲连接
-          min-idle: 0
+          max-idle: 16
+          max-active: 32
+          min-idle: 8
 # 是否开启sql记录
 mybatis:
-  sqlLog: true
+  sqlLog: false
 mybatis-flex:
   mapper-locations: classpath*:mapper/**/*.xml
 logging:
@@ -76,15 +70,3 @@ sa-token:
   token-style: random-64
   # 60分钟内无操作，token则会立即过期，有操作就一直续期(目前暂时不过期)
   active-timeout: -1
-  token-name: Authorization
-  # token 前缀
-  token-prefix: Bearer
-  # 是否允许同一账号多地同时登录
-  is-concurrent: false
-  # 是否多端共享 token
-  is-share: false
-  # 不自动刷新数据
-  data-refresh-period: -1
-  is-log: false
-  # 是否读取 cookie 中的 token，从header中读取
-  is-read-cookie: false
