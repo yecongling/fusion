@@ -156,18 +156,20 @@ public class LoginServiceImpl implements ILoginService {
      *
      * @param refreshToken 更新token
      * @return 新的访问token
-     * @throws Exception ex
      */
     @Override
-    public String refreshToken(String refreshToken) throws Exception {
+    public String refreshToken(String refreshToken) {
         // 1、验证refreshToken是否存在
         Object userId = redisUtil.get(CommonConstant.PREFIX_USER_REFRESH_TOKEN + refreshToken);
         if (userId == null) {
             throw new BusinessException(HttpCodeEnum.RC401.getCode(), "refreshToken已失效，请重新登录！");
         }
+        SysUser sysUser = this.getUserById(userId.toString());
         // 重新生成token
         StpUtil.login(userId);
-        return StpUtil.getTokenValue();
+        String tokenValue = StpUtil.getTokenValue();
+        redisUtil.set(CommonConstant.PREFIX_USER_TOKEN + tokenValue, sysUser, 900);
+        return tokenValue;
     }
 
     /**
@@ -196,6 +198,31 @@ public class LoginServiceImpl implements ILoginService {
     }
 
     /**
+     * 根据用户id查询用户的信息、以及角色
+     *
+     * @param userId 用户id
+     * @return 用户信息
+     */
+    private SysUser getUserById(String userId) {
+        // 查询条件
+        QueryWrapper queryWrapper = new QueryWrapper();
+        // 查询的字段（用户表+用户角色表）
+        queryWrapper.select(
+                        QueryMethods.column(SysUser::getId),
+                        QueryMethods.column(SysUser::getUsername),
+                        QueryMethods.column(SysUser::getSalt),
+                        QueryMethods.column(SysUser::getPassword),
+                        QueryMethods.column(SysUser::getStatus),
+                        QueryMethods.column(SysUserRole::getRoleId).as(SysUser::getCurrentRoleId)
+                )
+                .from(SysUser.class).as("user")
+                .leftJoin(SysUserRole.class).as("user_role")
+                .on(SysUser::getId, SysUserRole::getUserId)
+                .eq(SysUser::getId, userId);
+        return loginMapper.selectOneByQuery(queryWrapper);
+    }
+
+    /**
      * 生成用户相关信息
      *
      * @param sysUser  用户
@@ -204,8 +231,10 @@ public class LoginServiceImpl implements ILoginService {
     private void generateUserInfo(SysUser sysUser, Response<Object> response) {
         // 6、登录成功，生成token
         StpUtil.login(sysUser.getUserId());
+        // 7、将用户信息存入redis中
         // so-token会自动将其存入redis中
         String tokenValue = StpUtil.getTokenValue();
+        redisUtil.set(CommonConstant.PREFIX_USER_TOKEN + tokenValue, sysUser, 900);
         // 记录操作员登录地址
         String localAddr = servletUtils.getCurrentIp();
         sysUser.setLoginIp(localAddr);
