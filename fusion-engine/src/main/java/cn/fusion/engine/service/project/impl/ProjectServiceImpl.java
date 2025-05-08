@@ -3,9 +3,12 @@ package cn.fusion.engine.service.project.impl;
 import cn.fusion.engine.camel.core.RouteControlService;
 import cn.fusion.engine.camel.core.RouteManager;
 import cn.fusion.engine.entity.project.Project;
+import cn.fusion.engine.entity.project.ProjectTags;
+import cn.fusion.engine.entity.project.Tags;
 import cn.fusion.engine.mapper.project.ProjectMapper;
 import cn.fusion.engine.service.project.IProjectService;
 import com.alibaba.fastjson2.JSONObject;
+import com.mybatisflex.core.query.QueryMethods;
 import com.mybatisflex.core.query.QueryWrapper;
 import org.apache.camel.ServiceStatus;
 import org.apache.commons.lang3.StringUtils;
@@ -51,12 +54,23 @@ public class ProjectServiceImpl implements IProjectService {
      */
     @Override
     public List<Project> getProjects(Project project) {
-        QueryWrapper queryWrapper = new QueryWrapper();
+        QueryWrapper queryWrapper = QueryWrapper.create();
+        queryWrapper.select(
+                        QueryMethods.column(
+                                QueryWrapper.create().select(QueryMethods.allColumns(Project.class))
+                        ),
+                        QueryMethods.column(
+                                QueryWrapper.create().select(QueryMethods.allColumns(Project.class))
+                        )
+                )
+                .from(Project.class).as("p")
+                .leftJoin(ProjectTags.class).as("pt").on(ProjectTags::getProjectId, Project::getId)
+                .leftJoin(Tags.class).as("t").on(Tags::getId, ProjectTags::getTagId);
+        // 还要支持标签查询
         queryWrapper.like(Project::getName, project.getName(), StringUtils.isNotBlank(project.getName()));
         queryWrapper.eq(Project::getCreateBy, project.getCreateBy(), project.getCreateBy() != null);
         queryWrapper.eq(Project::getType, project.getType(), project.getType() != 0);
-        // 如果有标签的查询条件，需要进行关联查询
-        return projectMapper.selectListByQuery(queryWrapper);
+        return projectMapper.selectListByQueryAs(queryWrapper, Project.class);
     }
 
     /**

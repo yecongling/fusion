@@ -3,13 +3,11 @@ package cn.fusion.engine.entity.project;
 import cn.fusion.framework.config.EntityInsertListener;
 import cn.fusion.framework.config.EntityUpdateListener;
 import cn.fusion.framework.core.BaseEntity;
-import com.mybatisflex.annotation.RelationOneToMany;
 import com.mybatisflex.annotation.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * @ClassName ProjectTags
@@ -31,10 +29,5 @@ public class ProjectTags extends BaseEntity implements Serializable {
      * 标签id
      */
     private Long tagId;
-    /**
-     * 标签id
-     */
-    @RelationOneToMany(selfField = "tagId", targetField = "id")
-    private List<Tags> tags;
 
 }

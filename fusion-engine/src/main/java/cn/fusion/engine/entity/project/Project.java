@@ -15,6 +15,7 @@ import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @ClassName Project
@@ -81,7 +82,7 @@ public class Project extends BaseEntity implements Serializable {
     /**
      * 项目标签
      */
-    @RelationOneToMany(targetField = "projectId", selfField = "id")
-    private ProjectTags tags;
+    @Column(ignore = true)
+    private List<Tags> tags;
 
 }
