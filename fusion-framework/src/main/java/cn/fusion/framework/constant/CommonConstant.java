@@ -73,6 +73,11 @@ public interface CommonConstant {
      */
     String PREFIX_USER_TOKEN = "prefix_user_token_";
 
+    /**
+     * 用户刷新token
+     */
+    String PREFIX_USER_REFRESH_TOKEN = "prefix_user_refresh_token_";
+
     // 用户token前缀
     String USER_TOKEN_PREFIX = "user_token_";
 

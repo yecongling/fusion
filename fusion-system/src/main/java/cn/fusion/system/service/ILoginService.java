@@ -35,4 +35,13 @@ public interface ILoginService {
      * @throws Exception ex
      */
     String randomImage(String key) throws Exception;
+
+    /**
+     * 刷新token
+     *
+     * @param refreshToken 更新token
+     * @return 新的访问token
+     * @throws Exception ex
+     */
+    String refreshToken(String refreshToken) throws Exception;
 }

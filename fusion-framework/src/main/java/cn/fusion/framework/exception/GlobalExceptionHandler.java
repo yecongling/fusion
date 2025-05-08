@@ -89,6 +89,6 @@ public class GlobalExceptionHandler {
 //        if (NotLoginException.TOKEN_FREEZE.equals(e.getLoginType())) {
 //            System.out.println(e.getMessage());
 //        }
-        return Response.fail(HttpCodeEnum.RC101.getCode(), ExceptionUtils.getRootCauseMessage(e));
+        return Response.fail(HttpCodeEnum.RC401.getCode(), ExceptionUtils.getRootCauseMessage(e));
     }
 }

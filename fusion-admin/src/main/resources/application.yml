@@ -73,9 +73,9 @@ logging:
     path: ${user.home}/fusionLog
 # sa-token 配置
 sa-token:
-  token-style: random-64
-  # 60分钟内无操作，token则会立即过期，有操作就一直续期(目前暂时不过期)
-  active-timeout: -1
+  token-style: random-128
+  # 15分钟内无操作，token则会立即过期(单位:秒)
+  active-timeout: 900
   token-name: Authorization
   # token 前缀
   token-prefix: Bearer
@@ -83,8 +83,6 @@ sa-token:
   is-concurrent: false
   # 是否多端共享 token
   is-share: false
-  # 不自动刷新数据
-  data-refresh-period: -1
   is-log: false
   # 是否读取 cookie 中的 token，从header中读取
   is-read-cookie: false

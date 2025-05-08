@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 /**
  * @ClassName LoginController
  * @Description 登录控制器入口
@@ -63,5 +65,16 @@ public class LoginController {
     @GetMapping("/getCaptcha/{key}")
     public Response<String> getCaptcha(@PathVariable("key") String key) throws Exception {
         return Response.success(loginService.randomImage(key));
+    }
+
+    /**
+     * 刷新token
+     *
+     * @param requestBody 请求体
+     * @return 新的token
+     */
+    @PostMapping("/refreshToken")
+    public Response<String> refreshToken(@RequestBody Map<String, String> requestBody) throws Exception {
+        return Response.success(loginService.refreshToken(requestBody.get("refreshToken")));
     }
 }

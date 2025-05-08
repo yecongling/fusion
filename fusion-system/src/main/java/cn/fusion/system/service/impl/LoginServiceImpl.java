@@ -8,6 +8,7 @@ import cn.fusion.framework.enums.HttpCodeEnum;
 import cn.fusion.framework.enums.SysOperation;
 import cn.fusion.framework.event.BaseEvent;
 import cn.fusion.framework.event.Producer;
+import cn.fusion.framework.exception.BusinessException;
 import cn.fusion.framework.redis.RedisUtil;
 import cn.fusion.framework.utils.*;
 import cn.fusion.system.entity.SysUser;
@@ -151,6 +152,25 @@ public class LoginServiceImpl implements ILoginService {
     }
 
     /**
+     * 刷新token
+     *
+     * @param refreshToken 更新token
+     * @return 新的访问token
+     * @throws Exception ex
+     */
+    @Override
+    public String refreshToken(String refreshToken) throws Exception {
+        // 1、验证refreshToken是否存在
+        Object userId = redisUtil.get(CommonConstant.PREFIX_USER_REFRESH_TOKEN + refreshToken);
+        if (userId == null) {
+            throw new BusinessException(HttpCodeEnum.RC401.getCode(), "refreshToken已失效，请重新登录！");
+        }
+        // 重新生成token
+        StpUtil.login(userId);
+        return StpUtil.getTokenValue();
+    }
+
+    /**
      * 根据用户名查询用户的信息、以及角色
      *
      * @param username 用户名
@@ -183,7 +203,7 @@ public class LoginServiceImpl implements ILoginService {
      */
     private void generateUserInfo(SysUser sysUser, Response<Object> response) {
         // 6、登录成功，生成token
-        StpUtil.login(sysUser.getUsername());
+        StpUtil.login(sysUser.getUserId());
         // so-token会自动将其存入redis中
         String tokenValue = StpUtil.getTokenValue();
         // 记录操作员登录地址
@@ -193,7 +213,12 @@ public class LoginServiceImpl implements ILoginService {
         JSONObject result = new JSONObject();
         result.put("homePath", sysUser.getHomePath());
         result.put("roleId", sysUser.getCurrentRoleId());
-        result.put("token", tokenValue);
+        result.put("accessToken", tokenValue);
+        // 生成refreshToken
+        String refreshToken = UUIDUtils.getUUID();
+        // 设置refreshToken有效期为7天
+        redisUtil.set(CommonConstant.PREFIX_USER_REFRESH_TOKEN + refreshToken, sysUser.getUserId(), 604800);
+        result.put("refreshToken", refreshToken);
 
         response.setCode(HttpCodeEnum.SUCCESS.getCode());
         response.setMessage(HttpCodeEnum.SUCCESS.getMessage());
