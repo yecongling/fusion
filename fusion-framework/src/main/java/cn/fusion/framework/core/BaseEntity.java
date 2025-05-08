@@ -3,8 +3,7 @@ package cn.fusion.framework.core;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
@@ -15,8 +14,7 @@ import java.time.LocalDateTime;
  * @Date 2024/12/14 10:49
  * @Version 1.0
  */
-@Setter
-@Getter
+@Data
 public class BaseEntity {
     // 创建人
     @JsonSerialize(using = ToStringSerializer.class)

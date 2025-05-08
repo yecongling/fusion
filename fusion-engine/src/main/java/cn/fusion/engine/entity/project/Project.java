@@ -3,10 +3,9 @@ package cn.fusion.engine.entity.project;
 import cn.fusion.framework.config.EntityInsertListener;
 import cn.fusion.framework.config.EntityUpdateListener;
 import cn.fusion.framework.core.BaseEntity;
-import com.mybatisflex.annotation.Column;
-import com.mybatisflex.annotation.Id;
-import com.mybatisflex.annotation.KeyType;
-import com.mybatisflex.annotation.Table;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.mybatisflex.annotation.*;
 import com.mybatisflex.core.keygen.KeyGenerators;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -35,7 +34,8 @@ public class Project extends BaseEntity implements Serializable {
      * 项目ID
      */
     @Id(keyType = KeyType.Generator, value = KeyGenerators.snowFlakeId)
-    private String id;
+    @JsonSerialize(using = ToStringSerializer.class)
+    private Long id;
 
     /**
      * 项目名称
@@ -77,5 +77,11 @@ public class Project extends BaseEntity implements Serializable {
      * 备注
      */
     private String remark;
+
+    /**
+     * 项目标签
+     */
+    @RelationOneToMany(targetField = "projectId", selfField = "id")
+    private ProjectTags tags;
 
 }

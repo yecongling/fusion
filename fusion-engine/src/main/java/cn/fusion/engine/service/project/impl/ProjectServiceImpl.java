@@ -53,7 +53,9 @@ public class ProjectServiceImpl implements IProjectService {
     public List<Project> getProjects(Project project) {
         QueryWrapper queryWrapper = new QueryWrapper();
         queryWrapper.like(Project::getName, project.getName(), StringUtils.isNotBlank(project.getName()));
-        queryWrapper.eq(Project::getType, project.getType());
+        queryWrapper.eq(Project::getCreateBy, project.getCreateBy(), project.getCreateBy() != null);
+        queryWrapper.eq(Project::getType, project.getType(), project.getType() != 0);
+        // 如果有标签的查询条件，需要进行关联查询
         return projectMapper.selectListByQuery(queryWrapper);
     }
 
