@@ -55,14 +55,8 @@ public class ProjectServiceImpl implements IProjectService {
     @Override
     public List<Project> getProjects(Project project) {
         QueryWrapper queryWrapper = QueryWrapper.create();
-        queryWrapper.select(
-                        QueryMethods.column(
-                                QueryWrapper.create().select(QueryMethods.allColumns(Project.class))
-                        ),
-                        QueryMethods.column(
-                                QueryWrapper.create().select(QueryMethods.allColumns(Project.class))
-                        )
-                )
+        queryWrapper.select(QueryMethods.allColumns(Project.class))
+                .select(QueryMethods.allColumns(Tags.class))
                 .from(Project.class).as("p")
                 .leftJoin(ProjectTags.class).as("pt").on(ProjectTags::getProjectId, Project::getId)
                 .leftJoin(Tags.class).as("t").on(Tags::getId, ProjectTags::getTagId);

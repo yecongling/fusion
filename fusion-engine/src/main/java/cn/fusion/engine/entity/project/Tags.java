@@ -24,7 +24,7 @@ import java.io.Serializable;
  **/
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Table(value = "t_engine_tags", onInsert = EntityInsertListener.class, onUpdate = EntityUpdateListener.class)
+@Table(value = "t_tags", onInsert = EntityInsertListener.class, onUpdate = EntityUpdateListener.class)
 public class Tags extends BaseEntity implements Serializable {
 
     /**

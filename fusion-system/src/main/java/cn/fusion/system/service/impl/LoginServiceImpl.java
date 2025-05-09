@@ -164,7 +164,10 @@ public class LoginServiceImpl implements ILoginService {
         if (userId == null) {
             throw new BusinessException(HttpCodeEnum.RC401.getCode(), "refreshToken已失效，请重新登录！");
         }
-        SysUser sysUser = this.getUserById(userId.toString());
+        SysUser sysUser = this.getUserById((Long) userId);
+        if (sysUser == null) {
+            throw new BusinessException(HttpCodeEnum.RC401.getCode(), HttpCodeEnum.RC107.getMessage());
+        }
         // 重新生成token
         StpUtil.login(userId);
         String tokenValue = StpUtil.getTokenValue();
@@ -203,7 +206,7 @@ public class LoginServiceImpl implements ILoginService {
      * @param userId 用户id
      * @return 用户信息
      */
-    private SysUser getUserById(String userId) {
+    private SysUser getUserById(Long userId) {
         // 查询条件
         QueryWrapper queryWrapper = new QueryWrapper();
         // 查询的字段（用户表+用户角色表）
