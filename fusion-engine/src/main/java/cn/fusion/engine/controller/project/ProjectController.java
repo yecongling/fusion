@@ -1,16 +1,16 @@
 package cn.fusion.engine.controller.project;
 
+import cn.fusion.engine.dto.project.ProjectQuery;
 import cn.fusion.engine.entity.project.Project;
 import cn.fusion.engine.service.project.IProjectService;
+import cn.fusion.framework.annotation.CurrentUser;
 import cn.fusion.framework.core.Response;
+import cn.fusion.framework.core.SysOpr;
 import cn.fusion.framework.enums.HttpCodeEnum;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -35,12 +35,13 @@ public class ProjectController {
     /**
      * 获取所有的项目
      *
-     * @param project 查询条件
+     * @param projectQuery 查询条件
+     * @param sysOpr       操作人信息
      * @return 项目集合
      */
-    @PostMapping("/getProjectList")
-    public List<Project> getProjectList(@RequestBody Project project) {
-        return projectService.getProjects(project);
+    @GetMapping("/getProjectList")
+    public List<Project> getProjectList(ProjectQuery projectQuery, @CurrentUser SysOpr sysOpr) {
+        return projectService.getProjects(projectQuery, sysOpr);
     }
 
     /**
@@ -58,7 +59,7 @@ public class ProjectController {
     }
 
     /**
-     * 新增项目
+     * 修改项目
      *
      * @param project 项目数据
      * @return 结果

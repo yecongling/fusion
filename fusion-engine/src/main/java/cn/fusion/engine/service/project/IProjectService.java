@@ -1,6 +1,8 @@
 package cn.fusion.engine.service.project;
 
+import cn.fusion.engine.dto.project.ProjectQuery;
 import cn.fusion.engine.entity.project.Project;
+import cn.fusion.framework.core.SysOpr;
 import com.alibaba.fastjson2.JSONObject;
 import org.apache.camel.ServiceStatus;
 
@@ -18,10 +20,11 @@ public interface IProjectService {
     /**
      * 检索项目（目前参数支持name、type进行检索）
      *
-     * @param project 检索条件
+     * @param projectQuery 检索条件
+     * @param sysOpr       操作人信息
      * @return 项目集合
      */
-    List<Project> getProjects(Project project);
+    List<Project> getProjects(ProjectQuery projectQuery, SysOpr sysOpr);
 
     /**
      * 新增项目

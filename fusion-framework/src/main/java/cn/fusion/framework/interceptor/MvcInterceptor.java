@@ -2,11 +2,15 @@ package cn.fusion.framework.interceptor;
 
 import cn.dev33.satoken.interceptor.SaInterceptor;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.fusion.framework.resolver.CurrentUserArgumentResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.List;
 
 /**
  * @ClassName MvcInterceptor
@@ -19,10 +23,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class MvcInterceptor implements WebMvcConfigurer {
 
     private final RateLimitingInterceptor rateLimitingInterceptor;
+    private final CurrentUserArgumentResolver currentUserArgumentResolver;
 
     @Autowired
-    public MvcInterceptor(RateLimitingInterceptor rateLimitingInterceptor) {
+    public MvcInterceptor(RateLimitingInterceptor rateLimitingInterceptor,  CurrentUserArgumentResolver currentUserArgumentResolver) {
         this.rateLimitingInterceptor = rateLimitingInterceptor;
+        this.currentUserArgumentResolver = currentUserArgumentResolver;
     }
 
     /**
@@ -35,6 +41,17 @@ public class MvcInterceptor implements WebMvcConfigurer {
         registry.addInterceptor(new SaInterceptor(handle -> StpUtil.checkLogin())).addPathPatterns("/**").excludePathPatterns("/login", "/logout", "/getCaptcha/*", "/refreshToken");
         // 限流
         registry.addInterceptor(rateLimitingInterceptor).addPathPatterns("/**");
+    }
+
+    /**
+     * 添加参数解析器
+     *
+     * @param resolvers 解析里集合
+     */
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+        // 添加当前操作员参数解析器
+        resolvers.add(currentUserArgumentResolver);
     }
 
     /**

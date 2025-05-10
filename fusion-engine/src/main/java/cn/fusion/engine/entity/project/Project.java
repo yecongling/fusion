@@ -85,4 +85,10 @@ public class Project extends BaseEntity implements Serializable {
     @Column(ignore = true)
     private List<Tags> tags;
 
+    /**
+     * 项目标签(作为外部传入的参数)
+     */
+    @Column(ignore = true)
+    private List<String> tagsId;
+
 }

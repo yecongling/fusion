@@ -2,11 +2,13 @@ package cn.fusion.engine.service.project.impl;
 
 import cn.fusion.engine.camel.core.RouteControlService;
 import cn.fusion.engine.camel.core.RouteManager;
+import cn.fusion.engine.dto.project.ProjectQuery;
 import cn.fusion.engine.entity.project.Project;
 import cn.fusion.engine.entity.project.ProjectTags;
 import cn.fusion.engine.entity.project.Tags;
 import cn.fusion.engine.mapper.project.ProjectMapper;
 import cn.fusion.engine.service.project.IProjectService;
+import cn.fusion.framework.core.SysOpr;
 import com.alibaba.fastjson2.JSONObject;
 import com.mybatisflex.core.query.QueryMethods;
 import com.mybatisflex.core.query.QueryWrapper;
@@ -15,6 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -49,21 +52,29 @@ public class ProjectServiceImpl implements IProjectService {
     /**
      * 检索项目（目前参数支持name、type进行检索）
      *
-     * @param project 检索条件
+     * @param projectQuery 检索条件
+     * @param sysOpr       操作人信息
      * @return 项目集合
      */
     @Override
-    public List<Project> getProjects(Project project) {
+    public List<Project> getProjects(ProjectQuery projectQuery, SysOpr sysOpr) {
         QueryWrapper queryWrapper = QueryWrapper.create();
         queryWrapper.select(QueryMethods.allColumns(Project.class))
                 .select(QueryMethods.allColumns(Tags.class))
                 .from(Project.class).as("p")
                 .leftJoin(ProjectTags.class).as("pt").on(ProjectTags::getProjectId, Project::getId)
                 .leftJoin(Tags.class).as("t").on(Tags::getId, ProjectTags::getTagId);
+        queryWrapper.like(Project::getName, projectQuery.getName(), StringUtils.isNotBlank(projectQuery.getName()));
+        if (projectQuery.getIsMine() != null && projectQuery.getIsMine()) {
+            queryWrapper.eq(Project::getCreateBy, sysOpr.getUserId());
+        }
+        // 项目类型
+        queryWrapper.eq(Project::getType, projectQuery.getType(), projectQuery.getType() != 0);
         // 还要支持标签查询
-        queryWrapper.like(Project::getName, project.getName(), StringUtils.isNotBlank(project.getName()));
-        queryWrapper.eq(Project::getCreateBy, project.getCreateBy(), project.getCreateBy() != null);
-        queryWrapper.eq(Project::getType, project.getType(), project.getType() != 0);
+        if (projectQuery.getTagIDs() != null) {
+            List<String> tagIds = Arrays.stream(projectQuery.getTagIDs().split("\\|")).toList();
+            queryWrapper.in(Tags::getId, tagIds);
+        }
         return projectMapper.selectListByQueryAs(queryWrapper, Project.class);
     }
 
