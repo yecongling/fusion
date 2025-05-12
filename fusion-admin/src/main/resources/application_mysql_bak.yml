@@ -1,0 +1,72 @@
+server:
+  port: 8090
+  undertow:
+    # 以下的配置会影响buffer,这些buffer会用于服务器连接的IO操作,有点类似netty的池化内存管理
+    # 每块buffer的空间大小,越小的空间被利用越充分，不要设置太大，以免影响其他应用，合适即可
+    buffer-size: 1024
+    # 每个区分配的buffer数量 , 所以pool的大小是buffer-size * buffers-per-region
+    #buffers-per-region: 1024
+    # 是否分配的直接内存(NIO直接分配的堆外内存)
+    direct-buffers: true
+    threads:
+      # 阻塞任务线程池, 当执行类似servlet请求阻塞IO操作, undertow会从这个线程池中取得线程
+      # 它的值设置取决于系统线程执行任务的阻塞系数，默认值是IO线程数*8
+      worker: 64
+      io: 8
+  servlet:
+    context-path: /fusion
+spring:
+  application:
+    name: fusion
+  web:
+    resources:
+      add-mappings: false
+  datasource:
+    url: MFACjKALPqKdW8XlhZbu1J3vvlpcLjAntE5j2trzYgDtfyfd92M/TobpBQDyP8egDw1xRxKQHc2NeZzw97i9JqNvx0Gy3EH/vYGjTk5b+rswk+UGwQBz5fssCR8615fPVLOeSsqD+M7q9Et6bjkYOHCE1ENJ+nuiTcQXrclrED1lqf13qGOye+e7uLV18jUeknykhKvztqO+45ROzD0sjajoXlaO8ocq4AqMNYbSOYi1EJY5r5wSgBhxNH9OVZEs
+    username: HFundkUyNJ6IqZX+sDMeFg==
+    password: QA2Cr8IO+jgJWrcIZZZZmw==
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    # 连接池
+    hikari:
+      #连接池名
+      pool-name: DateHikariCP
+      #最小空闲连接数
+      minimum-idle: 5
+      # 空闲连接存活最大时间，默认10分钟
+      idle-timeout: 600000
+      # 连接池最大连接数，默认是10
+      maximum-pool-size: 100
+      # 此属性控制池中连接的最长生命周期，值0表示无限生命周期，默认1800000即30分钟
+      max-lifetime: 1800000
+      # 数据库连接超时时间,默认30秒，即30000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: QA2Cr8IO+jgJWrcIZZZZmw==
+      database: 0
+      lettuce:
+        pool:
+          max-idle: 16
+          max-active: 32
+          min-idle: 8
+# 是否开启sql记录
+mybatis:
+  sqlLog: false
+mybatis-flex:
+  mapper-locations: classpath*:mapper/**/*.xml
+logging:
+  level:
+    root: info
+    cn.net.fusion: debug
+    org.springframework.web: error
+  file:
+    path: ${user.home}/fusionLog
+# sa-token 配置
+sa-token:
+  token-style: random-64
+  # 60分钟内无操作，token则会立即过期，有操作就一直续期(目前暂时不过期)
+  active-timeout: -1
