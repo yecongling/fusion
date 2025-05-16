@@ -1,4 +1,4 @@
-package cn.fusion.engine.service.project;
+package cn.fusion.engine.service.apps;
 
 /**
  * @ClassName IDesignerService

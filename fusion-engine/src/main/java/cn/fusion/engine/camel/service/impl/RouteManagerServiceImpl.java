@@ -1,7 +1,7 @@
 package cn.fusion.engine.camel.service.impl;
 
 import cn.fusion.engine.camel.service.IRouteManagerService;
-import cn.fusion.engine.dto.project.ProjectDTO;
+import cn.fusion.engine.dto.app.AppDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,7 +23,7 @@ public class RouteManagerServiceImpl implements IRouteManagerService {
      * @return 项目DTO列表
      */
     @Override
-    public List<ProjectDTO> buildProjectDTOList(String projectId) {
+    public List<AppDTO> buildProjectDTOList(String projectId) {
         return List.of();
     }
 

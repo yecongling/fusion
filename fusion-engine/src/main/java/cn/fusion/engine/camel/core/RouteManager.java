@@ -2,7 +2,7 @@ package cn.fusion.engine.camel.core;
 
 import cn.fusion.engine.camel.route.BaseRoute;
 import cn.fusion.engine.camel.service.IRouteManagerService;
-import cn.fusion.engine.dto.project.ProjectDTO;
+import cn.fusion.engine.dto.app.AppDTO;
 import org.apache.camel.CamelContext;
 import org.apache.camel.Route;
 import org.apache.camel.spi.RouteController;
@@ -44,11 +44,11 @@ public class RouteManager {
      */
     public void addRoute(String projectId) {
         // 通过项目ID获取路由配置信息
-        List<ProjectDTO> projectDTOS = routeManagerService.buildProjectDTOList(projectId);
+        List<AppDTO> appDTOS = routeManagerService.buildProjectDTOList(projectId);
         try {
             // 构建路由
-            for (ProjectDTO projectDTO : projectDTOS) {
-                BaseRoute route = new BaseRoute(projectDTO);
+            for (AppDTO appDTO : appDTOS) {
+                BaseRoute route = new BaseRoute(appDTO);
                 // 添加路由
                 camelContext.addRoutes(route);
             }

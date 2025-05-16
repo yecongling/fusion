@@ -1,12 +1,12 @@
-package cn.fusion.engine.service.project.impl;
+package cn.fusion.engine.service.apps.impl;
 
-import cn.fusion.engine.entity.project.EndpointConfig;
-import cn.fusion.engine.entity.project.EndpointConfigProperty;
-import cn.fusion.engine.entity.project.EndpointType;
-import cn.fusion.engine.mapper.project.EndpointConfigMapper;
-import cn.fusion.engine.mapper.project.EndpointPropertyMapper;
-import cn.fusion.engine.mapper.project.EndpointTypeMapper;
-import cn.fusion.engine.service.project.IEndpointConfigService;
+import cn.fusion.engine.entity.apps.EndpointConfig;
+import cn.fusion.engine.entity.apps.EndpointConfigProperty;
+import cn.fusion.engine.entity.apps.EndpointType;
+import cn.fusion.engine.mapper.apps.EndpointConfigMapper;
+import cn.fusion.engine.mapper.apps.EndpointPropertyMapper;
+import cn.fusion.engine.mapper.apps.EndpointTypeMapper;
+import cn.fusion.engine.service.apps.IEndpointConfigService;
 import cn.fusion.framework.core.SysOpr;
 import cn.fusion.framework.exception.BusinessException;
 import cn.fusion.framework.utils.ServletUtils;

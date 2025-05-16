@@ -1,6 +1,6 @@
 package cn.fusion.engine.camel.route;
 
-import cn.fusion.engine.dto.project.ProjectDTO;
+import cn.fusion.engine.dto.app.AppDTO;
 import org.apache.camel.builder.RouteBuilder;
 
 /**
@@ -15,9 +15,9 @@ public class BaseRoute extends RouteBuilder {
     /**
      * 结构化路由数据
      */
-    private final ProjectDTO projectDto;
-    public BaseRoute(ProjectDTO projectDto) {
-        this.projectDto = projectDto;
+    private final AppDTO appDto;
+    public BaseRoute(AppDTO appDto) {
+        this.appDto = appDto;
     }
 
     /**

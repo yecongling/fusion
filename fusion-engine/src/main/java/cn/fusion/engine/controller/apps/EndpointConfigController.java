@@ -1,8 +1,8 @@
-package cn.fusion.engine.controller.project;
+package cn.fusion.engine.controller.apps;
 
-import cn.fusion.engine.entity.project.EndpointConfig;
-import cn.fusion.engine.entity.project.EndpointType;
-import cn.fusion.engine.service.project.IEndpointConfigService;
+import cn.fusion.engine.entity.apps.EndpointConfig;
+import cn.fusion.engine.entity.apps.EndpointType;
+import cn.fusion.engine.service.apps.IEndpointConfigService;
 import cn.fusion.framework.core.Response;
 import cn.fusion.framework.enums.HttpCodeEnum;
 import cn.fusion.framework.exception.BusinessException;

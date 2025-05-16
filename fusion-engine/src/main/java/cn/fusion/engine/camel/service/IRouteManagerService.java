@@ -1,6 +1,6 @@
 package cn.fusion.engine.camel.service;
 
-import cn.fusion.engine.dto.project.ProjectDTO;
+import cn.fusion.engine.dto.app.AppDTO;
 
 import java.util.List;
 
@@ -18,5 +18,5 @@ public interface IRouteManagerService {
      * @param projectId 项目ID
      * @return 项目DTO列表
      */
-    List<ProjectDTO> buildProjectDTOList(String projectId);
+    List<AppDTO> buildProjectDTOList(String projectId);
 }

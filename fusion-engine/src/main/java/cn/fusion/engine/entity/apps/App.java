@@ -1,4 +1,4 @@
-package cn.fusion.engine.entity.project;
+package cn.fusion.engine.entity.apps;
 
 import cn.fusion.framework.config.EntityInsertListener;
 import cn.fusion.framework.config.EntityUpdateListener;
@@ -26,8 +26,8 @@ import java.util.List;
  */
 @Setter
 @Getter
-@Table(value = "t_engine_project", onInsert = EntityInsertListener.class, onUpdate = EntityUpdateListener.class)
-public class Project extends BaseEntity implements Serializable {
+@Table(value = "t_engine_apps", onInsert = EntityInsertListener.class, onUpdate = EntityUpdateListener.class)
+public class App extends BaseEntity implements Serializable {
     @Serial
     private static final long serialVersionUID = 6595370169713034744L;
 

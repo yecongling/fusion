@@ -1,6 +1,6 @@
-package cn.fusion.engine.mapper.project;
+package cn.fusion.engine.mapper.apps;
 
-import cn.fusion.engine.entity.project.EndpointConfigProperty;
+import cn.fusion.engine.entity.apps.EndpointConfigProperty;
 import com.mybatisflex.core.BaseMapper;
 
 /**

@@ -1,4 +1,4 @@
-package cn.fusion.engine.entity.project;
+package cn.fusion.engine.entity.apps;
 
 import cn.fusion.framework.config.EntityInsertListener;
 import cn.fusion.framework.config.EntityUpdateListener;

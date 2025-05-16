@@ -1,6 +1,6 @@
-package cn.fusion.engine.mapper.project;
+package cn.fusion.engine.mapper.apps;
 
-import cn.fusion.engine.entity.project.Project;
+import cn.fusion.engine.entity.apps.App;
 import com.mybatisflex.core.BaseMapper;
 
 /**
@@ -10,5 +10,5 @@ import com.mybatisflex.core.BaseMapper;
  * @Date 2025/1/22 15:59
  * @Version 1.0
  */
-public interface ProjectMapper extends BaseMapper<Project> {
+public interface AppsMapper extends BaseMapper<App> {
 }

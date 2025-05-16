@@ -1,6 +1,6 @@
-package cn.fusion.engine.mapper.project;
+package cn.fusion.engine.mapper.apps;
 
-import cn.fusion.engine.entity.project.EndpointType;
+import cn.fusion.engine.entity.apps.EndpointType;
 import com.mybatisflex.core.BaseMapper;
 
 /**

@@ -1,7 +1,7 @@
-package cn.fusion.engine.service.project;
+package cn.fusion.engine.service.apps;
 
-import cn.fusion.engine.entity.project.EndpointConfig;
-import cn.fusion.engine.entity.project.EndpointType;
+import cn.fusion.engine.entity.apps.EndpointConfig;
+import cn.fusion.engine.entity.apps.EndpointType;
 
 import java.util.List;
 
