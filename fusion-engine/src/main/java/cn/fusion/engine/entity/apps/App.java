@@ -19,40 +19,40 @@ import java.util.List;
 
 /**
  * @ClassName Project
- * @Description 项目实例
+ * @Description 应用实例
  * @Author ycl
  * @Date 2025/1/22 11:50
  * @Version 1.0
  */
 @Setter
 @Getter
-@Table(value = "t_engine_apps", onInsert = EntityInsertListener.class, onUpdate = EntityUpdateListener.class)
+@Table(value = "t_engine_app", onInsert = EntityInsertListener.class, onUpdate = EntityUpdateListener.class)
 public class App extends BaseEntity implements Serializable {
     @Serial
     private static final long serialVersionUID = 6595370169713034744L;
 
     /**
-     * 项目ID
+     * 应用ID
      */
     @Id(keyType = KeyType.Generator, value = KeyGenerators.snowFlakeId)
     @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
     /**
-     * 项目名称
+     * 应用名称
      */
-    @NotBlank(message = "项目名称不能为空")
+    @NotBlank(message = "应用名称不能为空")
     @Size(min = 1, max = 128)
     private String name;
 
     /**
-     * 项目类型
+     * 应用类型
      */
-    @NotNull(message = "项目类型不能为空，type字段必传")
+    @NotNull(message = "应用类型不能为空，type字段必传")
     private Integer type;
 
     /**
-     * 项目状态（正常、异常、部分异常、未启动）
+     * 应用状态（正常、异常、部分异常、未启动）
      */
     @Column(onInsertValue = "0")
     private Integer status;
@@ -80,13 +80,13 @@ public class App extends BaseEntity implements Serializable {
     private String remark;
 
     /**
-     * 项目标签
+     * 应用标签
      */
     @Column(ignore = true)
     private List<Tags> tags;
 
     /**
-     * 项目标签(作为外部传入的参数)
+     * 应用标签(作为外部传入的参数)
      */
     @Column(ignore = true)
     private List<String> tagsId;
