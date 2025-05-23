@@ -7,6 +7,7 @@ import cn.fusion.framework.annotation.CurrentUser;
 import cn.fusion.framework.core.Response;
 import cn.fusion.framework.core.SysOpr;
 import cn.fusion.framework.enums.HttpCodeEnum;
+import com.alibaba.fastjson2.JSONObject;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -36,7 +37,7 @@ public class AppsController {
      * 获取所有的应用
      *
      * @param appQuery 查询条件
-     * @param sysOpr       操作人信息
+     * @param sysOpr   操作人信息
      * @return 应用集合
      */
     @GetMapping("/getApps")
@@ -70,5 +71,17 @@ public class AppsController {
             return Response.fail(HttpCodeEnum.RC400.getCode(), bindingResult.getAllErrors().getFirst().getDefaultMessage());
         }
         return Response.success(appsService.updateApp(app));
+    }
+
+    /**
+     * 删除应用
+     *
+     * @param params 应用id
+     * @return 结果
+     */
+    @PostMapping("/deleteApp")
+    public Response<String> deleteApp(@RequestBody JSONObject params) {
+        String appId = params.getString("appId");
+        return appsService.deleteApp(appId);
     }
 }

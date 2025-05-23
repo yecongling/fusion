@@ -8,6 +8,7 @@ import cn.fusion.engine.entity.apps.ProjectTags;
 import cn.fusion.engine.entity.apps.Tags;
 import cn.fusion.engine.mapper.apps.AppsMapper;
 import cn.fusion.engine.service.apps.IAppsService;
+import cn.fusion.framework.core.Response;
 import cn.fusion.framework.core.SysOpr;
 import com.alibaba.fastjson2.JSONObject;
 import com.mybatisflex.core.query.QueryMethods;
@@ -114,15 +115,15 @@ public class AppsServiceImpl implements IAppsService {
     /**
      * 删除应用
      *
-     * @param app 应用
+     * @param appId 应用
      * @return true | false
      */
     @Override
-    public boolean deleteApp(App app) {
+    public Response<String> deleteApp(String appId) {
         // 检查应用是否在运行中
         // 停止服务
         // 删除应用
-        return false;
+        return null;
     }
 
     /**

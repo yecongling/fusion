@@ -2,6 +2,7 @@ package cn.fusion.engine.service.apps;
 
 import cn.fusion.engine.dto.app.AppQuery;
 import cn.fusion.engine.entity.apps.App;
+import cn.fusion.framework.core.Response;
 import cn.fusion.framework.core.SysOpr;
 import com.alibaba.fastjson2.JSONObject;
 import org.apache.camel.ServiceStatus;
@@ -51,10 +52,10 @@ public interface IAppsService {
     /**
      * 删除应用
      *
-     * @param app 应用
+     * @param appId 应用
      * @return true | false
      */
-    boolean deleteApp(App app);
+    Response<String> deleteApp(String appId);
 
     /**
      * 更新服务状态（启用服务、停止服务）
